@@ -1,0 +1,16 @@
+{
+    "name": "Unity.Pharos",
+    "rootNamespace": "Pharos",
+    "references": [
+        "ReflexPlus"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
