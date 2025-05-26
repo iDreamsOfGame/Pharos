@@ -1,7 +1,7 @@
 using System;
 using Pharos.Framework;
 
-namespace PharosEditor.Tests.Supports
+namespace PharosEditor.Tests.Framework.Supports
 {
     internal class CallbackExtensionInjectable : IExtension
     {

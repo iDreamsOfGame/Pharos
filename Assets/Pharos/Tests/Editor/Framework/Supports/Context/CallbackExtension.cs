@@ -2,7 +2,7 @@ using System;
 using JetBrains.Annotations;
 using Pharos.Framework;
 
-namespace PharosEditor.Tests.Supports
+namespace PharosEditor.Tests.Framework.Supports
 {
     internal class CallbackExtension : IExtension
     {

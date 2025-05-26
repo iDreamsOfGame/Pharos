@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Pharos.Framework.Helpers
 {
@@ -27,12 +28,12 @@ namespace Pharos.Framework.Helpers
             var obj = CreateInstance(type);
             Add(obj);
         }
-        
+
         public void Add(object obj)
         {
             if (obj == null)
                 return;
-            
+
             var type = obj.GetType();
             if (typeMap.ContainsKey(type))
                 return;
@@ -76,11 +77,37 @@ namespace Pharos.Framework.Helpers
             RemoveAll();
             typeMap?.Clear();
         }
-        
+
         private static object CreateInstance(Type type)
         {
-            var constructor = type.GetConstructor(Type.EmptyTypes);
-            return constructor != null ? constructor.Invoke(null) : null;
+            // Get the constructor with the least amount of parameters. 
+            var maxParameters = int.MaxValue;
+            var constructors = type.GetConstructors();
+            ConstructorInfo constructorToInject = null;
+            foreach (var constructor in constructors)
+            {
+                var paramsLength = constructor.GetParameters().Length;
+                if (paramsLength < maxParameters)
+                {
+                    constructorToInject = constructor;
+                    maxParameters = paramsLength;
+                }
+            }
+
+            if (constructorToInject != null)
+            {
+                var parameters = constructorToInject.GetParameters();
+                var parametersLength = parameters.Length;
+                var args = new object[parametersLength];
+                for (var i = 0; i < parametersLength; i++)
+                {
+                    args[i] = parameters[i].DefaultValue;
+                }
+
+                return constructorToInject.Invoke(args);
+            }
+
+            return null;
         }
 
         private void Uninstall(Type type, object obj)

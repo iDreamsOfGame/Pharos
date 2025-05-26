@@ -1,9 +1,9 @@
 using System;
 using Pharos.Framework;
 
-namespace PharosEditor.Tests.Supports
+namespace PharosEditor.Tests.Framework.Supports
 {
-    public class CallbackConfig : IConfig
+    internal class CallbackConfig : IConfig
     {
         private readonly Action callback;
 

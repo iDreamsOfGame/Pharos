@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using Pharos.Framework;
 using Pharos.Framework.Helpers;
-using PharosEditor.Tests.Supports;
+using PharosEditor.Tests.Framework.Supports;
 
 namespace PharosEditor.Tests.Framework.Helpers
 {
