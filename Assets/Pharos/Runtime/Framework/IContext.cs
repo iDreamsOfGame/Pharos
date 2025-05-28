@@ -44,7 +44,7 @@ namespace Pharos.Framework
         /// <summary>
         /// Adds custom extensions or bundles into the context. 
         /// </summary>
-        /// <typeparam name="T">IExtension class. </typeparam>
+        /// <typeparam name="T">IExtension type. </typeparam>
         /// <returns>The implementation instance of interface <see cref="IContext"/>. </returns>
         IContext AddExtension<T>() where T : IExtension;
 
@@ -72,7 +72,7 @@ namespace Pharos.Framework
         /// <summary>
         /// Configures the context with custom configurations. 
         /// </summary>
-        /// <typeparam name="T">Configuration class. </typeparam>
+        /// <typeparam name="T">Configuration type. </typeparam>
         /// <returns>The implementation instance of interface <see cref="IContext"/>. </returns>
         IContext Configure<T>() where T : IConfig;
 

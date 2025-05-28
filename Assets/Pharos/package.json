@@ -16,6 +16,7 @@
     "changelogUrl": "https://github.com/iDreamsOfGame/Pharos/blob/main/CHANGELOG.md",
     "licensesUrl": "https://github.com/iDreamsOfGame/Pharos/blob/main/LICENSE",
     "dependencies": {
-        "io.github.idreamsofgame.reflexplus": "1.0.6"
+        "io.github.idreamsofgame.reflexplus": "1.0.6",
+        "nuget.moq": "2.0.0"
     }
 }

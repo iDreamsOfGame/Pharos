@@ -94,14 +94,20 @@ namespace Pharos.Framework.Injection
         public object GetOrCreateNewInstance(Type type, object key = null)
         {
             var instance = GetInstance(type, key);
-            if (instance != null) 
-                return instance;
-            
+            return instance ?? CreateNewInstance(type, key);
+        }
+
+        public T CreateNewInstance<T>(object key = null)
+        {
+            return (T)CreateNewInstance(typeof(T), key);
+        }
+
+        public object CreateNewInstance(Type type, object key = null)
+        {
             if (Container == null)
                 Build();
             
-            instance = Container?.Construct(type, key);
-            return instance;
+            return Container?.Construct(type, key);
         }
 
         public void InjectInto(object target, Container container = null)

@@ -107,7 +107,7 @@ namespace PharosEditor.Tests.Framework.Injection
         }
 
         [Test]
-        public void Map_MapClassToValue_ReturnsCorrectInstance()
+        public void Map_MapTypeToValue_ReturnsCorrectInstance()
         {
             var foo = new Foo();
             injector.Map<Foo>().ToValue(foo);
@@ -117,7 +117,7 @@ namespace PharosEditor.Tests.Framework.Injection
         }
 
         [Test]
-        public void Map_MapClassToValueWithKey_ReturnsCorrectInstance()
+        public void Map_MapTypeToValueWithKey_ReturnsCorrectInstance()
         {
             const string key = nameof(Foo);
             var foo = new Foo();
@@ -128,7 +128,7 @@ namespace PharosEditor.Tests.Framework.Injection
         }
 
         [Test]
-        public void Map_MapMultiInterfacesToOneSingletonClass_ReturnsDifferentInstances()
+        public void Map_MapMultiInterfacesToOneSingletonType_ReturnsDifferentInstances()
         {
             injector.Map<IFoo>().ToSingleton<Foo>();
             injector.Map<IFoo2>().ToSingleton<Foo>();
@@ -139,7 +139,7 @@ namespace PharosEditor.Tests.Framework.Injection
         }
 
         [Test]
-        public void Map_MapClassToType_ReturnsDifferentInstances()
+        public void Map_MapTypeToType_ReturnsDifferentInstances()
         {
             injector.Map<Foo>().ToType<Foo>();
             injector.Build();
@@ -149,7 +149,7 @@ namespace PharosEditor.Tests.Framework.Injection
         }
 
         [Test]
-        public void Map_MapClassToTypeWithKey_ReturnsDifferentInstances()
+        public void Map_MapTypeToTypeWithKey_ReturnsDifferentInstances()
         {
             const string key = nameof(Foo);
             injector.Map<Foo>(key).ToType<Foo>();
@@ -181,7 +181,7 @@ namespace PharosEditor.Tests.Framework.Injection
         }
 
         [Test]
-        public void Map_MapClassToSingleton_ReturnsCorrectInstance()
+        public void Map_MapTypeToSingletonType_ReturnsCorrectInstance()
         {
             injector.Map<Foo>().ToSingleton<Foo>();
             injector.Build();

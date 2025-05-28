@@ -83,7 +83,7 @@ namespace Pharos.Framework.Helpers
         {
             if (config is Type type)
             {
-                logger.LogDebug("Now initializing. Instantiating config class {0}", config);
+                logger.LogDebug("Now initializing. Instantiating config type {0}", config);
                 ProcessConfigType(type);
             }
             else

@@ -41,6 +41,10 @@ namespace Pharos.Framework.Injection
         T GetOrCreateNewInstance<T>(object key = null);
 
         object GetOrCreateNewInstance(Type type, object key = null);
+
+        T CreateNewInstance<T>(object key = null);
+
+        object CreateNewInstance(Type type, object key = null);
         
         void InjectInto(object target, Container container = null);
     }

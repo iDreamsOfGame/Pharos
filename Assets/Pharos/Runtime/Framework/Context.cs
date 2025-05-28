@@ -90,6 +90,7 @@ namespace Pharos.Framework
             Destroying += OnDestroying;
             Destroyed += OnDestroyed;
             
+            Injector.Map<IContext>().ToValue(this);
             Injector.Map<IInjector>().ToValue(Injector);
         }
 
