@@ -19,7 +19,7 @@ namespace Pharos.Common.CommandCenter
                 MethodParameters = Array.Empty<ParameterInfo>();
             }
         }
-        
+
         public MethodInfo MethodInfo { get; }
 
         public ParameterInfo[] MethodParameters { get; }

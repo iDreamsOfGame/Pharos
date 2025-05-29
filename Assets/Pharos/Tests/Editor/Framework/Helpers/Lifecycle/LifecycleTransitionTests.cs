@@ -10,9 +10,9 @@ namespace PharosEditor.Tests.Framework.Helpers
     internal class LifecycleTransitionTests
     {
         private LifecycleManager lifecycleManager;
-        
+
         private LifecycleTransition transition;
-        
+
         [SetUp]
         public void Setup()
         {
@@ -97,7 +97,7 @@ namespace PharosEditor.Tests.Framework.Helpers
             Assert.That(actual, Is.Not.Null);
             lifecycleManager.ErrorOccurred -= OnErrorOccurred;
             return;
-            
+
             void OnErrorOccurred(Exception exception)
             {
             }

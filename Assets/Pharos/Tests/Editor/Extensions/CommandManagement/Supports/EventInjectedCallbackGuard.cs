@@ -11,7 +11,7 @@ namespace PharosEditor.Tests.Extensions.CommandManagement.Supports
 
         [Inject("ApproveCallback")]
         public Action<EventInjectedCallbackGuard> Callback { get; private set; }
-        
+
         public bool Approve()
         {
             Callback?.Invoke(this);

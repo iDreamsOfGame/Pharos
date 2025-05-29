@@ -8,7 +8,7 @@ namespace PharosEditor.Tests.Common.CommandCenter.Supports
     {
         [Inject("ReportingFunction")]
         private Action<object> reportingFunc;
-        
+
         public void Execute()
         {
             reportingFunc?.Invoke(typeof(AbstractInterfaceImplementingCommand));

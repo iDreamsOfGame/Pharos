@@ -14,7 +14,7 @@ namespace PharosEditor.Tests.Extensions.CommandManagement.Supports
 
         [Inject("ExecuteCallback")]
         public Action<SupportEventTriggeredSelfReportingCallbackCommand> Callback { get; private set; }
-        
+
         public void Execute()
         {
             Callback?.Invoke(this);

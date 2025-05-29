@@ -267,9 +267,9 @@ namespace PharosEditor.Tests.Common.CommandCenter
         [Test]
         public void ExecuteCommands_CommandMappedToInterfaceIsExecuted_ReturnsExpectedReportedList()
         {
-            injector.Map<ICommand> ().ToType (typeof(AbstractInterfaceImplementingCommand));
+            injector.Map<ICommand>().ToType(typeof(AbstractInterfaceImplementingCommand));
             subject.ExecuteCommand(AddMapping<ICommand>());
-            Assert.That(reported, Is.EqualTo(new object[]{typeof(AbstractInterfaceImplementingCommand)}).AsCollection);
+            Assert.That(reported, Is.EqualTo(new object[] { typeof(AbstractInterfaceImplementingCommand) }).AsCollection);
         }
 
         private ICommandMapping AddMapping<T>()

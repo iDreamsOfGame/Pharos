@@ -7,17 +7,17 @@ namespace Pharos.Framework
     public partial class Context : IContext
     {
         private readonly LogManager logManager = new();
-        
+
         private readonly List<IContext> children = new();
-        
+
         private Pin pin;
 
         private LifecycleManager lifecycleManager;
-        
+
         private ILogger logger;
-        
+
         private ExtensionManager extensionManager;
-        
+
         private ConfigManager configManager;
 
         public Context()
@@ -44,10 +44,10 @@ namespace Pharos.Framework
                 logger.LogDebug("Adding child context {0}. ", child);
                 if (child.HasInitialized)
                     logger.LogWarning("Child context {0} must be uninitialized. ", child);
-                
+
                 if (child.Injector.Parent != null)
                     logger.LogWarning("Child context {0} must not have a parent Injector. ", child);
-                
+
                 children.Add(child);
                 child.Injector.Parent = Injector;
                 child.Injector.Builder.SetParent(Injector.Container);
@@ -89,7 +89,7 @@ namespace Pharos.Framework
             Initialized += OnInitialized;
             Destroying += OnDestroying;
             Destroyed += OnDestroyed;
-            
+
             Injector.Map<IContext>().ToValue(this);
             Injector.Map<IInjector>().ToValue(Injector);
         }
@@ -100,10 +100,10 @@ namespace Pharos.Framework
             {
                 RemoveChild(child);
             }
-            
+
             children.Clear();
         }
-        
+
         private void OnChildDestroyed(object context)
         {
             RemoveChild(context as IContext);

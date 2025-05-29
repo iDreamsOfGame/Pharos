@@ -12,7 +12,7 @@ namespace PharosEditor.Tests.Framework.Helpers
         private object target;
 
         private LifecycleManager lifecycleManager;
-        
+
         [SetUp]
         public void Setup()
         {
@@ -43,7 +43,7 @@ namespace PharosEditor.Tests.Framework.Helpers
             Assert.That(lifecycleManager.State, Is.EqualTo(LifecycleState.Suspended));
             Assert.That(lifecycleManager.HasSuspended, Is.True);
         }
-        
+
         [Test]
         public void Resume_ChangeStateToActivated_ReturnsHasActivatedIsTrue()
         {
@@ -86,13 +86,13 @@ namespace PharosEditor.Tests.Framework.Helpers
             lifecycleManager.Resumed += OnEventRaised(nameof(lifecycleManager.Resumed));
             lifecycleManager.Destroying += OnEventRaised(nameof(lifecycleManager.Destroying));
             lifecycleManager.Destroyed += OnEventRaised(nameof(lifecycleManager.Destroyed));
-            
+
             lifecycleManager.Initialize();
             lifecycleManager.Suspend();
             lifecycleManager.Resume();
             lifecycleManager.Destroy();
             Assert.That(actual, Is.EqualTo(expected));
-            
+
             lifecycleManager.Initializing -= OnEventRaised(nameof(lifecycleManager.Initializing));
             lifecycleManager.Initialized -= OnEventRaised(nameof(lifecycleManager.Initialized));
             lifecycleManager.Suspending -= OnEventRaised(nameof(lifecycleManager.Suspending));

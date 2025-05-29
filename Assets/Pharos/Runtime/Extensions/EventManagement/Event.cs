@@ -9,7 +9,7 @@ namespace Pharos.Extensions.EventManagement
         {
             EventType = type;
         }
-        
+
         public Enum EventType { get; }
     }
 }

@@ -13,12 +13,12 @@ namespace PharosEditor.Tests.Common.CommandCenter.Supports
 
         [Inject("ReportingFunction")]
         private Action<object> reportingFunc;
-        
+
         public void Execute()
         {
-            if (reportingFunc == null) 
+            if (reportingFunc == null)
                 return;
-            
+
             reportingFunc.Invoke(message);
             reportingFunc.Invoke(code);
         }

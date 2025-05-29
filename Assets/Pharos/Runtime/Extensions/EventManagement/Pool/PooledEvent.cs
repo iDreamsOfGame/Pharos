@@ -22,16 +22,16 @@ namespace Pharos.Extensions.EventManagement.Pool
             var eventArgs = ObjectPool.Get();
             if (eventArgs == null)
                 return;
-            
+
             callback?.Invoke(eventArgs);
             ObjectPool.Return(eventArgs);
         }
-        
+
         public static void Dispatch(Enum eventType, Action<T> setter = null)
         {
             Dispatch(eventType, setter, EventDispatcher.GlobalEventDispatcher);
         }
-        
+
         public static void Dispatch(Enum eventType, Action<T> setter, IEventDispatcher eventDispatcher)
         {
             Borrow(e =>

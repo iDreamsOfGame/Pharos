@@ -13,7 +13,7 @@ namespace PharosEditor.Tests.Common.CommandCenter.Supports
 
         [Inject(true)]
         private int code;
-        
+
         public void Execute()
         {
             if (reportingFunc != null)

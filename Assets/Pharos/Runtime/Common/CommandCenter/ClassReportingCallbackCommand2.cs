@@ -7,7 +7,7 @@ namespace Pharos.Common.CommandCenter
     {
         [Inject("ReportingFunction")]
         private Action<object> reportingFunc;
-        
+
         public void Execute()
         {
             reportingFunc?.Invoke(typeof(ClassReportingCallbackCommand2));

@@ -6,7 +6,7 @@ namespace PharosEditor.Tests.Framework.Supports
     internal class CallbackLogHandler : ILogHandler
     {
         internal delegate void LogParamDelegate(LogParams logParams);
-        
+
         public CallbackLogHandler(LogParamDelegate callback)
         {
             Callback = callback;

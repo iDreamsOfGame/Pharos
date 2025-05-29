@@ -8,11 +8,11 @@ namespace PharosEditor.Tests.Extensions.CommandManagement.Supports
         public enum Type
         {
             Type1,
-            
+
             Type2
         }
-        
-        public SupportEvent (Type type)
+
+        public SupportEvent(Type type)
         {
             EventType = type;
         }

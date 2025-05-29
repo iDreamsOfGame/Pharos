@@ -15,7 +15,7 @@ namespace PharosEditor.Tests.Framework.Helpers
             [Inject(true)]
             public int InjectedValue { get; private set; }
         }
-        
+
         [Test]
         public void CreateInstance_WithInjectorNotNull_ReturnInstanceNotNull()
         {

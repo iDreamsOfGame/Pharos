@@ -6,7 +6,7 @@ namespace PharosEditor.Tests.Common.CommandCenter.Supports
     {
         [Inject]
         private string message;
-        
+
         public string Execute() => message;
     }
 }

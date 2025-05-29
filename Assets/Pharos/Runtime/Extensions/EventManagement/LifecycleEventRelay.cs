@@ -5,22 +5,22 @@ namespace Pharos.Extensions.EventManagement
     internal class LifecycleEventRelay
     {
         private ILifecycleEvent source;
-        
+
         public LifecycleEventRelay(ILifecycleEvent source)
         {
             this.source = source;
-            
+
             source.StateChanged += OnStateChanged;
-            
+
             source.Initializing += OnInitializing;
             source.Initialized += OnInitialized;
-            
+
             source.Suspending += OnSuspending;
             source.Suspended += OnSuspended;
-            
+
             source.Resuming += OnResuming;
             source.Resumed += OnResumed;
-            
+
             source.Destroying += OnDestroying;
             source.Destroyed += OnDestroyed;
         }
@@ -28,22 +28,22 @@ namespace Pharos.Extensions.EventManagement
         public void Destroy()
         {
             source.StateChanged -= OnStateChanged;
-            
+
             source.Initializing -= OnInitializing;
             source.Initialized -= OnInitialized;
-            
+
             source.Suspending -= OnSuspending;
             source.Suspended -= OnSuspended;
-            
+
             source.Resuming -= OnResuming;
             source.Resumed -= OnResumed;
-            
+
             source.Destroying -= OnDestroying;
             source.Destroyed -= OnDestroyed;
-            
+
             source = null;
         }
-        
+
         private static void OnStateChanged()
         {
             LifecycleEvent.Dispatch(LifecycleEvent.Type.StateChanged);
@@ -53,7 +53,7 @@ namespace Pharos.Extensions.EventManagement
         {
             LifecycleEvent.Dispatch(LifecycleEvent.Type.Initializing);
         }
-        
+
         private static void OnInitialized(object target)
         {
             LifecycleEvent.Dispatch(LifecycleEvent.Type.Initialized);

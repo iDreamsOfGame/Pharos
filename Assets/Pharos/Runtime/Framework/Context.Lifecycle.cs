@@ -214,12 +214,12 @@ namespace Pharos.Framework
         {
             lifecycleManager?.Destroy(callback);
         }
-        
+
         private void OnInitializing(object context)
         {
             logger.LogDebug("Initializing...");
         }
-        
+
         private void OnInitialized(object context)
         {
             logger.LogDebug("Initialized");
@@ -236,7 +236,7 @@ namespace Pharos.Framework
             Initialized -= OnInitialized;
             Destroying -= OnDestroying;
             Destroyed -= OnDestroyed;
-            
+
             extensionManager?.Destroy();
             configManager?.Destroy();
             pin?.ReleaseAll();

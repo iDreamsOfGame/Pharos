@@ -7,7 +7,7 @@ namespace PharosEditor.Tests.Extensions.CommandManagement.Supports
     {
         [Inject("ExecuteCallback")]
         private Action<SupportEvent> callback;
-        
+
         public void Execute(SupportEvent e)
         {
             callback?.Invoke(e);

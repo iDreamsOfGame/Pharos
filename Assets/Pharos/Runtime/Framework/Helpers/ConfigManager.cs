@@ -12,7 +12,7 @@ namespace Pharos.Framework.Helpers
         private bool hasInitialized;
 
         private Dictionary<object, bool> configMap = new();
-        
+
         public ConfigManager(IContext context)
         {
             Context = context;
@@ -21,7 +21,7 @@ namespace Pharos.Framework.Helpers
         }
 
         public IContext Context { get; }
-        
+
         public IInjector Injector => Context.Injector;
 
         public void AddConfig<T>() where T : IConfig
@@ -34,7 +34,7 @@ namespace Pharos.Framework.Helpers
             if (!configMap.TryAdd(config, hasInitialized))
                 return;
 
-            if (!hasInitialized) 
+            if (!hasInitialized)
                 return;
 
             ProcessConfig(config);
@@ -46,7 +46,7 @@ namespace Pharos.Framework.Helpers
             if (Context != null)
                 Context.Initializing -= OnContextInitializing;
         }
-        
+
         private static void Configure(object obj, Type type = null)
         {
             if (obj is IConfig config)
@@ -61,7 +61,7 @@ namespace Pharos.Framework.Helpers
                 method?.Invoke(obj, null);
             }
         }
-        
+
         private void OnContextInitializing(object obj)
         {
             if (!hasInitialized)
@@ -71,7 +71,7 @@ namespace Pharos.Framework.Helpers
                 {
                     if (hasProcessed)
                         continue;
-                    
+
                     ProcessConfig(config);
                 }
 

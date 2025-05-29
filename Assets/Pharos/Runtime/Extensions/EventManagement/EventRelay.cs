@@ -19,7 +19,7 @@ namespace Pharos.Extensions.EventManagement
             this.destination = destination;
             this.types = types == null ? new List<Enum>() : new List<Enum>(types);
         }
-        
+
         public EventRelay Start()
         {
             if (!hasActivated)
@@ -27,9 +27,10 @@ namespace Pharos.Extensions.EventManagement
                 hasActivated = true;
                 AddListeners();
             }
+
             return this;
         }
-        
+
         public EventRelay Stop()
         {
             if (hasActivated)
@@ -37,22 +38,23 @@ namespace Pharos.Extensions.EventManagement
                 hasActivated = false;
                 RemoveListeners();
             }
+
             return this;
         }
-        
+
         public void AddType(Enum eventType)
         {
             types.Add(eventType);
             if (hasActivated)
                 AddListener(eventType);
         }
-        
+
         public void RemoveType(Enum eventType)
         {
             var index = types.IndexOf(eventType);
             if (index > -1)
             {
-                types.RemoveAt (index);
+                types.RemoveAt(index);
                 RemoveListener(eventType);
             }
         }
@@ -61,7 +63,7 @@ namespace Pharos.Extensions.EventManagement
         {
             source.AddEventListener(type, destination.Dispatch);
         }
-        
+
         private void AddListeners()
         {
             foreach (var type in types)
@@ -69,7 +71,7 @@ namespace Pharos.Extensions.EventManagement
                 AddListener(type);
             }
         }
-        
+
         private void RemoveListener(Enum type)
         {
             source.RemoveEventListener(type, destination.Dispatch);

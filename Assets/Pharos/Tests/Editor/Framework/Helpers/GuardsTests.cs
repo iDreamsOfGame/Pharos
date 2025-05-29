@@ -138,7 +138,7 @@ namespace PharosEditor.Tests.Framework.Helpers
         [Test]
         public void Approve_FunctionList_ReturnsTrue()
         {
-            Assert.That(Guards.Approve (new List<Func<bool>> { TrueGuard, HappyFunction }), Is.True);
+            Assert.That(Guards.Approve(new List<Func<bool>> { TrueGuard, HappyFunction }), Is.True);
             return;
             bool TrueGuard() => true;
         }

@@ -23,7 +23,7 @@ namespace Pharos.Framework
         /// Gets a value that indicates whether this object has been fully suspended or not. 
         /// </summary>
         bool HasSuspended { get; }
-        
+
         /// <summary>
         /// Gets a value that indicates whether this object has been fully destroyed or not. 
         /// </summary>
@@ -34,19 +34,19 @@ namespace Pharos.Framework
         /// </summary>
         /// <param name="callback"></param>
         void Initialize(Action<Exception> callback = null);
-        
+
         /// <summary>
         /// Suspends the lifecycle. 
         /// </summary>
         /// <param name="callback"></param>
         void Suspend(Action<Exception> callback = null);
-        
+
         /// <summary>
         /// Resumes a suspended lifecycle. 
         /// </summary>
         /// <param name="callback"></param>
         void Resume(Action<Exception> callback = null);
-        
+
         /// <summary>
         /// Destroys an activated lifecycle. 
         /// </summary>

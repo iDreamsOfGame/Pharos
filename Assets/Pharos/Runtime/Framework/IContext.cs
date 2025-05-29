@@ -82,7 +82,7 @@ namespace Pharos.Framework
         /// <param name="type">Type with a 'Configure' method signature. </param>
         /// <returns>The implementation instance of interface <see cref="IContext"/>. </returns>
         IContext Configure(Type type);
-        
+
         /// <summary>
         /// Configures the context with custom configurations. 
         /// </summary>

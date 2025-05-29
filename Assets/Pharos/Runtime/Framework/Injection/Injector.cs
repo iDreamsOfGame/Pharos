@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using ReflexPlus.Core;
 using ReflexPlus.Injectors;
@@ -8,7 +9,7 @@ namespace Pharos.Framework.Injection
     internal class Injector : IInjector
     {
         private const BindingFlags ConstructorsBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-        
+
         public Injector(string name = null)
         {
             Builder = new ContainerBuilder()
@@ -25,7 +26,6 @@ namespace Pharos.Framework.Injection
         {
             var childInjector = new Injector();
             childInjector.Parent = this;
-            childInjector.Builder.SetParent(Container);
             return childInjector;
         }
 
@@ -64,10 +64,11 @@ namespace Pharos.Framework.Injection
             Builder?.Unbind(type, key);
         }
 
-        public IInjector Build()
+        public IInjector Build(bool buildAncestors = false)
         {
-            if (Container != null)
-                Builder.SetParent(Container);
+            // Build Ancestors
+            if (buildAncestors)
+                TryBuildAncestors();
 
             Container = Builder.Build();
             return this;
@@ -106,7 +107,7 @@ namespace Pharos.Framework.Injection
         {
             if (Container == null)
                 Build();
-            
+
             return Container?.Construct(type, key);
         }
 
@@ -129,6 +130,30 @@ namespace Pharos.Framework.Injection
         {
             Container?.Dispose();
             Container = null;
+        }
+
+        private void TryBuildAncestors()
+        {
+            if (Parent == null) 
+                return;
+            
+            var linkedList = new LinkedList<Injector>();
+            var parent = Parent as Injector;
+            while (parent != null)
+            {
+                linkedList.AddFirst(parent);
+                parent = parent.Parent as Injector;
+            }
+
+            var first = linkedList.First.Value;
+            while (first != null)
+            {
+                linkedList.RemoveFirst();
+                first.Build();
+                var container = first.Container;
+                first = linkedList.First.Value;
+                first.Builder.SetParent(container);
+            }
         }
     }
 }

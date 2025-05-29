@@ -14,11 +14,11 @@ namespace Pharos.Framework
             RegisterMediators();
             RegisterOthers();
         }
-        
+
         public virtual void Disable(IContext context)
         {
         }
-        
+
         protected virtual void RegisterModels()
         {
         }

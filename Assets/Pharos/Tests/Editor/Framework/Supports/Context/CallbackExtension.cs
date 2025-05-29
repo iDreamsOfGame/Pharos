@@ -11,7 +11,7 @@ namespace PharosEditor.Tests.Framework.Supports
         {
             ExtendCallback = StaticCallback;
         }
-        
+
         public CallbackExtension(Action<IContext> extendCallback = null, Action<IContext> unplugCallback = null)
         {
             ExtendCallback = extendCallback ?? StaticCallback;

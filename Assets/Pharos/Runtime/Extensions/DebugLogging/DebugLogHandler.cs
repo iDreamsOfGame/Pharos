@@ -8,12 +8,12 @@ namespace Pharos.Extensions.DebugLogging
     public class DebugLogHandler : ILogHandler
     {
         private readonly IContext context;
-        
+
         public DebugLogHandler(IContext context)
         {
             this.context = context;
         }
-        
+
         public void Log(object source,
             LogLevel level,
             DateTime timestamp,
@@ -28,18 +28,19 @@ namespace Pharos.Extensions.DebugLogging
                                         + " "
                                         + source
                                         + " "
-                                        + message, messageParameters);
+                                        + message,
+                messageParameters);
 
             switch (level)
             {
                 case >= LogLevel.Info:
                     Debug.Log(content);
                     break;
-                
+
                 case LogLevel.Warning:
                     Debug.LogWarning(content);
                     break;
-                
+
                 default:
                     Debug.LogError(content);
                     break;

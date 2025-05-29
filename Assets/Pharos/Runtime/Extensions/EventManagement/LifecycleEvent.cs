@@ -7,26 +7,26 @@ namespace Pharos.Extensions.EventManagement
         public enum Type
         {
             ErrorOccurred,
-            
+
             StateChanged,
-            
+
             Initializing,
-            
+
             Initialized,
-            
+
             Suspending,
-            
+
             Suspended,
-            
+
             Resuming,
-            
+
             Resumed,
-            
+
             Destroying,
-            
+
             Destroyed
         }
-        
+
         public override void OnPreprocessGet()
         {
         }

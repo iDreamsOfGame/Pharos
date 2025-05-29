@@ -7,7 +7,7 @@ namespace Pharos.Framework
             get => logManager?.LogLevel ?? LogLevel.Debug;
             set
             {
-                if (logManager != null) 
+                if (logManager != null)
                     logManager.LogLevel = value;
             }
         }

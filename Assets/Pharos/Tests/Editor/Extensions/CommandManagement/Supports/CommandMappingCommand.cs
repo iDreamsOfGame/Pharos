@@ -15,7 +15,7 @@ namespace PharosEditor.Tests.Extensions.CommandManagement.Supports
 
         [Inject]
         public IEventCommandMap EventCommandMap { get; private set; }
-        
+
         public void Execute()
         {
             EventCommandMap.Map(Event.EventType, typeof(IEvent)).ToCommand(CommandType);

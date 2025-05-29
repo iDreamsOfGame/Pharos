@@ -54,6 +54,21 @@ namespace PharosEditor.Tests.Framework.Injection
         }
 
         [Test]
+        public void Parent_GetSet_ReturnsExpectedInstance()
+        {
+            var expected = new Injector();
+            injector.Parent = expected;
+            Assert.That(injector.Parent, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void CreateChild_RemembersParent_ReturnsExpectedInstance()
+        {
+            var child = injector.CreateChild();
+            Assert.That(child.Parent, Is.EqualTo(injector));
+        }
+
+        [Test]
         public void HasMapping_BeforeBuilding_ReturnsTrue()
         {
             injector.Map<IFoo>().ToSingleton<Foo>();

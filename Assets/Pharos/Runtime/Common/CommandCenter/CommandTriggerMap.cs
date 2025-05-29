@@ -5,11 +5,11 @@ namespace Pharos.Common.CommandCenter
     public class CommandTriggerMap
     {
         public delegate object KeyFactory(params object[] args);
-        
+
         public delegate ICommandTrigger TriggerFactory(params object[] args);
 
         private readonly Dictionary<object, ICommandTrigger> triggerMap = new();
-        
+
         private readonly KeyFactory keyFactory;
 
         private readonly TriggerFactory triggerFactory;
@@ -45,7 +45,7 @@ namespace Pharos.Common.CommandCenter
         {
             if (!triggerMap.TryGetValue(key, out var trigger))
                 return null;
-            
+
             trigger.Deactivate();
             triggerMap.Remove(key);
             return trigger;

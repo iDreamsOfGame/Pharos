@@ -267,17 +267,17 @@ namespace PharosEditor.Tests.Framework
         [Test]
         public void Resume_ResumptionCallbackIsInvoked_ReturnsPass()
         {
-            context.Initialize ();
-            context.Suspend ();
-            context.Resume (delegate { Assert.Pass(); });
+            context.Initialize();
+            context.Suspend();
+            context.Resume(delegate { Assert.Pass(); });
             Assert.Fail();
         }
 
         [Test]
         public void Destroy_DestructionCallbackIsInvoked_ReturnsPass()
         {
-            context.Initialize ();
-            context.Destroy (delegate { Assert.Pass(); });
+            context.Initialize();
+            context.Destroy(delegate { Assert.Pass(); });
             Assert.Fail();
         }
     }

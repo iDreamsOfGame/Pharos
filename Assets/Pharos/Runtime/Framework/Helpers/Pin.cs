@@ -6,7 +6,7 @@ namespace Pharos.Framework.Helpers
     internal class Pin : IPinEvent
     {
         private readonly Dictionary<object, bool> instanceMap = new();
-        
+
         public event Action<object> Detained;
 
         public event Action<object> Released;
@@ -31,7 +31,7 @@ namespace Pharos.Framework.Helpers
         {
             if (instanceMap == null || instanceMap.Count == 0)
                 return;
-            
+
             var instances = new object[instanceMap.Keys.Count];
             instanceMap.Keys.CopyTo(instances, 0);
             foreach (var instance in instances)

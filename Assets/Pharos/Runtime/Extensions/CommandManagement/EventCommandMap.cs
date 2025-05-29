@@ -10,7 +10,7 @@ namespace Pharos.Extensions.CommandManagement
     public class EventCommandMap : IEventCommandMap
     {
         private readonly List<Action<ICommandMapping>> mappingProcessors = new();
-        
+
         private readonly IInjector injector;
 
         private readonly IEventDispatcher dispatcher;
@@ -18,7 +18,7 @@ namespace Pharos.Extensions.CommandManagement
         private readonly CommandTriggerMap triggerMap;
 
         private readonly ILogger logger;
-        
+
         public EventCommandMap(IContext context, IEventDispatcher dispatcher)
         {
             injector = context.Injector;
@@ -51,7 +51,7 @@ namespace Pharos.Extensions.CommandManagement
         {
             if (!mappingProcessors.Contains(processor))
                 mappingProcessors.Add(processor);
-            
+
             return this;
         }
 

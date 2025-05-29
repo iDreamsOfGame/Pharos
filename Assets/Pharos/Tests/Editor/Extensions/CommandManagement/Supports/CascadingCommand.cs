@@ -11,13 +11,13 @@ namespace PharosEditor.Tests.Extensions.CommandManagement.Supports
         {
             CascadingEvent
         }
-        
+
         [Inject]
         private IEventDispatcher dispatcher;
 
         [Inject]
         private IEventCommandMap eventCommandMap;
-        
+
         public void Execute()
         {
             eventCommandMap.Map(EventType.CascadingEvent).ToCommand<NullCommand>().ExecuteOnce();

@@ -10,7 +10,7 @@ namespace PharosEditor.Tests.Common.CommandCenter.Supports
 
         [Inject("HookCallback")]
         private Action<SelfReportingCallbackHook> callback;
-        
+
         public void Hook()
         {
             callback(this);

@@ -7,7 +7,7 @@ namespace Pharos.Framework.Helpers
     internal static class Guards
     {
         private const string ApproveMethodName = nameof(IGuard.Approve);
-        
+
         public static bool Approve(IInjector injector, IEnumerable<Func<bool>> guards)
         {
             return Approve(injector, guards as IEnumerable<object>);
@@ -59,7 +59,7 @@ namespace Pharos.Framework.Helpers
                 {
                     guardInstance = guard;
                 }
-                
+
                 var approveMethod = guardInstance.GetType().GetMethod(ApproveMethodName);
                 if (approveMethod == null)
                     throw new MissingMethodException(guardInstance.GetType().FullName, ApproveMethodName);

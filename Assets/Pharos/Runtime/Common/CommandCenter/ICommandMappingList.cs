@@ -8,13 +8,13 @@ namespace Pharos.Common.CommandCenter
         IEnumerable<ICommandMapping> Mappings { get; }
 
         ICommandMappingList WithSortComparer(IComparer<ICommandMapping> comparer);
-        
+
         void AddMapping(ICommandMapping mapping);
-        
+
         void RemoveMapping(ICommandMapping mapping);
-        
+
         void RemoveMappingFor(Type commandType);
-        
+
         void RemoveAllMappings();
     }
 }

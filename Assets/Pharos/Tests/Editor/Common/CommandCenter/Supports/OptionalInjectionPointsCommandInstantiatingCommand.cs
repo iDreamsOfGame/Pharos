@@ -7,7 +7,7 @@ namespace PharosEditor.Tests.Common.CommandCenter.Supports
     {
         [Inject]
         private IInjector injector;
-        
+
         public void Execute()
         {
             var command = injector.CreateNewInstance<OptionalInjectionPointsCommand>();

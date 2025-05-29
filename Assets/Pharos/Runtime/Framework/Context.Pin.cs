@@ -15,7 +15,7 @@ namespace Pharos.Framework
             add => pin.Released += value;
             remove => pin.Released -= value;
         }
-        
+
         public IContext Detain(params object[] instances)
         {
             foreach (var instance in instances)

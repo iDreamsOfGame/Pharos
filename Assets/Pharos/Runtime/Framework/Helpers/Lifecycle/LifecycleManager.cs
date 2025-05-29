@@ -11,7 +11,7 @@ namespace Pharos.Framework.Helpers
         private LifecycleTransition resumingTransition;
 
         private LifecycleTransition destroyingTransition;
-        
+
         public LifecycleManager(object target)
         {
             Target = target;
@@ -37,7 +37,7 @@ namespace Pharos.Framework.Helpers
         public event Action<object> Destroying;
 
         public event Action<object> Destroyed;
-        
+
         public object Target { get; }
 
         public LifecycleState State { get; private set; }
@@ -87,7 +87,7 @@ namespace Pharos.Framework.Helpers
                 ErrorOccurred?.Invoke(exception);
                 return true;
             }
-            
+
             return false;
         }
 

@@ -6,9 +6,9 @@ namespace Pharos.Common.CommandCenter
     public interface ICommandExecutor
     {
         IInjector Injector { get; }
-        
+
         void ExecuteCommand(ICommandMapping mapping, CommandPayload payload = default);
-        
+
         void ExecuteCommands(IEnumerable<ICommandMapping> mappings, CommandPayload payload = default);
     }
 }

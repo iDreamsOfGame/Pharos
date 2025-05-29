@@ -18,7 +18,7 @@ namespace Pharos.Extensions.CommandManagement
         private readonly ICommandMappingList mappings;
 
         private readonly ICommandExecutor executor;
-        
+
         public EventCommandTrigger(IInjector injector,
             IEventDispatcher dispatcher,
             Enum type,
@@ -37,7 +37,7 @@ namespace Pharos.Extensions.CommandManagement
         {
             return new CommandMapper(mappings);
         }
-        
+
         public void Activate()
         {
             dispatcher.AddEventListener(type, EventHandler);

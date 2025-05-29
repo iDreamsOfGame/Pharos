@@ -14,7 +14,7 @@ namespace Pharos.Common.CommandCenter
 
             if (CommandTypeExecuteMethodInfoMap.ContainsKey(CommandType))
                 return;
-            
+
             var executeMethodInfo = new CommandExecuteMethodInfo(CommandType);
             if (executeMethodInfo.MethodInfo != null)
                 CommandTypeExecuteMethodInfoMap[CommandType] = executeMethodInfo;
@@ -22,10 +22,10 @@ namespace Pharos.Common.CommandCenter
 
         public Type CommandType { get; }
 
-        public MethodInfo ExecuteMethodInfo => 
+        public MethodInfo ExecuteMethodInfo =>
             CommandTypeExecuteMethodInfoMap.TryGetValue(CommandType, out var methodInfo) ? methodInfo.MethodInfo : null;
 
-        public ParameterInfo[] ExecuteMethodParameters => 
+        public ParameterInfo[] ExecuteMethodParameters =>
             CommandTypeExecuteMethodInfoMap.TryGetValue(CommandType, out var methodInfo) ? methodInfo.MethodParameters : null;
 
         public List<object> Guards { get; private set; }

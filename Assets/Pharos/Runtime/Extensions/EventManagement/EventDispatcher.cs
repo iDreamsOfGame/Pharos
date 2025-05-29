@@ -8,7 +8,7 @@ namespace Pharos.Extensions.EventManagement
         public static IEventDispatcher GlobalEventDispatcher { get; internal set; }
 
         private readonly Dictionary<Enum, List<EventListenerData>> eventTypeListenerMap = new();
-        
+
         public void AddEventListener<T>(Enum type, Action<T> listener)
         {
             AddEventListener(type, listener as Delegate);
@@ -28,7 +28,7 @@ namespace Pharos.Extensions.EventManagement
         {
             if (!eventTypeListenerMap.ContainsKey(type))
                 eventTypeListenerMap.Add(type, new List<EventListenerData>());
-            
+
             eventTypeListenerMap[type].Add(new EventListenerData(listener));
         }
 
@@ -68,7 +68,7 @@ namespace Pharos.Extensions.EventManagement
         {
             if (!eventTypeListenerMap.TryGetValue(e.EventType, out var value))
                 return;
-            
+
             var listeners = value.ToArray();
             foreach (var listener in listeners)
             {

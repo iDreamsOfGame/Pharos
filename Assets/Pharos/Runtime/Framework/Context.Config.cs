@@ -26,6 +26,7 @@ namespace Pharos.Framework
             {
                 configManager.AddConfig(obj);
             }
+
             return this;
         }
 
@@ -33,11 +34,12 @@ namespace Pharos.Framework
         {
             if (types == null)
                 return this;
-            
+
             foreach (var type in types)
             {
                 Configure(type);
             }
+
             return this;
         }
     }

@@ -12,7 +12,7 @@ namespace Pharos.Framework.Helpers
             Source = source;
             Handler = handler;
         }
-        
+
         /// <summary>
         /// The source of log messages. 
         /// </summary>

@@ -7,9 +7,9 @@ namespace Pharos.Common.CommandCenter
     public class CommandMappingList : ICommandMappingList
     {
         private readonly Dictionary<Type, ICommandMapping> commandTypeMappingMap = new();
-        
+
         private readonly List<ICommandMapping> mappings = new();
-        
+
         private readonly ICommandTrigger trigger;
 
         private readonly IEnumerable<Action<ICommandMapping>> processors;
@@ -19,7 +19,7 @@ namespace Pharos.Common.CommandCenter
         private IComparer<ICommandMapping> sortComparer;
 
         private bool hasSorted;
-        
+
         public CommandMappingList(ICommandTrigger trigger, IEnumerable<Action<ICommandMapping>> processors, ILogger logger = null)
         {
             this.trigger = trigger;
@@ -65,7 +65,7 @@ namespace Pharos.Common.CommandCenter
         {
             if (!commandTypeMappingMap.ContainsKey(mapping.CommandType))
                 return;
-            
+
             RemoveMappingFromList(mapping);
             if (mappings.Count == 0)
                 trigger.Deactivate();
@@ -89,6 +89,7 @@ namespace Pharos.Common.CommandCenter
                 var mapping = tempMappings[i];
                 RemoveMappingFromList(mapping);
             }
+
             trigger.Deactivate();
         }
 
@@ -108,9 +109,7 @@ namespace Pharos.Common.CommandCenter
 
         private void OverwriteMapping(ICommandMapping oldMapping, ICommandMapping newMapping)
         {
-            logger?.LogWarning("{0} already mapped to {1}\n" +
-                               "If you have overridden this mapping intentionally you can use 'unmap()' " +
-                               "prior to your replacement mapping in order to avoid seeing this message.\n", trigger, oldMapping);
+            logger?.LogWarning("{0} already mapped to {1}\n" + "If you have overridden this mapping intentionally you can use 'unmap()' " + "prior to your replacement mapping in order to avoid seeing this message.\n", trigger, oldMapping);
             RemoveMappingFromList(oldMapping);
             AddMappingToList(newMapping);
         }
@@ -127,7 +126,7 @@ namespace Pharos.Common.CommandCenter
         {
             if (processors == null)
                 return;
-            
+
             foreach (var processor in processors)
             {
                 processor?.Invoke(mapping);

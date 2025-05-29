@@ -72,7 +72,7 @@ namespace Pharos.Framework.Helpers
                 ReportError("Invalid transition", callback);
                 return;
             }
-            
+
             PreprocessCallback?.Invoke();
             LifecycleManager.SetState(transitionState);
             ProcessingCallback?.Invoke();
@@ -91,7 +91,7 @@ namespace Pharos.Framework.Helpers
         {
             var canThrow = !LifecycleManager.ReportError(exception);
             callback?.Invoke(exception);
-            
+
             if (canThrow)
                 throw exception;
         }

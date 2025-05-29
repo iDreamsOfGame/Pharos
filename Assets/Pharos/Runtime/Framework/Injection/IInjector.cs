@@ -6,7 +6,7 @@ namespace Pharos.Framework.Injection
     public interface IInjector : IDisposable
     {
         Container Container { get; }
-        
+
         ContainerBuilder Builder { get; }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Pharos.Framework.Injection
 
         void Unmap(Type type, object key = null);
 
-        IInjector Build();
+        IInjector Build(bool buildAncestors = false);
 
         T GetInstance<T>(object key = null);
 
@@ -45,7 +45,7 @@ namespace Pharos.Framework.Injection
         T CreateNewInstance<T>(object key = null);
 
         object CreateNewInstance(Type type, object key = null);
-        
+
         void InjectInto(object target, Container container = null);
     }
 }

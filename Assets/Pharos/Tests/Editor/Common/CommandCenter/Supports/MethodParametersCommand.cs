@@ -7,7 +7,7 @@ namespace PharosEditor.Tests.Common.CommandCenter.Supports
     {
         [Inject("ReportingFunction")]
         private Action<object> reportingFunc;
-        
+
         public void Execute(string message, int code)
         {
             if (reportingFunc != null)

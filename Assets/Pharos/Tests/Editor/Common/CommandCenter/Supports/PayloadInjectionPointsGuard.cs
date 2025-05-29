@@ -13,7 +13,7 @@ namespace PharosEditor.Tests.Common.CommandCenter.Supports
 
         [Inject("ReportingFunction")]
         private Action<object> reportingFunc;
-        
+
         public bool Approve()
         {
             if (reportingFunc != null)
@@ -21,7 +21,7 @@ namespace PharosEditor.Tests.Common.CommandCenter.Supports
                 reportingFunc.Invoke(message);
                 reportingFunc.Invoke(code);
             }
-            
+
             return true;
         }
     }

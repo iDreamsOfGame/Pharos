@@ -7,7 +7,7 @@ namespace PharosEditor.Tests.Common.CommandCenter.Supports
     {
         [Inject("ReportingFunction")]
         public Action<object> ReportingFunc { get; private set; }
-        
+
         public void Execute()
         {
             ReportingFunc?.Invoke(typeof(TypeReportingCallbackCommand));

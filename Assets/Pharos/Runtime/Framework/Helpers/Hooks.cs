@@ -7,12 +7,12 @@ namespace Pharos.Framework.Helpers
     internal static class Hooks
     {
         private const string HookMethodName = nameof(IHook.Hook);
-        
+
         public static void Hook(IInjector injector, IEnumerable<Action> hooks)
         {
             Hook(injector, hooks as IEnumerable<object>);
         }
-        
+
         public static void Hook(IInjector injector, params Action[] hooks)
         {
             Hook(injector, hooks as IEnumerable<object>);
@@ -27,17 +27,17 @@ namespace Pharos.Framework.Helpers
         {
             Hook(null, hooks);
         }
-        
+
         public static void Hook(params object[] hooks)
         {
             Hook(null, hooks);
         }
-        
+
         public static void Hook(IInjector injector, params object[] hooks)
         {
             Hook(injector, hooks as IEnumerable<object>);
         }
-        
+
         public static void Hook(IInjector injector, IEnumerable<object> hooks)
         {
             foreach (var hook in hooks)
@@ -47,7 +47,7 @@ namespace Pharos.Framework.Helpers
                     action.Invoke();
                     continue;
                 }
-                
+
                 object hookInstance;
                 if (hook is Type type)
                 {
@@ -57,11 +57,11 @@ namespace Pharos.Framework.Helpers
                 {
                     hookInstance = hook;
                 }
-                
+
                 var hookMethod = hookInstance.GetType().GetMethod(HookMethodName);
                 if (hookMethod == null)
                     throw new MissingMethodException(hookInstance.GetType().FullName, HookMethodName);
-                
+
                 hookMethod.Invoke(hookInstance, null);
             }
         }

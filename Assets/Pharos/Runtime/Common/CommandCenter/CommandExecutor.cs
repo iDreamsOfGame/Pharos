@@ -11,9 +11,9 @@ namespace Pharos.Common.CommandCenter
         private readonly Action<ICommandMapping> removeMappingProcessor;
 
         private readonly Action<object, ICommandMapping> executingPreprocessor;
-        
+
         private readonly Action<object, object, ICommandMapping> resultHandler;
-        
+
         public CommandExecutor(IInjector injector,
             Action<ICommandMapping> removeMappingProcessor = null,
             Action<object, ICommandMapping> executingPreprocessor = null,
@@ -24,19 +24,19 @@ namespace Pharos.Common.CommandCenter
             this.executingPreprocessor = executingPreprocessor;
             this.resultHandler = resultHandler;
         }
-        
+
         public IInjector Injector { get; }
 
         public void ExecuteCommand(ICommandMapping mapping, CommandPayload payload = default)
         {
             if (mapping == null)
                 return;
-            
+
             var hasPayload = payload.HasPayload;
             var payloadInjectionEnabled = hasPayload && mapping.PayloadInjectionEnabled;
-            
+
             object command = null;
-            
+
             // Inject payload.
             if (payloadInjectionEnabled)
                 MapPayload(payload);
@@ -57,11 +57,11 @@ namespace Pharos.Common.CommandCenter
                     Injector.Unmap(commandType);
                 }
             }
-            
+
             // Uninject payload.
             if (payloadInjectionEnabled)
                 UnmapPayload(payload);
-            
+
             // Execute command.
             if (command != null)
             {
@@ -70,7 +70,7 @@ namespace Pharos.Common.CommandCenter
                 if (executeMethodInfo != null)
                 {
                     var executeMethodParameters = mapping.ExecuteMethodParameters;
-                    var result = hasPayload && executeMethodParameters.Length > 0 
+                    var result = hasPayload && executeMethodParameters.Length > 0
                         ? executeMethodInfo.Invoke(command, payload.ValueTypeMap.Keys.ToArray())
                         : executeMethodInfo.Invoke(command, null);
                     resultHandler?.Invoke(result, command, mapping);
@@ -84,6 +84,8 @@ namespace Pharos.Common.CommandCenter
 
         public void ExecuteCommands(IEnumerable<ICommandMapping> mappings, CommandPayload payload = default)
         {
+            Injector.Build();
+            
             foreach (var mapping in mappings)
             {
                 ExecuteCommand(mapping, payload);
@@ -96,6 +98,8 @@ namespace Pharos.Common.CommandCenter
             {
                 Injector.Map(type).ToValue(obj);
             }
+
+            Injector.Build();
         }
 
         private void UnmapPayload(CommandPayload payload)

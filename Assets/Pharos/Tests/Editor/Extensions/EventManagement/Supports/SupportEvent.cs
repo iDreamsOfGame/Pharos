@@ -8,15 +8,15 @@ namespace PharosEditor.Tests.Extensions.EventManagement.Supports
         public enum Type
         {
             Type1,
-            
+
             Type2
         }
-        
+
         public SupportEvent(Type type)
         {
             EventType = type;
         }
-        
+
         public Enum EventType { get; }
     }
 }

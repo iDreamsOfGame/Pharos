@@ -15,7 +15,7 @@ namespace PharosEditor.Tests.Framework.Helpers
         private class PlainConfig : IConfig
         {
             public const string CallbackInjectKey = nameof(Callback);
-            
+
             [Inject(CallbackInjectKey)]
             public Action<PlainConfig> Callback { get; private set; }
 
@@ -24,11 +24,11 @@ namespace PharosEditor.Tests.Framework.Helpers
                 Callback?.Invoke(this);
             }
         }
-        
+
         private class UntypedConfig
         {
             public const string CallbackInjectKey = nameof(Callback);
-            
+
             [Inject(CallbackInjectKey)]
             public Action<UntypedConfig> Callback { get; private set; }
 
