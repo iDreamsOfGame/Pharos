@@ -17,7 +17,7 @@ namespace Pharos.Extensions.CommandManagement
 
         private readonly ICommandMappingList mappings;
 
-        private readonly ICommandExecutor executor;
+        private readonly ICommandsExecutor executor;
 
         public EventCommandTrigger(IInjector injector,
             IEventDispatcher dispatcher,
@@ -30,7 +30,7 @@ namespace Pharos.Extensions.CommandManagement
             this.type = type;
             this.eventType = eventType;
             mappings = new CommandMappingList(this, processors, logger);
-            executor = new CommandExecutor(injector, mappings.RemoveMapping);
+            executor = new CommandsExecutor(injector, mappings.RemoveMapping);
         }
 
         public CommandMapper CreateMapper()

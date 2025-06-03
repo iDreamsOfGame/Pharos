@@ -1,16 +1,16 @@
 using System;
 using ReflexPlus.Attributes;
 
-namespace Pharos.Common.CommandCenter
+namespace PharosEditor.Tests.Common.CommandCenter.Supports
 {
-    internal class ClassReportingCallbackCommand2
+    internal class ClassReportingCallbackCommand
     {
         [Inject("ReportingFunction")]
         private Action<object> reportingFunc;
 
         public void Execute()
         {
-            reportingFunc?.Invoke(typeof(ClassReportingCallbackCommand2));
+            reportingFunc?.Invoke(typeof(ClassReportingCallbackCommand));
         }
     }
 }

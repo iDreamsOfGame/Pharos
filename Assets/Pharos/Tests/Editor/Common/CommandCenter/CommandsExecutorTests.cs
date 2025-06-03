@@ -9,13 +9,13 @@ using PharosEditor.Tests.Common.CommandCenter.Supports;
 namespace PharosEditor.Tests.Common.CommandCenter
 {
     [TestFixture]
-    internal class CommandExecutorTests
+    internal class CommandsExecutorTests
     {
         private Mock<UnmapperStub> unmapper;
 
         private List<ICommandMapping> mappings;
 
-        private CommandExecutor subject;
+        private CommandsExecutor subject;
 
         private List<object> reported;
 
@@ -30,13 +30,13 @@ namespace PharosEditor.Tests.Common.CommandCenter
 
             injector.Map(typeof(Action<object>), "ReportingFunction").ToValue((Action<object>)ReportingFunction);
             mappings = new List<ICommandMapping>();
-            subject = new CommandExecutor(injector);
+            subject = new CommandsExecutor(injector);
         }
 
         [Test]
         public void ExecuteCommands_OneshotMappingIsRemoved_VerifiesMockObject()
         {
-            subject = new CommandExecutor(injector, unmapper.Object.Unmap);
+            subject = new CommandsExecutor(injector, unmapper.Object.Unmap);
             var mapping = AddMapping<TypeReportingCallbackCommand>();
             mapping.ShouldExecuteOnce = true;
             subject.ExecuteCommands(mappings);
@@ -236,7 +236,7 @@ namespace PharosEditor.Tests.Common.CommandCenter
         public void ExecuteCommands_ResultIsHandled_ReturnsExpectedObjectsAndValues()
         {
             var mapping = new CommandMapping(typeof(MessageReturningCommand));
-            subject = new CommandExecutor(injector, null, null, ResultReporter);
+            subject = new CommandsExecutor(injector, null, null, ResultReporter);
             injector.Map<string>().ToValue("message");
             subject.ExecuteCommand(mapping);
             Assert.That(reported.Count, Is.EqualTo(1));

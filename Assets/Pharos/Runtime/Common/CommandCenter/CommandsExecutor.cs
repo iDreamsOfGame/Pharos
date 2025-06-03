@@ -6,7 +6,7 @@ using Pharos.Framework.Injection;
 
 namespace Pharos.Common.CommandCenter
 {
-    public class CommandExecutor : ICommandExecutor
+    public class CommandsExecutor : ICommandsExecutor
     {
         private readonly Action<ICommandMapping> removeMappingProcessor;
 
@@ -14,7 +14,7 @@ namespace Pharos.Common.CommandCenter
 
         private readonly Action<object, object, ICommandMapping> resultHandler;
 
-        public CommandExecutor(IInjector injector,
+        public CommandsExecutor(IInjector injector,
             Action<ICommandMapping> removeMappingProcessor = null,
             Action<object, ICommandMapping> executingPreprocessor = null,
             Action<object, object, ICommandMapping> resultHandler = null)
@@ -63,9 +63,9 @@ namespace Pharos.Common.CommandCenter
                 UnmapPayload(payload);
 
             // Execute command.
+            executingPreprocessor?.Invoke(command, mapping);
             if (command != null)
             {
-                executingPreprocessor?.Invoke(command, mapping);
                 var executeMethodInfo = mapping.ExecuteMethodInfo;
                 if (executeMethodInfo != null)
                 {

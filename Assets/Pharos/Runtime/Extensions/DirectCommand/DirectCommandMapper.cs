@@ -3,15 +3,15 @@ using Pharos.Common.CommandCenter;
 
 namespace Pharos.Extensions.DirectCommand
 {
-    public class DirectCommandMapper : IDirectCommandConfigurator
+    internal class DirectCommandMapper : IDirectCommandConfigurator
     {
         private readonly ICommandMappingList mappings;
 
         private readonly ICommandMapping mapping;
 
-        private readonly ICommandExecutor executor;
+        private readonly ICommandsExecutor executor;
 
-        public DirectCommandMapper(ICommandExecutor executor, ICommandMappingList mappings, Type commandType)
+        public DirectCommandMapper(ICommandsExecutor executor, ICommandMappingList mappings, Type commandType)
         {
             mapping = new CommandMapping(commandType);
             mapping.ShouldExecuteOnce = true;

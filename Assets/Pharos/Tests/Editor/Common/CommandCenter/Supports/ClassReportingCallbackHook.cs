@@ -1,7 +1,7 @@
 using System;
 using ReflexPlus.Attributes;
 
-namespace Pharos.Common.CommandCenter
+namespace PharosEditor.Tests.Common.CommandCenter.Supports
 {
     internal class ClassReportingCallbackHook
     {

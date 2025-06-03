@@ -41,6 +41,13 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
             injector.Map<IDirectCommandMap>().ToType<DirectCommandMap>();
             subject = injector.GetInstance<IDirectCommandMap>();
         }
+        
+        [Test]
+        public void Constructor_SandboxedDirectCommandMapInstanceDoesNotLeakIntoSystem_ReturnsDifferentInstance()
+        {
+            var actual = injector.GetInstance<IDirectCommandMap>();
+            Assert.That(actual, Is.Not.EqualTo(subject));
+        }
 
         [Test]
         public void Map_CreatesIDirectCommandConfigurator_ReturnsInstanceIsExpectedType()
@@ -52,7 +59,7 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
         public void Execute_SuccessfullyExecutesCommands_ReturnsExpectedExecutionCount()
         {
             var executionCount = 0;
-            injector.Map(typeof(Action), "ExecuteCallback").ToValue((Action)delegate { executionCount++; });
+            injector.Map(typeof(Action), "ExecuteCallback").ToValue((Action)delegate { executionCount++; }, true);
             subject.Map<CallbackCommand>()
                 .Map<CallbackCommand2>()
                 .Execute();
@@ -63,7 +70,8 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
         public void Execute_CommandsGetInjectedWithDirectCommandMapInstance_ReturnsExpectedInstance()
         {
             IDirectCommandMap actual = null;
-            injector.Map(typeof(Action<IDirectCommandMap>), "ReportingFunction").ToValue((Action<IDirectCommandMap>)delegate(IDirectCommandMap passed) { actual = passed; });
+            injector.Map(typeof(Action<IDirectCommandMap>), "ReportingFunction")
+                .ToValue((Action<IDirectCommandMap>)delegate(IDirectCommandMap passed) { actual = passed; }, true);
             subject.Map<DirectCommandMapReportingCommand>().Execute();
             Assert.That(actual, Is.EqualTo(subject));
         }
@@ -72,17 +80,10 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
         public void Execute_CommandsAreDisposedAfterExecution_ReturnsExpectedExecutionCount()
         {
             var executionCount = 0;
-            injector.Map(typeof(Action), "ExecuteCallback").ToValue((Action)delegate { executionCount++; });
+            injector.Map(typeof(Action), "ExecuteCallback").ToValue((Action)delegate { executionCount++; }, true);
             subject.Map<CallbackCommand>().Execute();
             subject.Map<CallbackCommand>().Execute();
             Assert.That(executionCount, Is.EqualTo(2));
-        }
-
-        [Test]
-        public void Constructor_SandboxedDirectCommandMapInstanceDoesNotLeakIntoSystem_ReturnsDifferentInstance()
-        {
-            var actual = injector.GetInstance<IDirectCommandMap>();
-            Assert.That(actual, Is.Not.EqualTo(subject));
         }
 
         [Test]
@@ -95,13 +96,13 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
             Assert.That(hasDetained, Is.True);
             context.Detained -= OnDetained;
             return;
-            
+
             void OnDetained(object obj)
             {
-                hasDetained = true; 
+                hasDetained = true;
             }
         }
-        
+
         [Test]
         public void Release_ReleasesCommand_ReturnsFlagHasReleasedIsTrue()
         {
@@ -113,10 +114,10 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
             Assert.That(hasReleased, Is.True);
             context.Released -= OnReleased;
             return;
-            
+
             void OnReleased(object obj)
             {
-                hasReleased = true; 
+                hasReleased = true;
             }
         }
 
@@ -124,7 +125,7 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
         public void Execute_ExecutesCommands_ReturnsExpectedExecutionCount()
         {
             var executionCount = 0;
-            injector.Map(typeof(Action), "ExecuteCallback").ToValue((Action)delegate { executionCount++; });
+            injector.Map(typeof(Action), "ExecuteCallback").ToValue((Action)delegate { executionCount++; }, true);
             subject.Map<CallbackCommand>();
             subject.Execute();
             Assert.That(executionCount, Is.EqualTo(1));

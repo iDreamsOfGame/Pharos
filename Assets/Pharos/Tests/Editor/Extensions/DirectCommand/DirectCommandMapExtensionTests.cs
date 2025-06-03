@@ -5,7 +5,7 @@ using Pharos.Framework;
 namespace PharosEditor.Tests.Extensions.DirectCommand
 {
     [TestFixture]
-    internal class DirectCommandExtensionTests
+    internal class DirectCommandMapExtensionTests
     {
         private IContext context;
 
@@ -13,7 +13,7 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
         public void Setup()
         {
             context = new Context();
-            context.AddExtension<DirectCommandExtension>();
+            context.AddExtension<DirectCommandMapExtension>();
         }
 
         [Test]

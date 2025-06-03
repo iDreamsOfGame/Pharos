@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Pharos.Common.CommandCenter;
 using Pharos.Framework;
-using Pharos.Framework.Injection;
 
 namespace Pharos.Extensions.DirectCommand
 {
@@ -12,20 +11,25 @@ namespace Pharos.Extensions.DirectCommand
 
         private readonly IContext context;
 
-        private readonly IInjector sandboxedInjector;
-
-        private readonly ICommandExecutor executor;
+        private readonly ICommandsExecutor executor;
 
         private readonly ICommandMappingList mappings;
 
         public DirectCommandMap(IContext context)
         {
             this.context = context;
-            // sandboxedInjector = context.Injector.CreateChild();
-            sandboxedInjector = context.Injector;
-            sandboxedInjector.Map<IDirectCommandMap>().ToValue(this);
+            var childInjector = context.Injector.CreateChild();
+            childInjector.Map<IDirectCommandMap>().ToValue(this);
             mappings = new CommandMappingList(NullCommandTrigger.Instance, mappingProcessors, context.GetLogger(this));
-            executor = new CommandExecutor(sandboxedInjector, mappings.RemoveMapping);
+            executor = new CommandsExecutor(childInjector, mappings.RemoveMapping);
+        }
+        
+        public IDirectCommandMap AddMappingProcessor(Action<ICommandMapping> processor)
+        {
+            if (!mappingProcessors.Contains(processor))
+                mappingProcessors.Add(processor);
+
+            return this;
         }
 
         public IDirectCommandConfigurator Map(Type commandType)
@@ -46,14 +50,6 @@ namespace Pharos.Extensions.DirectCommand
         public void Release(object command)
         {
             context.Release(command);
-        }
-
-        public IDirectCommandMap AddMappingProcessor(Action<ICommandMapping> processor)
-        {
-            if (!mappingProcessors.Contains(processor))
-                mappingProcessors.Add(processor);
-
-            return this;
         }
 
         public void Execute(CommandPayload payload = default)

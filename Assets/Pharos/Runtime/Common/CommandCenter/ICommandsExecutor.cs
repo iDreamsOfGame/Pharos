@@ -3,7 +3,7 @@ using Pharos.Framework.Injection;
 
 namespace Pharos.Common.CommandCenter
 {
-    public interface ICommandExecutor
+    public interface ICommandsExecutor
     {
         IInjector Injector { get; }
 

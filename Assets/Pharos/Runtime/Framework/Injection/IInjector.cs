@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using ReflexPlus.Core;
 
 namespace Pharos.Framework.Injection
@@ -13,6 +14,8 @@ namespace Pharos.Framework.Injection
         /// The parent IInjector used for dependencies the current IInjector can't supply. 
         /// </summary>
         IInjector Parent { get; set; }
+
+        List<IInjector> Children { get; }
 
         /// <summary>
         /// Creates a new <see cref="IInjector"/> and sets itself as that new <see cref="IInjector"/>'s parentInjector. 

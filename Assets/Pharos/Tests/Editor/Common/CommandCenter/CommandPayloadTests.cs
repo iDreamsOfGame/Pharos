@@ -65,9 +65,9 @@ namespace PharosEditor.Tests.Common.CommandCenter
             Assert.That(valueIndex, Is.EqualTo(classIndex));
         }
 
-        private CommandPayload CreateConfig(Dictionary<object, Type> valueTypeMap = null)
+        private void CreateConfig(Dictionary<object, Type> valueTypeMap = null)
         {
-            return subject = new CommandPayload(valueTypeMap);
+            subject = new CommandPayload(valueTypeMap);
         }
     }
 }

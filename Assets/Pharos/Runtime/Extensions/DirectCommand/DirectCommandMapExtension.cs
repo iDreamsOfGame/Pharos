@@ -2,7 +2,7 @@ using Pharos.Framework;
 
 namespace Pharos.Extensions.DirectCommand
 {
-    public class DirectCommandExtension : IExtension
+    public class DirectCommandMapExtension : IExtension
     {
         public void Enable(IContext context)
         {

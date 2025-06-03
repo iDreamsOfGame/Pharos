@@ -22,10 +22,14 @@ namespace Pharos.Framework.Injection
 
         public IInjector Parent { get; set; }
 
+        public List<IInjector> Children { get; private set; } = new();
+
         public IInjector CreateChild()
         {
             var childInjector = new Injector();
             childInjector.Parent = this;
+            childInjector.Builder.SetParent(Container);
+            Children.Add(childInjector);
             return childInjector;
         }
 
@@ -71,6 +75,12 @@ namespace Pharos.Framework.Injection
                 TryBuildAncestors();
 
             Container = Builder.Build();
+
+            foreach (var child in Children)
+            {
+                child.Builder.SetParent(Container);
+            }
+            
             return this;
         }
 
@@ -130,6 +140,16 @@ namespace Pharos.Framework.Injection
         {
             Container?.Dispose();
             Container = null;
+
+            if (Children != null)
+            {
+                foreach (var child in Children)
+                {
+                    child?.Dispose();
+                }
+
+                Children = null;
+            }
         }
 
         private void TryBuildAncestors()
@@ -151,8 +171,16 @@ namespace Pharos.Framework.Injection
                 linkedList.RemoveFirst();
                 first.Build();
                 var container = first.Container;
-                first = linkedList.First.Value;
-                first.Builder.SetParent(container);
+
+                if (linkedList.First != null)
+                {
+                    first = linkedList.First.Value;
+                    first.Builder.SetParent(container);
+                }
+                else
+                {
+                    first = null;
+                }
             }
         }
     }

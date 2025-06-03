@@ -12,7 +12,7 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
     {
         private Mock<ICommandMappingList> mockMappingList;
 
-        private Mock<ICommandExecutor> mockExecutor;
+        private Mock<ICommandsExecutor> mockExecutor;
 
         private DirectCommandMapper subject;
 
@@ -21,7 +21,7 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
         [SetUp]
         public void Setup()
         {
-            mockExecutor = new Mock<ICommandExecutor>();
+            mockExecutor = new Mock<ICommandsExecutor>();
             mockMappingList = new Mock<ICommandMappingList>();
             mockMappingList.Setup(m => m.AddMapping(It.IsAny<ICommandMapping>()))
                 .Callback<ICommandMapping>(r => caughtMapping = r);
