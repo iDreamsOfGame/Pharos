@@ -1,5 +1,5 @@
 using System;
-using Pharos.Extensions.EventManagement;
+using Pharos.Common.EventCenter;
 
 namespace PharosEditor.Tests.Extensions.CommandManagement.Supports
 {

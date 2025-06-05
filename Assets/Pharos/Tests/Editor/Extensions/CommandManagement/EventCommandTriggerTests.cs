@@ -1,8 +1,8 @@
 using System;
 using Moq;
 using NUnit.Framework;
+using Pharos.Common.EventCenter;
 using Pharos.Extensions.CommandManagement;
-using Pharos.Extensions.EventManagement;
 using Pharos.Framework.Injection;
 
 namespace PharosEditor.Tests.Extensions.CommandManagement

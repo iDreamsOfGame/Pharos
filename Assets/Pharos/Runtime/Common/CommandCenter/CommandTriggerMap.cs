@@ -8,7 +8,7 @@ namespace Pharos.Common.CommandCenter
 
         public delegate ICommandTrigger TriggerFactory(params object[] args);
 
-        private readonly Dictionary<object, ICommandTrigger> triggerMap = new();
+        private readonly Dictionary<object, ICommandTrigger> keyToTrigger = new();
 
         private readonly KeyFactory keyFactory;
 
@@ -23,7 +23,7 @@ namespace Pharos.Common.CommandCenter
         public ICommandTrigger GetTrigger(params object[] args)
         {
             var key = GetKey(args);
-            return triggerMap.TryGetValue(key, out var trigger) ? trigger : triggerMap[key] = CreateTrigger(args);
+            return keyToTrigger.TryGetValue(key, out var trigger) ? trigger : keyToTrigger[key] = CreateTrigger(args);
         }
 
         public ICommandTrigger RemoveTrigger(params object[] args)
@@ -43,11 +43,11 @@ namespace Pharos.Common.CommandCenter
 
         private ICommandTrigger DestroyTrigger(object key)
         {
-            if (!triggerMap.TryGetValue(key, out var trigger))
+            if (!keyToTrigger.TryGetValue(key, out var trigger))
                 return null;
 
             trigger.Deactivate();
-            triggerMap.Remove(key);
+            keyToTrigger.Remove(key);
             return trigger;
         }
     }

@@ -1,0 +1,22 @@
+using System;
+using Pharos.Common.EventCenter;
+
+namespace PharosEditor.Tests.Common.EventCenter.Supports
+{
+    internal class SupportEvent : IEvent
+    {
+        public enum Type
+        {
+            Type1,
+
+            Type2
+        }
+
+        public SupportEvent(Type type)
+        {
+            EventType = type;
+        }
+
+        public Enum EventType { get; }
+    }
+}

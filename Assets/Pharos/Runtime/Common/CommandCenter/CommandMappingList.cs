@@ -6,7 +6,7 @@ namespace Pharos.Common.CommandCenter
 {
     public class CommandMappingList : ICommandMappingList
     {
-        private readonly Dictionary<Type, ICommandMapping> commandTypeMappingMap = new();
+        private readonly Dictionary<Type, ICommandMapping> commandTypeToMapping = new();
 
         private readonly List<ICommandMapping> mappings = new();
 
@@ -49,7 +49,7 @@ namespace Pharos.Common.CommandCenter
         {
             hasSorted = false;
             InvokeProcessors(mapping);
-            if (commandTypeMappingMap.TryGetValue(mapping.CommandType, out var oldMapping))
+            if (commandTypeToMapping.TryGetValue(mapping.CommandType, out var oldMapping))
             {
                 OverwriteMapping(oldMapping, mapping);
             }
@@ -63,7 +63,7 @@ namespace Pharos.Common.CommandCenter
 
         public void RemoveMapping(ICommandMapping mapping)
         {
-            if (!commandTypeMappingMap.ContainsKey(mapping.CommandType))
+            if (!commandTypeToMapping.ContainsKey(mapping.CommandType))
                 return;
 
             RemoveMappingFromList(mapping);
@@ -73,7 +73,7 @@ namespace Pharos.Common.CommandCenter
 
         public void RemoveMappingFor(Type commandType)
         {
-            if (commandTypeMappingMap.TryGetValue(commandType, out var mapping))
+            if (commandTypeToMapping.TryGetValue(commandType, out var mapping))
                 RemoveMapping(mapping);
         }
 
@@ -95,14 +95,14 @@ namespace Pharos.Common.CommandCenter
 
         private void AddMappingToList(ICommandMapping mapping)
         {
-            commandTypeMappingMap[mapping.CommandType] = mapping;
+            commandTypeToMapping[mapping.CommandType] = mapping;
             mappings.Add(mapping);
             logger?.LogDebug("{0} mapped to {1}", trigger, mapping);
         }
 
         private void RemoveMappingFromList(ICommandMapping mapping)
         {
-            commandTypeMappingMap.Remove(mapping.CommandType);
+            commandTypeToMapping.Remove(mapping.CommandType);
             mappings.Remove(mapping);
             logger?.LogDebug("{0} unmapped from {1}", trigger, mapping);
         }

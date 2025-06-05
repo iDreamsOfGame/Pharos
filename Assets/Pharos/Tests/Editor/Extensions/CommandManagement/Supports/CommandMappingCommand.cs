@@ -1,6 +1,6 @@
 using System;
+using Pharos.Common.EventCenter;
 using Pharos.Extensions.CommandManagement;
-using Pharos.Extensions.EventManagement;
 using ReflexPlus.Attributes;
 
 namespace PharosEditor.Tests.Extensions.CommandManagement.Supports

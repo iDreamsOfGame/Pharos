@@ -87,7 +87,7 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
             CreateMapper<NullCommand>().Execute();
             mockExecutor.Verify(e =>
                     e.ExecuteCommands(It.Is<List<ICommandMapping>>(arg1 => arg1 == list),
-                        It.Is<CommandPayload>(arg2 => arg2.ValueTypeMap == null)),
+                        It.Is<CommandPayload>(arg2 => arg2.ValueToType == null)),
                 Times.Once);
         }
 

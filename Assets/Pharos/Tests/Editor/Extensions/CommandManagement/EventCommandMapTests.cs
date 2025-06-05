@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Pharos.Common.CommandCenter;
+using Pharos.Common.EventCenter;
 using Pharos.Extensions.CommandManagement;
-using Pharos.Extensions.EventManagement;
 using Pharos.Framework;
 using Pharos.Framework.Injection;
 using PharosEditor.Tests.Common.CommandCenter.Supports;
@@ -121,7 +121,10 @@ namespace PharosEditor.Tests.Extensions.CommandManagement
         {
             SupportEvent injectedEvent = null;
             injector.Map(typeof(Action<SupportEventTriggeredSelfReportingCallbackCommand>), "ExecuteCallback")
-                .ToValue((Action<SupportEventTriggeredSelfReportingCallbackCommand>)delegate(SupportEventTriggeredSelfReportingCallbackCommand command) { injectedEvent = command.TypedEvent; });
+                .ToValue((Action<SupportEventTriggeredSelfReportingCallbackCommand>)delegate(SupportEventTriggeredSelfReportingCallbackCommand command)
+                {
+                    injectedEvent = command.TypedEvent;
+                });
             subject.Map(SupportEvent.Type.Type1, typeof(SupportEvent)).ToCommand<SupportEventTriggeredSelfReportingCallbackCommand>();
             var supportEvent = new SupportEvent(SupportEvent.Type.Type1);
             dispatcher.Dispatch(supportEvent);
@@ -133,7 +136,10 @@ namespace PharosEditor.Tests.Extensions.CommandManagement
         {
             IEvent injectedEvent = null;
             injector.Map(typeof(Action<SupportEventTriggeredSelfReportingCallbackCommand>), "ExecuteCallback")
-                .ToValue((Action<SupportEventTriggeredSelfReportingCallbackCommand>)delegate(SupportEventTriggeredSelfReportingCallbackCommand command) { injectedEvent = command.UntypedEvent; });
+                .ToValue((Action<SupportEventTriggeredSelfReportingCallbackCommand>)delegate(SupportEventTriggeredSelfReportingCallbackCommand command)
+                {
+                    injectedEvent = command.UntypedEvent;
+                });
             subject.Map(SupportEvent.Type.Type1, typeof(IEvent)).ToCommand<SupportEventTriggeredSelfReportingCallbackCommand>();
             var supportEvent = new SupportEvent(SupportEvent.Type.Type1);
             dispatcher.Dispatch(supportEvent);

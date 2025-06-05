@@ -6,7 +6,7 @@ namespace Pharos.Framework.Helpers
 {
     internal class ExtensionManager
     {
-        private readonly Dictionary<Type, object> typeMap = new();
+        private readonly Dictionary<Type, object> typeToInstance = new();
 
         private readonly ILogger logger;
 
@@ -35,11 +35,11 @@ namespace Pharos.Framework.Helpers
                 return;
 
             var type = obj.GetType();
-            if (typeMap.ContainsKey(type))
+            if (typeToInstance.ContainsKey(type))
                 return;
 
             logger.LogDebug("Adding extension {0}...", obj);
-            typeMap[type] = obj;
+            typeToInstance[type] = obj;
 
             if (obj is IExtension extension)
             {
@@ -66,7 +66,7 @@ namespace Pharos.Framework.Helpers
 
         public void RemoveAll()
         {
-            foreach (var (type, obj) in typeMap)
+            foreach (var (type, obj) in typeToInstance)
             {
                 Uninstall(type, obj);
             }
@@ -75,7 +75,7 @@ namespace Pharos.Framework.Helpers
         public void Destroy()
         {
             RemoveAll();
-            typeMap?.Clear();
+            typeToInstance?.Clear();
         }
 
         private static object CreateInstance(Type type)

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using NUnit.Framework;
+using Pharos.Common.EventCenter;
 using Pharos.Extensions.EventManagement;
 using Pharos.Framework;
 
@@ -26,7 +27,7 @@ namespace PharosEditor.Tests.Extensions.EventManagement
         public void Setup()
         {
             context = new Context();
-            EventDispatcher.GlobalEventDispatcher = new EventDispatcher();
+            EventDispatcher.Instance = new EventDispatcher();
             subject = new LifecycleEventRelay(context);
             reportedTypes = new List<object>();
         }
@@ -73,7 +74,7 @@ namespace PharosEditor.Tests.Extensions.EventManagement
         {
             foreach (var type in types)
             {
-                EventDispatcher.GlobalEventDispatcher.AddEventListener(type, CatchEvent);
+                EventDispatcher.Instance.AddEventListener(type, CatchEvent);
             }
         }
 

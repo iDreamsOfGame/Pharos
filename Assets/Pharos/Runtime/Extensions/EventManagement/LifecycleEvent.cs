@@ -1,4 +1,4 @@
-using Pharos.Extensions.EventManagement.Pool;
+using Pharos.Common.EventCenter.Pool;
 
 namespace Pharos.Extensions.EventManagement
 {

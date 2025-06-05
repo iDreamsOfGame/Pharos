@@ -1,20 +1,24 @@
 using System;
+using Pharos.Common.CommandCenter;
 using ReflexPlus.Attributes;
 
 namespace PharosEditor.Tests.Common.CommandCenter.Supports
 {
-    internal class MethodParametersCommand
+    internal class MethodParametersCommand : ICommand
     {
+        [Inject]
+        private string message;
+
+        [Inject]
+        private int code;
+        
         [Inject("ReportingFunction")]
         private Action<object> reportingFunc;
 
-        public void Execute(string message, int code)
+        public void Execute()
         {
-            if (reportingFunc != null)
-            {
-                reportingFunc.Invoke(message);
-                reportingFunc.Invoke(code);
-            }
+            reportingFunc?.Invoke(message);
+            reportingFunc?.Invoke(code);
         }
     }
 }

@@ -1,3 +1,4 @@
+using Pharos.Common.EventCenter;
 using Pharos.Framework;
 
 namespace Pharos.Extensions.EventManagement
@@ -11,7 +12,7 @@ namespace Pharos.Extensions.EventManagement
         public EventManagementExtension(IEventDispatcher eventDispatcher = null)
         {
             this.eventDispatcher = eventDispatcher ?? new EventDispatcher();
-            EventDispatcher.GlobalEventDispatcher = this.eventDispatcher;
+            EventDispatcher.Instance = this.eventDispatcher;
         }
 
         public void Enable(IContext context)

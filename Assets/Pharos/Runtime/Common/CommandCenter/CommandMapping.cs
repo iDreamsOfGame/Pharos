@@ -1,32 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace Pharos.Common.CommandCenter
 {
     public class CommandMapping : ICommandMapping
     {
-        private static readonly Dictionary<Type, CommandExecuteMethodInfo> CommandTypeExecuteMethodInfoMap = new();
-
         public CommandMapping(Type commandType)
         {
             CommandType = commandType;
-
-            if (CommandTypeExecuteMethodInfoMap.ContainsKey(CommandType))
-                return;
-
-            var executeMethodInfo = new CommandExecuteMethodInfo(CommandType);
-            if (executeMethodInfo.MethodInfo != null)
-                CommandTypeExecuteMethodInfoMap[CommandType] = executeMethodInfo;
         }
 
         public Type CommandType { get; }
-
-        public MethodInfo ExecuteMethodInfo =>
-            CommandTypeExecuteMethodInfoMap.TryGetValue(CommandType, out var methodInfo) ? methodInfo.MethodInfo : null;
-
-        public ParameterInfo[] ExecuteMethodParameters =>
-            CommandTypeExecuteMethodInfoMap.TryGetValue(CommandType, out var methodInfo) ? methodInfo.MethodParameters : null;
 
         public List<object> Guards { get; private set; }
 

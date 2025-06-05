@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Pharos.Framework.Helpers;
 using Pharos.Framework.Injection;
 
@@ -10,22 +9,22 @@ namespace Pharos.Common.CommandCenter
     {
         private readonly Action<ICommandMapping> removeMappingProcessor;
 
-        private readonly Action<object, ICommandMapping> executingPreprocessor;
+        private readonly Action<ICommand, ICommandMapping> executingPreprocessor;
 
-        private readonly Action<object, object, ICommandMapping> resultHandler;
+        private readonly Action<ICommand, ICommandMapping> resultHandler;
+
+        private readonly IInjector injector;
 
         public CommandsExecutor(IInjector injector,
             Action<ICommandMapping> removeMappingProcessor = null,
-            Action<object, ICommandMapping> executingPreprocessor = null,
-            Action<object, object, ICommandMapping> resultHandler = null)
+            Action<ICommand, ICommandMapping> executingPreprocessor = null,
+            Action<ICommand, ICommandMapping> resultHandler = null)
         {
-            Injector = injector;
+            this.injector = injector;
             this.removeMappingProcessor = removeMappingProcessor;
             this.executingPreprocessor = executingPreprocessor;
             this.resultHandler = resultHandler;
         }
-
-        public IInjector Injector { get; }
 
         public void ExecuteCommand(ICommandMapping mapping, CommandPayload payload = default)
         {
@@ -35,26 +34,26 @@ namespace Pharos.Common.CommandCenter
             var hasPayload = payload.HasPayload;
             var payloadInjectionEnabled = hasPayload && mapping.PayloadInjectionEnabled;
 
-            object command = null;
+            ICommand command = null;
 
             // Inject payload.
             if (payloadInjectionEnabled)
                 MapPayload(payload);
 
             // Approve guards and hook hooks.
-            if (mapping.Guards == null || mapping.Guards.Count == 0 || Guards.Approve(Injector, mapping.Guards))
+            if (mapping.Guards == null || mapping.Guards.Count == 0 || Guards.Approve(injector, mapping.Guards))
             {
                 var commandType = mapping.CommandType;
                 if (mapping.ShouldExecuteOnce && removeMappingProcessor != null)
                     removeMappingProcessor.Invoke(mapping);
                 
-                command = Injector.GetOrCreateNewInstance(commandType);
-                if (mapping.Hooks is { Count: > 0 })
+                command = injector.GetOrCreateNewInstance(commandType) as ICommand;
+                if (command != null && mapping.Hooks is { Count: > 0 })
                 {
-                    Injector.Map(commandType).ToValue(command);
-                    Injector.Build();
-                    Hooks.Hook(Injector, mapping.Hooks);
-                    Injector.Unmap(commandType);
+                    injector.Map(commandType).ToValue(command);
+                    injector.Build();
+                    Hooks.Hook(injector, mapping.Hooks);
+                    injector.Unmap(commandType);
                 }
             }
 
@@ -66,25 +65,14 @@ namespace Pharos.Common.CommandCenter
             executingPreprocessor?.Invoke(command, mapping);
             if (command != null)
             {
-                var executeMethodInfo = mapping.ExecuteMethodInfo;
-                if (executeMethodInfo != null)
-                {
-                    var executeMethodParameters = mapping.ExecuteMethodParameters;
-                    var result = hasPayload && executeMethodParameters.Length > 0
-                        ? executeMethodInfo.Invoke(command, payload.ValueTypeMap.Keys.ToArray())
-                        : executeMethodInfo.Invoke(command, null);
-                    resultHandler?.Invoke(result, command, mapping);
-                }
-                else
-                {
-                    throw new MissingMethodException(mapping.CommandType.FullName, nameof(ICommand.Execute));
-                }
+                command.Execute();
+                resultHandler?.Invoke(command, mapping);
             }
         }
 
         public void ExecuteCommands(IEnumerable<ICommandMapping> mappings, CommandPayload payload = default)
         {
-            Injector.Build();
+            injector.Build();
             
             foreach (var mapping in mappings)
             {
@@ -94,19 +82,19 @@ namespace Pharos.Common.CommandCenter
 
         private void MapPayload(CommandPayload payload)
         {
-            foreach (var (obj, type) in payload.ValueTypeMap)
+            foreach (var (obj, type) in payload.ValueToType)
             {
-                Injector.Map(type).ToValue(obj);
+                injector.Map(type).ToValue(obj);
             }
 
-            Injector.Build();
+            injector.Build();
         }
 
         private void UnmapPayload(CommandPayload payload)
         {
-            foreach (var type in payload.ValueTypeMap.Values)
+            foreach (var type in payload.ValueToType.Values)
             {
-                Injector.Unmap(type);
+                injector.Unmap(type);
             }
         }
     }

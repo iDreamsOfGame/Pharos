@@ -155,16 +155,6 @@ namespace PharosEditor.Tests.Common.CommandCenter
         }
 
         [Test]
-        public void ExecuteCommands_ThrowsErrorWhenExecuteMethodIsNotAMethod_ThrowsException()
-        {
-            Assert.Throws<MissingMethodException>(() =>
-            {
-                AddMapping<IncorrectExecuteCommand>();
-                ExecuteCommands();
-            });
-        }
-
-        [Test]
         public void ExecuteCommands_PayloadIsInjectedIntoCommand_ReturnsExpectedReportedList()
         {
             AddMapping<PayloadInjectionPointsCommand>();
@@ -174,7 +164,7 @@ namespace PharosEditor.Tests.Common.CommandCenter
                 { 1, typeof(int) }
             });
             ExecuteCommands(payload);
-            Assert.That(reported, Is.EqualTo(payload.ValueTypeMap.Keys).AsCollection);
+            Assert.That(reported, Is.EqualTo(payload.ValueToType.Keys).AsCollection);
         }
 
         [Test]
@@ -187,7 +177,7 @@ namespace PharosEditor.Tests.Common.CommandCenter
                 { 1, typeof(int) }
             });
             ExecuteCommands(payload);
-            Assert.That(reported, Is.EqualTo(payload.ValueTypeMap.Keys).AsCollection);
+            Assert.That(reported, Is.EqualTo(payload.ValueToType.Keys).AsCollection);
         }
 
         [Test]
@@ -200,7 +190,7 @@ namespace PharosEditor.Tests.Common.CommandCenter
                 { 1, typeof(int) }
             });
             ExecuteCommands(payload);
-            Assert.That(reported, Is.EqualTo(payload.ValueTypeMap.Keys).AsCollection);
+            Assert.That(reported, Is.EqualTo(payload.ValueToType.Keys).AsCollection);
         }
 
         [Test]
@@ -213,7 +203,7 @@ namespace PharosEditor.Tests.Common.CommandCenter
                 { 1, typeof(int) }
             });
             ExecuteCommands(payload);
-            Assert.That(reported, Is.EqualTo(payload.ValueTypeMap.Keys).AsCollection);
+            Assert.That(reported, Is.EqualTo(payload.ValueToType.Keys).AsCollection);
         }
 
         [Test]

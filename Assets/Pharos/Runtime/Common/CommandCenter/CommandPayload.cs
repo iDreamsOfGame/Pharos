@@ -6,18 +6,18 @@ namespace Pharos.Common.CommandCenter
 {
     public struct CommandPayload
     {
-        public CommandPayload(Dictionary<object, Type> valueTypeMap = null)
+        public CommandPayload(Dictionary<object, Type> valueToType = null)
         {
-            ValueTypeMap = valueTypeMap;
+            ValueToType = valueToType;
         }
 
-        public Dictionary<object, Type> ValueTypeMap { get; private set; }
+        public Dictionary<object, Type> ValueToType { get; private set; }
 
-        public List<Type> Types => ValueTypeMap?.Values.ToList();
+        public List<Type> Types => ValueToType?.Values.ToList();
 
-        public List<object> Values => ValueTypeMap?.Keys.ToList();
+        public List<object> Values => ValueToType?.Keys.ToList();
 
-        public bool HasPayload => ValueTypeMap is { Count: > 0 };
+        public bool HasPayload => ValueToType is { Count: > 0 };
 
         public CommandPayload AddPayload<T>(object value)
         {
@@ -26,8 +26,8 @@ namespace Pharos.Common.CommandCenter
 
         public CommandPayload AddPayload(object value, Type type)
         {
-            ValueTypeMap ??= new Dictionary<object, Type>();
-            ValueTypeMap.Add(value, type);
+            ValueToType ??= new Dictionary<object, Type>();
+            ValueToType.Add(value, type);
             return this;
         }
     }

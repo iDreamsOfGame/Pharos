@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Pharos.Common.CommandCenter;
 using Pharos.Extensions.DirectCommand;
 using Pharos.Framework;
 using Pharos.Framework.Injection;
@@ -13,7 +14,7 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
     [TestFixture]
     internal class DirectCommandMapTests
     {
-        private class DirectCommandMapReportingCommand
+        private class DirectCommandMapReportingCommand : ICommand
         {
             [Inject]
             public IDirectCommandMap DirectCommandMap { get; private set; }

@@ -5,7 +5,7 @@ namespace Pharos.Framework.Helpers
 {
     internal class Pin : IPinEvent
     {
-        private readonly Dictionary<object, bool> instanceMap = new();
+        private readonly Dictionary<object, bool> instanceToDetainedFlag = new();
 
         public event Action<object> Detained;
 
@@ -13,7 +13,7 @@ namespace Pharos.Framework.Helpers
 
         public void Detain(object instance)
         {
-            if (instance == null || !instanceMap.TryAdd(instance, true))
+            if (instance == null || !instanceToDetainedFlag.TryAdd(instance, true))
                 return;
 
             Detained?.Invoke(instance);
@@ -21,7 +21,7 @@ namespace Pharos.Framework.Helpers
 
         public void Release(object instance)
         {
-            if (instance == null || !instanceMap.Remove(instance))
+            if (instance == null || !instanceToDetainedFlag.Remove(instance))
                 return;
 
             Released?.Invoke(instance);
@@ -29,11 +29,11 @@ namespace Pharos.Framework.Helpers
 
         public void ReleaseAll()
         {
-            if (instanceMap == null || instanceMap.Count == 0)
+            if (instanceToDetainedFlag == null || instanceToDetainedFlag.Count == 0)
                 return;
 
-            var instances = new object[instanceMap.Keys.Count];
-            instanceMap.Keys.CopyTo(instances, 0);
+            var instances = new object[instanceToDetainedFlag.Count];
+            instanceToDetainedFlag.Keys.CopyTo(instances, 0);
             foreach (var instance in instances)
             {
                 Release(instance);

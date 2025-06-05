@@ -11,7 +11,7 @@ namespace Pharos.Framework.Helpers
 
         private bool hasInitialized;
 
-        private Dictionary<object, bool> configMap = new();
+        private Dictionary<object, bool> configToHasProcessedFlag = new();
 
         public ConfigManager(IContext context)
         {
@@ -31,7 +31,7 @@ namespace Pharos.Framework.Helpers
 
         public void AddConfig(object config)
         {
-            if (!configMap.TryAdd(config, hasInitialized))
+            if (!configToHasProcessedFlag.TryAdd(config, hasInitialized))
                 return;
 
             if (!hasInitialized)
@@ -42,7 +42,7 @@ namespace Pharos.Framework.Helpers
 
         public void Destroy()
         {
-            configMap.Clear();
+            configToHasProcessedFlag.Clear();
             if (Context != null)
                 Context.Initializing -= OnContextInitializing;
         }
@@ -67,7 +67,7 @@ namespace Pharos.Framework.Helpers
             if (!hasInitialized)
             {
                 hasInitialized = true;
-                foreach (var (config, hasProcessed) in configMap)
+                foreach (var (config, hasProcessed) in configToHasProcessedFlag)
                 {
                     if (hasProcessed)
                         continue;
@@ -75,7 +75,7 @@ namespace Pharos.Framework.Helpers
                     ProcessConfig(config);
                 }
 
-                configMap = configMap.ToDictionary(pair => pair.Key, _ => true);
+                configToHasProcessedFlag = configToHasProcessedFlag.ToDictionary(pair => pair.Key, _ => true);
             }
         }
 

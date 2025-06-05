@@ -6,7 +6,7 @@ namespace Pharos.Framework.Helpers
 {
     internal class LogManager : ILogHandler
     {
-        private static readonly Dictionary<LogLevel, ReflexPlus.Logging.LogLevel> LogLevelReflexPlusLogLevelMap = new()
+        private static readonly Dictionary<LogLevel, ReflexPlus.Logging.LogLevel> LogLevelToReflexPlusLogLevel = new()
         {
             { LogLevel.FatalError, ReflexPlus.Logging.LogLevel.Error },
             { LogLevel.Error, ReflexPlus.Logging.LogLevel.Error },
@@ -25,7 +25,7 @@ namespace Pharos.Framework.Helpers
             set
             {
                 logLevel = value;
-                if (LogLevelReflexPlusLogLevelMap.TryGetValue(logLevel, out var reflexPlusLogLevel))
+                if (LogLevelToReflexPlusLogLevel.TryGetValue(logLevel, out var reflexPlusLogLevel))
                     ReflexPlusLogger.UpdateLogLevel(reflexPlusLogLevel);
             }
         }

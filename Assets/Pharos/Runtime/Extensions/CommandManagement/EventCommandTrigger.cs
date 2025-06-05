@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Pharos.Common.CommandCenter;
-using Pharos.Extensions.EventManagement;
+using Pharos.Common.EventCenter;
 using Pharos.Framework;
 using Pharos.Framework.Injection;
 

@@ -1,16 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace Pharos.Common.CommandCenter
 {
     public interface ICommandMapping
     {
         Type CommandType { get; }
-
-        MethodInfo ExecuteMethodInfo { get; }
-
-        ParameterInfo[] ExecuteMethodParameters { get; }
 
         List<object> Guards { get; }
 

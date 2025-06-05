@@ -1,10 +1,11 @@
 using System;
-using Pharos.Extensions.EventManagement;
+using Pharos.Common.CommandCenter;
+using Pharos.Common.EventCenter;
 using ReflexPlus.Attributes;
 
 namespace PharosEditor.Tests.Extensions.CommandManagement.Supports
 {
-    internal class SupportEventTriggeredSelfReportingCallbackCommand
+    internal class SupportEventTriggeredSelfReportingCallbackCommand : ICommand
     {
         [Inject(true)]
         public IEvent UntypedEvent { get; private set; }

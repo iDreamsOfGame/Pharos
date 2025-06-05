@@ -33,7 +33,7 @@ namespace PharosEditor.Tests.Common.CommandCenter
                 { 1, typeof(int) }
             };
             CreateConfig(expected);
-            Assert.That(subject.ValueTypeMap, Is.EqualTo(expected));
+            Assert.That(subject.ValueToType, Is.EqualTo(expected));
         }
 
         [Test]
@@ -50,12 +50,12 @@ namespace PharosEditor.Tests.Common.CommandCenter
         [Test]
         public void AddPayload_AddingStoresInLockstep_ReturnsSameIndexValues()
         {
-            var valueTypeMap = new Dictionary<object, Type>
+            var valueToType = new Dictionary<object, Type>
             {
                 { "string", typeof(string) },
                 { 1, typeof(int) }
             };
-            CreateConfig(valueTypeMap);
+            CreateConfig(valueToType);
             const float value = 5f;
 
             subject.AddPayload(value, typeof(float));
@@ -65,9 +65,9 @@ namespace PharosEditor.Tests.Common.CommandCenter
             Assert.That(valueIndex, Is.EqualTo(classIndex));
         }
 
-        private void CreateConfig(Dictionary<object, Type> valueTypeMap = null)
+        private void CreateConfig(Dictionary<object, Type> valueToType = null)
         {
-            subject = new CommandPayload(valueTypeMap);
+            subject = new CommandPayload(valueToType);
         }
     }
 }
