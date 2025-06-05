@@ -1,10 +1,12 @@
+using System;
+
 namespace Pharos.Extensions.DirectCommand
 {
     public interface IDirectCommandConfigurator : IDirectCommandMapper
     {
-        IDirectCommandConfigurator WithGuards(params object[] guards);
+        IDirectCommandConfigurator WithGuards(params Type[] guards);
 
-        IDirectCommandConfigurator WithHooks(params object[] hooks);
+        IDirectCommandConfigurator WithHooks(params Type[] hooks);
 
         IDirectCommandConfigurator WithPayloadInjection(bool value = true);
     }

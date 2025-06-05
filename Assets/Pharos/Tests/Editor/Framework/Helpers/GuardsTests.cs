@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using NUnit.Framework;
+using Pharos.Framework;
 using Pharos.Framework.Helpers;
 using Pharos.Framework.Injection;
 using PharosEditor.Tests.Common.CommandCenter.Supports;
@@ -13,7 +12,7 @@ namespace PharosEditor.Tests.Framework.Helpers
     [TestFixture]
     internal class GuardsTests
     {
-        private class BossGuard
+        private class BossGuard : IGuard
         {
             private readonly bool approve;
 
@@ -25,7 +24,7 @@ namespace PharosEditor.Tests.Framework.Helpers
             public bool Approve() => approve;
         }
 
-        private class JustTheMiddleManGuard
+        private class JustTheMiddleManGuard : IGuard
         {
             [Inject]
             public BossGuard BossDecision { get; private set; }
@@ -52,18 +51,6 @@ namespace PharosEditor.Tests.Framework.Helpers
         }
 
         [Test]
-        public void Approve_GrumpyFunction_ReturnsFalse()
-        {
-            Assert.That(Guards.Approve(new object[] { (Func<bool>)GrumpyFunction }), Is.False);
-        }
-
-        [Test]
-        public void Approve_HappyFunction_ReturnsTrue()
-        {
-            Assert.That(Guards.Approve(HappyFunction), Is.True);
-        }
-
-        [Test]
         public void Approve_GrumpyGuardType_ReturnsFalse()
         {
             Assert.That(Guards.Approve(typeof(GrumpyGuard)), Is.False);
@@ -73,18 +60,6 @@ namespace PharosEditor.Tests.Framework.Helpers
         public void Approve_HappyGuardType_ReturnsTrue()
         {
             Assert.That(Guards.Approve(typeof(HappyGuard)), Is.True);
-        }
-
-        [Test]
-        public void Approve_GrumpyGuardInstance_ReturnsFalse()
-        {
-            Assert.That(Guards.Approve(new GrumpyGuard()), Is.False);
-        }
-
-        [Test]
-        public void Approve_HappyGuardInstance_ReturnsTrue()
-        {
-            Assert.That(Guards.Approve(new HappyGuard()), Is.True);
         }
 
         [Test]
@@ -106,55 +81,5 @@ namespace PharosEditor.Tests.Framework.Helpers
         {
             Assert.That(Guards.Approve(typeof(HappyGuard), typeof(GrumpyGuard)), Is.False);
         }
-
-        [Test]
-        public void Approve_GuardsWithAGrumpyGuardInstance_ReturnsFalse()
-        {
-            Assert.That(Guards.Approve(new HappyGuard(), new GrumpyGuard()), Is.False);
-        }
-
-        [Test]
-        public void Approve_GuardsWithAGrumpyFunction_ReturnsFalse()
-        {
-            Assert.That(Guards.Approve(HappyFunction, GrumpyFunction), Is.False);
-        }
-
-        [Test]
-        public void Approve_FalseFunction_ReturnsFalse()
-        {
-            Assert.That(Guards.Approve(FalseGuard), Is.False);
-            return;
-            bool FalseGuard() => false;
-        }
-
-        [Test]
-        public void Approve_TrueFunction_ReturnsTrue()
-        {
-            Assert.That(Guards.Approve(TrueGuard), Is.True);
-            return;
-            bool TrueGuard() => true;
-        }
-
-        [Test]
-        public void Approve_FunctionList_ReturnsTrue()
-        {
-            Assert.That(Guards.Approve(new List<Func<bool>> { TrueGuard, HappyFunction }), Is.True);
-            return;
-            bool TrueGuard() => true;
-        }
-
-        [Test]
-        public void Approve_GuardInstanceWithoutApprove_ThrowsException()
-        {
-            Assert.Throws<MissingMethodException>(() =>
-            {
-                var invalidGuard = new object();
-                Guards.Approve(invalidGuard);
-            });
-        }
-
-        private static bool HappyFunction() => true;
-
-        private static bool GrumpyFunction() => false;
     }
 }

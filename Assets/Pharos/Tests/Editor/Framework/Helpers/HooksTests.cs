@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using NUnit.Framework;
 using Pharos.Framework;
 using Pharos.Framework.Helpers;
@@ -38,51 +37,12 @@ namespace PharosEditor.Tests.Framework.Helpers
         }
 
         [Test]
-        public void Hook_ActionHook_ReturnsExpectedCallCount()
-        {
-            var callCount = 0;
-            Hooks.Hook(delegate { callCount++; });
-            Assert.AreEqual(callCount, 1);
-        }
-
-        [Test]
-        public void Hook_ActionHookList_ReturnsExpectedCallCount()
-        {
-            var callCount = 0;
-            var hook = (Action)delegate { callCount++; };
-            Hooks.Hook(new List<Action> { hook, hook });
-            Assert.AreEqual(callCount, 2);
-        }
-
-        [Test]
         public void Hook_TypeHook_ReturnsExpectedCallCount()
         {
             var callCount = 0;
             injector.Map<Action>("hookCallback").ToValue((Action)delegate { callCount++; });
             Hooks.Hook(injector, typeof(CallbackHook));
             Assert.AreEqual(callCount, 1);
-        }
-
-        [Test]
-        public void Hook_HookInstance_ReturnsExpectedCallCount()
-        {
-            var callCount = 0;
-            var hook = new CallbackHook
-            {
-                Callback = delegate { callCount++; }
-            };
-            Hooks.Hook(hook);
-            Assert.AreEqual(callCount, 1);
-        }
-
-        [Test]
-        public void Hook_InstanceWithoutHookMethod_ThrowsException()
-        {
-            Assert.Throws<MissingMethodException>(() =>
-            {
-                var invalidHook = new object();
-                Hooks.Hook(invalidHook);
-            });
         }
     }
 }

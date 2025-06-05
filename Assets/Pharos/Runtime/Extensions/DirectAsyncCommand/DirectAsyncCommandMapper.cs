@@ -48,13 +48,13 @@ namespace Pharos.Extensions.DirectAsyncCommand
             return Map(typeof(T));
         }
         
-        public IDirectAsyncCommandConfigurator WithGuards(params object[] guards)
+        public IDirectAsyncCommandConfigurator WithGuards(params Type[] guards)
         {
             mapping.AddGuards(guards);
             return this;
         }
 
-        public IDirectAsyncCommandConfigurator WithHooks(params object[] hooks)
+        public IDirectAsyncCommandConfigurator WithHooks(params Type[] hooks)
         {
             mapping.AddHooks(hooks);
             return this;

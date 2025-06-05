@@ -30,13 +30,13 @@ namespace Pharos.Extensions.DirectCommand
             return Map(typeof(T));
         }
 
-        public IDirectCommandConfigurator WithGuards(params object[] guards)
+        public IDirectCommandConfigurator WithGuards(params Type[] guards)
         {
             mapping.AddGuards(guards);
             return this;
         }
 
-        public IDirectCommandConfigurator WithHooks(params object[] hooks)
+        public IDirectCommandConfigurator WithHooks(params Type[] hooks)
         {
             mapping.AddHooks(hooks);
             return this;

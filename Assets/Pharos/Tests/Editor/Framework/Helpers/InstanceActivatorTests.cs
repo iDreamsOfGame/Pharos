@@ -8,7 +8,7 @@ using ReflexPlus.Attributes;
 namespace PharosEditor.Tests.Framework.Helpers
 {
     [TestFixture]
-    internal class ActorsTests
+    internal class InstanceActivatorTests
     {
         private class Foo
         {
@@ -21,7 +21,7 @@ namespace PharosEditor.Tests.Framework.Helpers
         {
             var injector = new Injector();
             injector.Map<int>().ToValue(24);
-            var foo = Actors.CreateInstance<Foo>(injector);
+            var foo = InstanceActivator.CreateInstance<Foo>(injector);
             Assert.That(foo, Is.Not.Null);
             Assert.That(foo.InjectedValue, Is.EqualTo(24));
         }
@@ -29,7 +29,7 @@ namespace PharosEditor.Tests.Framework.Helpers
         [Test]
         public void CreateInstance_WithInjectorNull_ReturnInstanceNotNull()
         {
-            var foo = Actors.CreateInstance<Foo>();
+            var foo = InstanceActivator.CreateInstance<Foo>();
             Assert.That(foo, Is.Not.Null);
             Assert.That(foo.InjectedValue, Is.EqualTo(0));
         }

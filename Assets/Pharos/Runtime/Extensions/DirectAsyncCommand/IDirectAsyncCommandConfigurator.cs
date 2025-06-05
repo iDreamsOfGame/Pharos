@@ -1,3 +1,5 @@
+using System;
+
 namespace Pharos.Extensions.DirectAsyncCommand
 {
     public interface IDirectAsyncCommandConfigurator : IDirectAsyncCommandMapper
@@ -7,14 +9,14 @@ namespace Pharos.Extensions.DirectAsyncCommand
         /// </summary>
         /// <returns>Self</returns>
         /// <param name="guards">Guards</param>
-        IDirectAsyncCommandConfigurator WithGuards(params object[] guards);
+        IDirectAsyncCommandConfigurator WithGuards(params Type[] guards);
 
         /// <summary>
         /// Hooks to run before command execution. 
         /// </summary>
         /// <returns>Self</returns>
         /// <param name="hooks">Hooks</param>
-        IDirectAsyncCommandConfigurator WithHooks(params object[] hooks);
+        IDirectAsyncCommandConfigurator WithHooks(params Type[] hooks);
 
         /// <summary>
         /// Should the payload values be injected into the command instance?

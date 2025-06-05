@@ -9,9 +9,9 @@ namespace Pharos.Extensions.Mediation
 
         Type MediatorType { get; }
 
-        List<object> Guards { get; }
+        List<Type> GuardTypes { get; }
 
-        List<object> Hooks { get; }
+        List<Type> HookTypes { get; }
 
         bool AutoDestroyEnabled { get; }
     }

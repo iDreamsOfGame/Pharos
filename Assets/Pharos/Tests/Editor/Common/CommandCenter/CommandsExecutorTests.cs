@@ -81,7 +81,7 @@ namespace PharosEditor.Tests.Common.CommandCenter
                 .ToValue((Action<SelfReportingCallbackCommand>)delegate(SelfReportingCallbackCommand command) { executedCommand = command; });
             injector.Map(typeof(Action<SelfReportingCallbackHook>), "HookCallback")
                 .ToValue((Action<SelfReportingCallbackHook>)delegate(SelfReportingCallbackHook hook) { injectedCommand = hook.Command; });
-            AddMapping<SelfReportingCallbackCommand>().AddHooks<SelfReportingCallbackHook>();
+            AddMapping<SelfReportingCallbackCommand>().AddHook<SelfReportingCallbackHook>();
             ExecuteCommands();
             Assert.That(injectedCommand, Is.EqualTo(executedCommand));
         }
@@ -89,7 +89,7 @@ namespace PharosEditor.Tests.Common.CommandCenter
         [Test]
         public void ExecuteCommands_CommandExecutesWhenTheGuardAllows_ReturnsExpectedReportedList()
         {
-            AddMapping().AddGuards<HappyGuard>();
+            AddMapping().AddGuard<HappyGuard>();
             ExecuteCommands();
             Assert.That(reported, Is.EqualTo(new List<object> { typeof(TypeReportingCallbackCommand) }).AsCollection);
         }
@@ -105,8 +105,8 @@ namespace PharosEditor.Tests.Common.CommandCenter
         [Test]
         public void ExecuteCommands_ExecutionSequenceIsGuardCommandWithMultipleMapping_ReturnsExpectedReportedList()
         {
-            AddMapping<TypeReportingCallbackCommand>().AddGuards<TypeReportingCallbackGuard>();
-            AddMapping<TypeReportingCallbackCommand2>().AddGuards<TypeReportingCallbackGuard2>();
+            AddMapping<TypeReportingCallbackCommand>().AddGuard<TypeReportingCallbackGuard>();
+            AddMapping<TypeReportingCallbackCommand2>().AddGuard<TypeReportingCallbackGuard2>();
             ExecuteCommands();
             Assert.That(reported,
                 Is.EqualTo(new object[]
@@ -122,7 +122,7 @@ namespace PharosEditor.Tests.Common.CommandCenter
         [Test]
         public void ExecuteCommands_ExecutionSequenceIsGuardHookCommand_ReturnsExpectedReportedList()
         {
-            AddMapping().AddGuards<TypeReportingCallbackGuard>().AddHooks<TypeReportingCallbackHook>();
+            AddMapping().AddGuard<TypeReportingCallbackGuard>().AddHook<TypeReportingCallbackHook>();
             ExecuteCommands();
             Assert.That(reported,
                 Is.EqualTo(new object[]
@@ -137,7 +137,7 @@ namespace PharosEditor.Tests.Common.CommandCenter
         [Test]
         public void ExecuteCommands_AllowedCommandsGetExecutedAfterDeniedCommand_ReturnsExpectedReportedList()
         {
-            AddMapping<TypeReportingCallbackCommand>().AddGuards<GrumpyGuard>();
+            AddMapping<TypeReportingCallbackCommand>().AddGuard<GrumpyGuard>();
             AddMapping<TypeReportingCallbackCommand2>();
             ExecuteCommands();
             Assert.That(reported, Is.EqualTo(new object[] { typeof(TypeReportingCallbackCommand2) }).AsCollection);
@@ -159,7 +159,7 @@ namespace PharosEditor.Tests.Common.CommandCenter
         [Test]
         public void ExecuteCommands_PayloadIsInjectedIntoHook_ReturnsExpectedReportedList()
         {
-            AddMapping<NullCommand>().AddHooks<PayloadInjectionPointsHook>();
+            AddMapping<NullCommand>().AddHook<PayloadInjectionPointsHook>();
             var payload = new CommandPayload(new Dictionary<object, Type>
             {
                 { "message", typeof(string) },
@@ -172,7 +172,7 @@ namespace PharosEditor.Tests.Common.CommandCenter
         [Test]
         public void ExecuteCommands_PayloadIsInjectedIntoGuard_ReturnsExpectedReportedList()
         {
-            AddMapping<NullCommand>().AddGuards<PayloadInjectionPointsGuard>();
+            AddMapping<NullCommand>().AddGuard<PayloadInjectionPointsGuard>();
             var payload = new CommandPayload(new Dictionary<object, Type>
             {
                 { "message", typeof(string) },

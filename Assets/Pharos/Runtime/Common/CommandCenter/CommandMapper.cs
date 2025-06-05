@@ -1,4 +1,5 @@
 using System;
+using Pharos.Framework;
 
 namespace Pharos.Common.CommandCenter
 {
@@ -40,66 +41,94 @@ namespace Pharos.Common.CommandCenter
             mappings.RemoveAllMappings();
         }
 
-        public ICommandConfigurator WithGuards(params object[] guards)
-        {
-            mapping.AddGuards(guards);
-            return this;
-        }
-
-        public ICommandConfigurator WithGuards<T>()
+        public ICommandConfigurator WithGuards<T>() where T : IGuard
         {
             return WithGuards(typeof(T));
         }
 
         public ICommandConfigurator WithGuards<T1, T2>()
+            where T1 : IGuard
+            where T2 : IGuard
         {
             return WithGuards(typeof(T1), typeof(T2));
         }
 
         public ICommandConfigurator WithGuards<T1, T2, T3>()
+            where T1 : IGuard
+            where T2 : IGuard
+            where T3 : IGuard
         {
             return WithGuards(typeof(T1), typeof(T2), typeof(T3));
         }
 
         public ICommandConfigurator WithGuards<T1, T2, T3, T4>()
+            where T1 : IGuard
+            where T2 : IGuard
+            where T3 : IGuard
+            where T4 : IGuard
         {
             return WithGuards(typeof(T1), typeof(T2), typeof(T3), typeof(T4));
         }
 
         public ICommandConfigurator WithGuards<T1, T2, T3, T4, T5>()
+            where T1 : IGuard
+            where T2 : IGuard
+            where T3 : IGuard
+            where T4 : IGuard
+            where T5 : IGuard
         {
             return WithGuards(typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5));
         }
 
-        public ICommandConfigurator WithHooks(params object[] hooks)
+        public ICommandConfigurator WithGuards(params Type[] guards)
         {
-            mapping.AddHooks(hooks);
+            mapping.AddGuards(guards);
             return this;
         }
 
-        public ICommandConfigurator WithHooks<T>()
+        public ICommandConfigurator WithHooks<T>() where T : IHook
         {
             return WithHooks(typeof(T));
         }
 
         public ICommandConfigurator WithHooks<T1, T2>()
+            where T1 : IHook
+            where T2 : IHook
         {
             return WithHooks(typeof(T1), typeof(T2));
         }
 
         public ICommandConfigurator WithHooks<T1, T2, T3>()
+            where T1 : IHook
+            where T2 : IHook
+            where T3 : IHook
         {
             return WithHooks(typeof(T1), typeof(T2), typeof(T3));
         }
 
         public ICommandConfigurator WithHooks<T1, T2, T3, T4>()
+            where T1 : IHook
+            where T2 : IHook
+            where T3 : IHook
+            where T4 : IHook
         {
             return WithHooks(typeof(T1), typeof(T2), typeof(T3), typeof(T4));
         }
 
         public ICommandConfigurator WithHooks<T1, T2, T3, T4, T5>()
+            where T1 : IHook
+            where T2 : IHook
+            where T3 : IHook
+            where T4 : IHook
+            where T5 : IHook
         {
             return WithHooks(typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5));
+        }
+
+        public ICommandConfigurator WithHooks(params Type[] hooks)
+        {
+            mapping.AddHooks(hooks);
+            return this;
         }
 
         public ICommandConfigurator ExecuteOnce(bool value = true)

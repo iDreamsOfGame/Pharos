@@ -382,7 +382,7 @@ namespace PharosEditor.Tests.Extensions.CommandManagement
             return CommandExecutionCount(totalEvents, true);
         }
 
-        private uint HookCallCount(params object[] hooks)
+        private uint HookCallCount(params Type[] hooks)
         {
             uint hookCallCount = 0;
 
@@ -396,7 +396,7 @@ namespace PharosEditor.Tests.Extensions.CommandManagement
             return hookCallCount;
         }
 
-        private uint CommandExecutionCountWithGuards(params object[] guards)
+        private uint CommandExecutionCountWithGuards(params Type[] guards)
         {
             uint executionCount = 0;
             injector.Map(typeof(Action), "ExecuteCallback").ToValue((Action)delegate { executionCount++; });

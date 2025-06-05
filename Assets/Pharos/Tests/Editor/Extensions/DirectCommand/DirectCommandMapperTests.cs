@@ -59,17 +59,17 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
         [Test]
         public void WithGuards_SetsGuardsOfMapping_ReturnsExpectedGuardsCollection()
         {
-            var expected = new object[] { typeof(HappyGuard), typeof(GrumpyGuard) };
+            var expected = new[] { typeof(HappyGuard), typeof(GrumpyGuard) };
             CreateMapper<NullCommand>().WithGuards(expected);
-            Assert.That(caughtMapping.Guards, Is.EqualTo(expected).AsCollection);
+            Assert.That(caughtMapping.GuardTypes, Is.EqualTo(expected).AsCollection);
         }
 
         [Test]
         public void WithHooks_SetsHooksOfMapping_ReturnsExpectedHooksCollection()
         {
-            var expected = new object[] { typeof(ClassReportingCallbackHook), typeof(ClassReportingCallbackHook) };
+            var expected = new[] { typeof(ClassReportingCallbackHook), typeof(ClassReportingCallbackHook) };
             CreateMapper<NullCommand>().WithHooks(expected);
-            Assert.That(caughtMapping.Hooks, Is.EqualTo(expected).AsCollection);
+            Assert.That(caughtMapping.HookTypes, Is.EqualTo(expected).AsCollection);
         }
 
         [Test]

@@ -54,29 +54,29 @@ namespace PharosEditor.Tests.Common.CommandCenter
         [Test]
         public void AddGuards_MappingStoresGuards_ReturnsExpectedGuardsList()
         {
-            mapping.AddGuards(1, 2, 3);
-            Assert.That(mapping.Guards, Is.EqualTo(new object[] { 1, 2, 3 }).AsCollection);
+            mapping.AddGuards<GrumpyGuard, HappyGuard>();
+            Assert.That(mapping.GuardTypes, Is.EqualTo(new[] { typeof(GrumpyGuard), typeof(HappyGuard) }).AsCollection);
         }
 
         [Test]
         public void AddGuards_MappingStoresGuardsArray_ReturnsExpectedGuardsList()
         {
-            mapping.AddGuards(new object[] { 1, 2, 3 });
-            Assert.That(mapping.Guards, Is.EqualTo(new object[] { 1, 2, 3 }).AsCollection);
+            mapping.AddGuards(new[] { typeof(GrumpyGuard), typeof(HappyGuard) });
+            Assert.That(mapping.GuardTypes, Is.EqualTo(new[] { typeof(GrumpyGuard), typeof(HappyGuard) }).AsCollection);
         }
 
         [Test]
         public void AddHooks_MappingStoresHooks_ReturnsExpectedHooksList()
         {
-            mapping.AddHooks(1, 2, 3);
-            Assert.That(mapping.Hooks, Is.EqualTo(new object[] { 1, 2, 3 }).AsCollection);
+            mapping.AddHooks<NullHook, NullHook2>();
+            Assert.That(mapping.HookTypes, Is.EqualTo(new[] { typeof(NullHook), typeof(NullHook2) }).AsCollection);
         }
 
         [Test]
         public void AddHooks_MappingStoresHooksArray_ReturnsExpectedHooksList()
         {
-            mapping.AddHooks(new object[] { 1, 2, 3 });
-            Assert.That(mapping.Hooks, Is.EqualTo(new object[] { 1, 2, 3 }).AsCollection);
+            mapping.AddHooks(new[] { typeof(NullHook), typeof(NullHook2) });
+            Assert.That(mapping.HookTypes, Is.EqualTo(new[] { typeof(NullHook), typeof(NullHook2) }).AsCollection);
         }
     }
 }

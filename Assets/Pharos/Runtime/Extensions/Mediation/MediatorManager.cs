@@ -30,17 +30,17 @@ namespace Pharos.Extensions.Mediation
             var mediator = GetMediator(view);
             if (mediator == null)
             {
-                if (mapping.Guards == null || mapping.Guards.Count == 0 || Guards.Approve(injector, mapping.Guards))
+                if (mapping.GuardTypes == null || mapping.GuardTypes.Count == 0 || Guards.Approve(injector, mapping.GuardTypes))
                 {
                     var mediatorType = mapping.MediatorType;
                     mediator = injector.GetOrCreateNewInstance(mediatorType) as IMediator;
                     if (mediator != null)
                     {
-                        if (mapping.Hooks is { Count: > 0 })
+                        if (mapping.HookTypes is { Count: > 0 })
                         {
                             injector.Map(mediatorType).ToValue(mediator);
                             injector.Build();
-                            Hooks.Hook(injector, mapping.Hooks);
+                            Hooks.Hook(injector, mapping.HookTypes);
                             injector.Unmap(mediatorType);
                         }
 

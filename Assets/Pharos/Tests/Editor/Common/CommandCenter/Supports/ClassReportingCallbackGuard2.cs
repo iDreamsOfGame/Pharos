@@ -1,9 +1,10 @@
 using System;
+using Pharos.Framework;
 using ReflexPlus.Attributes;
 
 namespace PharosEditor.Tests.Common.CommandCenter.Supports
 {
-    internal class ClassReportingCallbackGuard2
+    internal class ClassReportingCallbackGuard2 : IGuard
     {
         [Inject("ReportingFunction")]
         private Action<object> reportingFunc;

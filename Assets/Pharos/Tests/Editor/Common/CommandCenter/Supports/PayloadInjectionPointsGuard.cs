@@ -1,9 +1,10 @@
 using System;
+using Pharos.Framework;
 using ReflexPlus.Attributes;
 
 namespace PharosEditor.Tests.Common.CommandCenter.Supports
 {
-    internal class PayloadInjectionPointsGuard
+    internal class PayloadInjectionPointsGuard : IGuard
     {
         [Inject]
         private string message;

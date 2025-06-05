@@ -6,65 +6,29 @@ namespace Pharos.Framework.Helpers
 {
     internal static class Guards
     {
-        private const string ApproveMethodName = nameof(IGuard.Approve);
-
-        public static bool Approve(IInjector injector, IEnumerable<Func<bool>> guards)
+        public static bool Approve(IEnumerable<Type> guardTypes)
         {
-            return Approve(injector, guards as IEnumerable<object>);
+            return Approve(null, guardTypes);
         }
 
-        public static bool Approve(IInjector injector, params Func<bool>[] guards)
+        public static bool Approve(params Type[] guardTypes)
         {
-            return Approve(injector, guards as IEnumerable<object>);
+            return Approve(null, guardTypes as IEnumerable<Type>);
         }
 
-        public static bool Approve(params Func<bool>[] guards)
+        public static bool Approve(IInjector injector, params Type[] guardTypes)
         {
-            return Approve(null, guards as IEnumerable<object>);
+            return Approve(injector, guardTypes as IEnumerable<Type>);
         }
 
-        public static bool Approve(IEnumerable<object> guards)
+        public static bool Approve(IInjector injector, IEnumerable<Type> guardTypes)
         {
-            return Approve(null, guards);
-        }
-
-        public static bool Approve(params object[] guards)
-        {
-            return Approve(null, guards as IEnumerable<object>);
-        }
-
-        public static bool Approve(IInjector injector, params object[] guards)
-        {
-            return Approve(injector, guards as IEnumerable<object>);
-        }
-
-        public static bool Approve(IInjector injector, IEnumerable<object> guards)
-        {
-            foreach (var guard in guards)
+            foreach (var guardType in guardTypes)
             {
-                if (guard is Func<bool> func)
-                {
-                    if (func.Invoke())
-                        continue;
-
+                if (InstanceActivator.CreateInstance(guardType, injector) is not IGuard guard)
                     return false;
-                }
 
-                object guardInstance;
-                if (guard is Type type)
-                {
-                    guardInstance = Actors.CreateInstance(type, injector);
-                }
-                else
-                {
-                    guardInstance = guard;
-                }
-
-                var approveMethod = guardInstance.GetType().GetMethod(ApproveMethodName);
-                if (approveMethod == null)
-                    throw new MissingMethodException(guardInstance.GetType().FullName, ApproveMethodName);
-
-                if ((bool)approveMethod.Invoke(guardInstance, null) == false)
+                if (!guard.Approve())
                     return false;
             }
 

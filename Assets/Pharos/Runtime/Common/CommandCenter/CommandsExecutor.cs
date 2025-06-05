@@ -41,18 +41,18 @@ namespace Pharos.Common.CommandCenter
                 MapPayload(payload);
 
             // Approve guards and hook hooks.
-            if (mapping.Guards == null || mapping.Guards.Count == 0 || Guards.Approve(injector, mapping.Guards))
+            if (mapping.GuardTypes == null || mapping.GuardTypes.Count == 0 || Guards.Approve(injector, mapping.GuardTypes))
             {
                 var commandType = mapping.CommandType;
                 if (mapping.ShouldExecuteOnce && removeMappingProcessor != null)
                     removeMappingProcessor.Invoke(mapping);
                 
                 command = injector.GetOrCreateNewInstance(commandType) as ICommand;
-                if (command != null && mapping.Hooks is { Count: > 0 })
+                if (command != null && mapping.HookTypes is { Count: > 0 })
                 {
                     injector.Map(commandType).ToValue(command);
                     injector.Build();
-                    Hooks.Hook(injector, mapping.Hooks);
+                    Hooks.Hook(injector, mapping.HookTypes);
                     injector.Unmap(commandType);
                 }
             }
