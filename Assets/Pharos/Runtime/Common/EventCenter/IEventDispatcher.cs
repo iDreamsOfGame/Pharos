@@ -20,6 +20,10 @@ namespace Pharos.Common.EventCenter
 
         void RemoveEventListener(Enum type, Delegate listener);
 
+        void RemoveEventListeners(Enum type);
+
+        void RemoveEventListeners(object target);
+
         void RemoveAllEventListeners();
 
         bool HasEventListener(Enum type);

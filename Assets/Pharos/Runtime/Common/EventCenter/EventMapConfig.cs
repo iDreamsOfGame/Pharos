@@ -2,9 +2,9 @@ using System;
 
 namespace Pharos.Common.EventCenter
 {
-    internal readonly struct EventListenerData : IEquatable<EventListenerData>
+    internal readonly struct EventMapConfig : IEquatable<EventMapConfig>
     {
-        public EventListenerData(Delegate listener)
+        public EventMapConfig(Delegate listener)
         {
             Listener = listener;
             IsAction = listener is Action;
@@ -28,9 +28,9 @@ namespace Pharos.Common.EventCenter
 
         public bool HasParameter { get; }
 
-        public bool Equals(EventListenerData other) => Listener.Equals(other.Listener);
+        public bool Equals(EventMapConfig other) => ReferenceEquals(Listener, other.Listener) || Listener.Equals(other.Listener);
 
-        public override bool Equals(object obj) => obj != null && Listener.Equals((obj is EventListenerData data ? data : default).Listener);
+        public override bool Equals(object obj) => obj != null && Listener.Equals((obj is EventMapConfig data ? data : default).Listener);
 
         public override int GetHashCode() => Listener?.GetHashCode() ?? 0;
 

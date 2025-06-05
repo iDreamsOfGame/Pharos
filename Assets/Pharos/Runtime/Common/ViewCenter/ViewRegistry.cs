@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 
+// ReSharper disable ForCanBeConvertedToForeach
+
 namespace Pharos.Common.ViewCenter
 {
     public class ViewRegistry
@@ -22,15 +24,20 @@ namespace Pharos.Common.ViewCenter
         public void RegisterView(IView view)
         {
             var viewType = view.GetType();
-            foreach (var handler in handlers)
+            for (var i = 0; i < handlers.Count; i++)
             {
+                var handler = handlers[i];
                 handler?.HandleViewInitialized(view, viewType);
             }
         }
 
         public void RemoveView(IView view)
         {
-            
+            for (var i = 0; i < handlers.Count; i++)
+            {
+                var handler = handlers[i];
+                handler?.HandleViewDestroying(view);
+            }
         }
     }
 }

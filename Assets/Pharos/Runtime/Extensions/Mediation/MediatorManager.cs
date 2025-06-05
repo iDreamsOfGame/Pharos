@@ -64,20 +64,13 @@ namespace Pharos.Extensions.Mediation
             viewToMappingMediatorPair.Remove(view);
             DestroyMediator(mediator);
         }
-        
-        private static void InitializeMediator(IView view, IMediator mediator)
-        {
-            mediator.PreInitialize();
-            mediator.View = view;
-            mediator.Initialize();
-            mediator.PostInitialize();
-        }
 
         private static void DestroyMediator(IMediator mediator)
         {
             mediator.PreDestroy();
             mediator.Destroy();
             mediator.View = null;
+            mediator.ViewDispatcher = null;
             mediator.PostDestroy();
         }
 
@@ -85,12 +78,11 @@ namespace Pharos.Extensions.Mediation
         {
             if (!viewToMappingMediatorPair.ContainsKey(view))
                 viewToMappingMediatorPair[view] = new KeyValuePair<IMediatorMapping, IMediator>(mapping, mediator);
-
-            InitializeEventView(view, viewType);
-            InitializeMediator(view, mediator);
+            
+            InitializeMediator(view, viewType, mediator);
         }
 
-        private void InitializeEventView(IView view, Type viewType)
+        private IEventDispatcher InitializeEventView(IView view, Type viewType)
         {
             if (view is IEventView eventView)
             {
@@ -111,7 +103,21 @@ namespace Pharos.Extensions.Mediation
                 }
                 
                 eventView.ViewDispatcher = viewDispatcher;
+                return viewDispatcher;
             }
+
+            return null;
+        }
+        
+        private void InitializeMediator(IView view, Type viewType, IMediator mediator)
+        {
+            var viewDispatcher = InitializeEventView(view, viewType);
+            
+            mediator.PreInitialize();
+            mediator.View = view;
+            mediator.ViewDispatcher = viewDispatcher;
+            mediator.Initialize();
+            mediator.PostInitialize();
         }
     }
 }

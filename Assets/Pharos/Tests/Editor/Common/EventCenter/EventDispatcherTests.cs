@@ -70,21 +70,6 @@ namespace PharosEditor.Tests.Common.EventCenter
         }
 
         [Test]
-        public void Dispatch_AllListenersWontBeCalledIfRemoveAllEventListenersHasCalled_ReturnsExpectedCallCount()
-        {
-            var callCount = 0;
-            var action = (Action)delegate { callCount++; };
-            dispatcher.AddEventListener(Type.A, action);
-            dispatcher.AddEventListener(Type.B, action);
-            dispatcher.AddEventListener(Type.C, action);
-            dispatcher.RemoveAllEventListeners();
-            dispatcher.Dispatch(new BlankEvent(Type.A));
-            dispatcher.Dispatch(new BlankEvent(Type.B));
-            dispatcher.Dispatch(new BlankEvent(Type.C));
-            Assert.That(callCount, Is.EqualTo(0));
-        }
-
-        [Test]
         public void HasEventListener_AddListenerForHasListener_ReturnsTrue()
         {
             Assert.That(dispatcher.HasEventListener(Type.A), Is.False);
@@ -119,6 +104,46 @@ namespace PharosEditor.Tests.Common.EventCenter
         }
 
         [Test]
+        public void RemoveEventListeners_RemoveListenersForType_ReturnsEmptyCollection()
+        {
+            var a = new object();
+            var b = new object();
+            var c = new object();
+            dispatcher.AddEventListener(Type.A, Report(a));
+            dispatcher.AddEventListener(Type.A, Report(b));
+            dispatcher.AddEventListener(Type.A, Report(c));
+            dispatcher.RemoveEventListeners(Type.A);
+            dispatcher.Dispatch(new BlankEvent(Type.A));
+            Assert.That(reported, Is.EqualTo(new List<object>()).AsCollection);
+        }
+
+        [Test]
+        public void RemoveEventListeners_RemoveListenersOfTarget_ReturnsEmptyCollection()
+        {
+            dispatcher.AddEventListener(Type.A, Report2);
+            dispatcher.AddEventListener<BlankEvent>(Type.B, Report3);
+            dispatcher.RemoveEventListeners(this);
+            dispatcher.Dispatch(new BlankEvent(Type.A));
+            dispatcher.Dispatch(new BlankEvent(Type.B));
+            Assert.That(reported, Is.EqualTo(new List<object>()).AsCollection);
+        }
+        
+        [Test]
+        public void RemoveAllEventListeners_AllListenersWontBeCalledIfRemoveAllEventListenersHasCalled_ReturnsExpectedCallCount()
+        {
+            var callCount = 0;
+            var action = (Action)delegate { callCount++; };
+            dispatcher.AddEventListener(Type.A, action);
+            dispatcher.AddEventListener(Type.B, action);
+            dispatcher.AddEventListener(Type.C, action);
+            dispatcher.RemoveAllEventListeners();
+            dispatcher.Dispatch(new BlankEvent(Type.A));
+            dispatcher.Dispatch(new BlankEvent(Type.B));
+            dispatcher.Dispatch(new BlankEvent(Type.C));
+            Assert.That(callCount, Is.EqualTo(0));
+        }
+
+        [Test]
         public void Dispatch_CheckCustomEventDataGetsPassed_ReturnsExpectedMessage()
         {
             string message = null;
@@ -137,5 +162,15 @@ namespace PharosEditor.Tests.Common.EventCenter
         }
 
         private Action Report(object message) => delegate { reported.Add(message); };
+
+        private void Report2()
+        {
+            reported.Add(this);
+        }
+
+        private void Report3(BlankEvent e)
+        {
+            reported.Add(e);
+        }
     }
 }
