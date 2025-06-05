@@ -62,6 +62,11 @@ namespace Pharos.Extensions.Mediation
             viewHandler.HandleViewInitialized(view, viewType);
         }
 
+        public void HandleViewDestroying(IView view)
+        {
+            viewHandler.HandleViewDestroying(view);
+        }
+
         private MediatorMapper CreateMapper(Type viewType)
         {
             return new MediatorMapper(viewType, viewHandler, logger);

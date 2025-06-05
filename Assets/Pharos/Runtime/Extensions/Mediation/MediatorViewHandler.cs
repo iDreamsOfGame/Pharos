@@ -10,7 +10,7 @@ namespace Pharos.Extensions.Mediation
         
         private readonly Dictionary<Type, IMediatorMapping> viewTypeToMapping = new();
 
-        private IMediatorManager manager;
+        private readonly IMediatorManager manager;
         
         public MediatorViewHandler(IMediatorManager mediatorManager)
         {
@@ -41,7 +41,12 @@ namespace Pharos.Extensions.Mediation
             var mapping = GetMapping(viewType);
             manager.CreateMediator(view, viewType, mapping);
         }
-        
+
+        public void HandleViewDestroying(IView view)
+        {
+            manager.RemoveMediator(view);
+        }
+
         private void FlushCache()
         {
             viewTypeToMapping.Clear();

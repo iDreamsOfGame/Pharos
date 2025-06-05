@@ -14,8 +14,6 @@ namespace Pharos.Extensions.Mediation
 
         public List<Type> HookTypes { get; private set; }
 
-        public bool AutoDestroyEnabled { get; private set; } = true;
-
         public MediatorMapping(Type viewType, Type mediatorType)
         {
             ViewType = viewType;
@@ -119,18 +117,6 @@ namespace Pharos.Extensions.Mediation
                 HookTypes.AddRange(hooks);
             }
 
-            return this;
-        }
-
-        public IMediatorConfigurator EnableAutoDestroy()
-        {
-            AutoDestroyEnabled = true;
-            return this;
-        }
-
-        public IMediatorConfigurator DisableAutoDestroy()
-        {
-            AutoDestroyEnabled = false;
             return this;
         }
 

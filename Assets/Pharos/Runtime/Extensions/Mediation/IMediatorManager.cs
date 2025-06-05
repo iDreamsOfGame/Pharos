@@ -8,5 +8,7 @@ namespace Pharos.Extensions.Mediation
         IMediator GetMediator(IView view);
 
         IMediator CreateMediator(IView view, Type viewType, IMediatorMapping mapping);
+
+        void RemoveMediator(IView view);
     }
 }

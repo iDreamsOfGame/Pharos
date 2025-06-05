@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Pharos.Common.ViewCenter
 {
-    internal class ViewRegistry
+    public class ViewRegistry
     {
         public static ViewRegistry Instance { get; } = new();
         
@@ -26,6 +26,11 @@ namespace Pharos.Common.ViewCenter
             {
                 handler?.HandleViewInitialized(view, viewType);
             }
+        }
+
+        public void RemoveView(IView view)
+        {
+            
         }
     }
 }

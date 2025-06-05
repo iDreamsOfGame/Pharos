@@ -12,7 +12,5 @@ namespace Pharos.Extensions.Mediation
         List<Type> GuardTypes { get; }
 
         List<Type> HookTypes { get; }
-
-        bool AutoDestroyEnabled { get; }
     }
 }

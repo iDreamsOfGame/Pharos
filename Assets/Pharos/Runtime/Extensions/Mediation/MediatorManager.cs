@@ -52,6 +52,19 @@ namespace Pharos.Extensions.Mediation
             return mediator;
         }
         
+        public void RemoveMediator(IView view)
+        {
+            if (!viewToMappingMediatorPair.TryGetValue(view, out var mappingMediatorPair))
+                return;
+            
+            if (view is IEventView eventView)
+                eventView.ViewDispatcher = null;
+            
+            var mediator = mappingMediatorPair.Value;
+            viewToMappingMediatorPair.Remove(view);
+            DestroyMediator(mediator);
+        }
+        
         private static void InitializeMediator(IView view, IMediator mediator)
         {
             mediator.PreInitialize();
@@ -73,26 +86,8 @@ namespace Pharos.Extensions.Mediation
             if (!viewToMappingMediatorPair.ContainsKey(view))
                 viewToMappingMediatorPair[view] = new KeyValuePair<IMediatorMapping, IMediator>(mapping, mediator);
 
-            if (mapping.AutoDestroyEnabled)
-                view.Destroying += OnViewDestroying;
-
             InitializeEventView(view, viewType);
             InitializeMediator(view, mediator);
-        }
-
-        private void RemoveMediator(IView view)
-        {
-            if (!viewToMappingMediatorPair.TryGetValue(view, out var mappingMediatorPair))
-                return;
-
-            var mapping = mappingMediatorPair.Key;
-            var mediator = mappingMediatorPair.Value;
-            viewToMappingMediatorPair.Remove(view);
-            
-            if (mapping.AutoDestroyEnabled)
-                view.Destroying -= OnViewDestroying;
-            
-            DestroyMediator(mediator);
         }
 
         private void InitializeEventView(IView view, Type viewType)
@@ -117,14 +112,6 @@ namespace Pharos.Extensions.Mediation
                 
                 eventView.ViewDispatcher = viewDispatcher;
             }
-        }
-
-        private void OnViewDestroying(IView view)
-        {
-            if (view is IEventView eventView)
-                eventView.ViewDispatcher = null;
-            
-            RemoveMediator(view);
         }
     }
 }
