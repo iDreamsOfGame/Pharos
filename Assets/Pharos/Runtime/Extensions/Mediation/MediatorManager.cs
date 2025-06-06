@@ -22,11 +22,6 @@ namespace Pharos.Extensions.Mediation
             this.injector = injector;
         }
 
-        public IMediator GetMediator(IView view)
-        {
-            return viewToMappingMediatorPair.TryGetValue(view, out var mappingMediatorPair) ? mappingMediatorPair.Value : null;
-        }
-
         public IMediator CreateMediator(IView view, Type viewType, IMediatorMapping mapping)
         {
             var mediator = GetMediator(view);
@@ -53,8 +48,13 @@ namespace Pharos.Extensions.Mediation
 
             return mediator;
         }
+        
+        public IMediator GetMediator(IView view)
+        {
+            return viewToMappingMediatorPair.TryGetValue(view, out var mappingMediatorPair) ? mappingMediatorPair.Value : null;
+        }
 
-        public void RemoveMediator(IView view)
+        public void DestroyMediator(IView view)
         {
             if (!viewToMappingMediatorPair.TryGetValue(view, out var mappingMediatorPair))
                 return;

@@ -29,9 +29,10 @@ namespace Pharos.Extensions.Mediation
 
         public IMediatorMapper Map(Type viewType)
         {
-            if (!viewType.IsAssignableFrom(typeof(IView)))
+            var interfaceType = typeof(IView);
+            if (!interfaceType.IsAssignableFrom(viewType))
             {
-                logger.LogError(new ArgumentException(nameof(viewType)));
+                logger.LogError("{0} should implements interface IView. ", nameof(viewType));
                 return null;
             }
             
@@ -48,7 +49,8 @@ namespace Pharos.Extensions.Mediation
 
         public IMediatorUnmapper Unmap(Type viewType)
         {
-            if (!viewType.IsAssignableFrom(typeof(IView)))
+            var interfaceType = typeof(IView);
+            if (!interfaceType.IsAssignableFrom(viewType))
             {
                 logger.LogError(new ArgumentException(nameof(viewType)));
                 return null;

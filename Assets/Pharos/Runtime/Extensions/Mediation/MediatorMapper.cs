@@ -28,9 +28,10 @@ namespace Pharos.Extensions.Mediation
 
         public IMediatorConfigurator ToMediator(Type mediatorType)
         {
-            if (!mediatorType.IsAssignableFrom(typeof(IMediator)))
+            var interfaceType = typeof(IMediator);
+            if (!interfaceType.IsAssignableFrom(mediatorType))
             {
-                logger.LogError(new ArgumentException(nameof(mediatorType)));
+                logger.LogError("{0} should implements interface IMediator. ", nameof(mediatorType));
                 return null;
             }
 
@@ -44,9 +45,10 @@ namespace Pharos.Extensions.Mediation
 
         public void FromMediator(Type mediatorType)
         {
-            if (!mediatorType.IsAssignableFrom(typeof(IMediator)))
+            var interfaceType = typeof(IMediator);
+            if (!interfaceType.IsAssignableFrom(mediatorType))
             {
-                logger.LogError(new ArgumentException(nameof(mediatorType)));
+                logger.LogError("{0} should implements interface IMediator. ", nameof(mediatorType));
                 return;
             }
             
@@ -83,8 +85,8 @@ namespace Pharos.Extensions.Mediation
 
         private IMediatorConfigurator OverwriteMapping(IMediatorMapping mapping)
         {
-            logger?.LogDebug("{0} already mapped to {1}\nIf you have overridden this mapping intentionally you can use 'unmap()' "
-                             + "prior to your replacement mapping in order to avoid seeing this message.",
+            logger?.LogWarning("{0} already mapped to {1}\nIf you have overridden this mapping intentionally you can use 'Unmap()' "
+                             + "prior to your replacement mapping in order to avoid seeing this message. ",
                 viewType,
                 mapping);
             DeleteMapping(mapping);

@@ -5,10 +5,10 @@ namespace Pharos.Extensions.Mediation
 {
     public interface IMediatorManager
     {
+        IMediator CreateMediator(IView view, Type viewType, IMediatorMapping mapping);
+        
         IMediator GetMediator(IView view);
 
-        IMediator CreateMediator(IView view, Type viewType, IMediatorMapping mapping);
-
-        void RemoveMediator(IView view);
+        void DestroyMediator(IView view);
     }
 }

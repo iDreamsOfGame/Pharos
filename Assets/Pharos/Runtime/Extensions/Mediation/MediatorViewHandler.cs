@@ -39,20 +39,21 @@ namespace Pharos.Extensions.Mediation
         public void HandleViewInitialized(IView view, Type viewType)
         {
             var mapping = GetMapping(viewType);
-            manager.CreateMediator(view, viewType, mapping);
+            if (mapping != null)
+                manager.CreateMediator(view, viewType, mapping);
         }
 
         public void HandleViewDestroying(IView view)
         {
-            manager.RemoveMediator(view);
+            manager.DestroyMediator(view);
         }
 
         private void FlushCache()
         {
             viewTypeToMapping.Clear();
         }
-
-        public IMediatorMapping GetMapping(Type viewType)
+        
+        private IMediatorMapping GetMapping(Type viewType)
         {
             if (viewTypeToMapping.TryGetValue(viewType, out var value)) 
                 return value;
@@ -67,7 +68,7 @@ namespace Pharos.Extensions.Mediation
                 break;
             }
 
-            return viewTypeToMapping[viewType];
+            return viewTypeToMapping.GetValueOrDefault(viewType);
         }
     }
 }

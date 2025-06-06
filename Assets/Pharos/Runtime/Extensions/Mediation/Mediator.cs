@@ -8,10 +8,10 @@ namespace Pharos.Extensions.Mediation
 {
     public abstract class Mediator : IMediator
     {
-        [Inject]
+        [Inject(true)]
         public ILogger Logger { get; protected set; }
 
-        [Inject]
+        [Inject(true)]
         public IEventDispatcher EventDispatcher { get; protected set; }
 
         IView IMediator.View
@@ -42,7 +42,7 @@ namespace Pharos.Extensions.Mediation
 
         void IMediator.PostInitialize()
         {
-            OnPostInitialize();
+            OnInitialized();
         }
 
         void IMediator.PreDestroy()
@@ -59,7 +59,7 @@ namespace Pharos.Extensions.Mediation
         {
             RemoveViewListeners();
             RemoveContextListeners();
-            OnPostDestroy();
+            OnDestroyed();
         }
 
         protected virtual void OnPreInitialize()
@@ -70,7 +70,7 @@ namespace Pharos.Extensions.Mediation
         {
         }
 
-        protected virtual void OnPostInitialize()
+        protected virtual void OnInitialized()
         {
         }
 
@@ -82,10 +82,10 @@ namespace Pharos.Extensions.Mediation
         {
         }
 
-        protected virtual void OnPostDestroy()
+        protected virtual void OnDestroyed()
         {
         }
-        
+
         protected virtual void AddViewListener<T>(Enum type, Action<T> listener) where T : IEvent
         {
             if (ViewDispatcher == null)
@@ -93,10 +93,10 @@ namespace Pharos.Extensions.Mediation
                 TriggerViewDispatcherError();
                 return;
             }
-            
+
             ViewDispatcher.AddEventListener(type, listener);
         }
-        
+
         protected virtual void AddViewListener(Enum type, Action<IEvent> listener)
         {
             if (ViewDispatcher == null)
@@ -104,7 +104,7 @@ namespace Pharos.Extensions.Mediation
                 TriggerViewDispatcherError();
                 return;
             }
-            
+
             ViewDispatcher.AddEventListener(type, listener);
         }
 
@@ -115,7 +115,7 @@ namespace Pharos.Extensions.Mediation
                 TriggerViewDispatcherError();
                 return;
             }
-            
+
             ViewDispatcher.AddEventListener(type, listener);
         }
 
@@ -126,10 +126,10 @@ namespace Pharos.Extensions.Mediation
                 TriggerViewDispatcherError();
                 return;
             }
-            
+
             ViewDispatcher.AddEventListener(type, listener);
         }
-        
+
         protected virtual void RemoveViewListener<T>(Enum type, Action<T> listener) where T : IEvent
         {
             if (ViewDispatcher == null)
@@ -137,10 +137,10 @@ namespace Pharos.Extensions.Mediation
                 TriggerViewDispatcherError();
                 return;
             }
-            
+
             ViewDispatcher.RemoveEventListener(type, listener);
         }
-        
+
         protected virtual void RemoveViewListener(Enum type, Action<IEvent> listener)
         {
             if (ViewDispatcher == null)
@@ -148,7 +148,7 @@ namespace Pharos.Extensions.Mediation
                 TriggerViewDispatcherError();
                 return;
             }
-            
+
             ViewDispatcher.RemoveEventListener(type, listener);
         }
 
@@ -159,7 +159,7 @@ namespace Pharos.Extensions.Mediation
                 TriggerViewDispatcherError();
                 return;
             }
-            
+
             ViewDispatcher.RemoveEventListener(type, listener);
         }
 
@@ -170,7 +170,7 @@ namespace Pharos.Extensions.Mediation
                 TriggerViewDispatcherError();
                 return;
             }
-            
+
             ViewDispatcher.RemoveEventListener(type, listener);
         }
 
@@ -181,57 +181,117 @@ namespace Pharos.Extensions.Mediation
                 TriggerViewDispatcherError();
                 return;
             }
-            
+
             ViewDispatcher.RemoveEventListeners(this);
         }
-        
+
         protected virtual void AddContextListener<T>(Enum type, Action<T> listener) where T : IEvent
         {
+            if (EventDispatcher == null)
+            {
+                TriggerEventDispatcherError();
+                return;
+            }
+            
             EventDispatcher.AddEventListener(type, listener);
         }
-        
+
         protected virtual void AddContextListener(Enum type, Action<IEvent> listener)
         {
+            if (EventDispatcher == null)
+            {
+                TriggerEventDispatcherError();
+                return;
+            }
+            
             EventDispatcher.AddEventListener(type, listener);
         }
 
         protected virtual void AddContextListener(Enum type, Action listener)
         {
+            if (EventDispatcher == null)
+            {
+                TriggerEventDispatcherError();
+                return;
+            }
+            
             EventDispatcher.AddEventListener(type, listener);
         }
 
         protected virtual void AddContextListener(Enum type, Delegate listener)
         {
+            if (EventDispatcher == null)
+            {
+                TriggerEventDispatcherError();
+                return;
+            }
+            
             EventDispatcher.AddEventListener(type, listener);
         }
 
         protected virtual void RemoveContextListener<T>(Enum type, Action<T> listener) where T : IEvent
         {
+            if (EventDispatcher == null)
+            {
+                TriggerEventDispatcherError();
+                return;
+            }
+            
             EventDispatcher.RemoveEventListener(type, listener);
         }
-        
+
         protected virtual void RemoveContextListener(Enum type, Action<IEvent> listener)
         {
+            if (EventDispatcher == null)
+            {
+                TriggerEventDispatcherError();
+                return;
+            }
+            
             EventDispatcher.RemoveEventListener(type, listener);
         }
 
         protected virtual void RemoveContextListener(Enum type, Action listener)
         {
+            if (EventDispatcher == null)
+            {
+                TriggerEventDispatcherError();
+                return;
+            }
+            
             EventDispatcher.RemoveEventListener(type, listener);
         }
 
         protected virtual void RemoveContextListener(Enum type, Delegate listener)
         {
+            if (EventDispatcher == null)
+            {
+                TriggerEventDispatcherError();
+                return;
+            }
+            
             EventDispatcher.RemoveEventListener(type, listener);
         }
 
         protected virtual void RemoveContextListeners()
         {
+            if (EventDispatcher == null)
+            {
+                TriggerEventDispatcherError();
+                return;
+            }
+            
             EventDispatcher.RemoveEventListeners(this);
         }
 
         protected void Dispatch(IEvent e)
         {
+            if (EventDispatcher == null)
+            {
+                TriggerEventDispatcherError();
+                return;
+            }
+            
             if (EventDispatcher.HasEventListener(e.EventType))
                 EventDispatcher.Dispatch(e);
         }
@@ -249,6 +309,11 @@ namespace Pharos.Extensions.Mediation
             {
                 Logger.LogWarning("{0}: Can't add or remove view listeners because {1} is not, and does not contain, an {2}. ", this, View, nameof(IEventDispatcher));
             }
+        }
+
+        private void TriggerEventDispatcherError()
+        {
+            Logger?.LogWarning("{0}: Can't add or remove context listeners because the {1} has not been set. ", this, nameof(EventDispatcher));
         }
     }
 }
