@@ -5,7 +5,7 @@ using Pharos.Framework.Injection;
 
 namespace Pharos.Common.CommandCenter
 {
-    internal class AsyncCommandsExecutor : IAsyncCommandsExecutor
+    public class AsyncCommandsExecutor : IAsyncCommandsExecutor
     {
         private readonly IContext context;
 

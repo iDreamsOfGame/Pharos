@@ -2,7 +2,7 @@ using System;
 
 namespace Pharos.Common.EventCenter
 {
-    internal readonly struct EventMapConfig : IEquatable<EventMapConfig>
+    public readonly struct EventMapConfig : IEquatable<EventMapConfig>
     {
         public EventMapConfig(Delegate listener)
         {
