@@ -1,0 +1,18 @@
+{
+    "name": "Unity.Pharos.Editor",
+    "rootNamespace": "PharosEditor",
+    "references": [
+        "Unity.Pharos"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

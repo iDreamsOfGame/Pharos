@@ -4,6 +4,8 @@ using Pharos.Common.EventCenter;
 using Pharos.Framework.Injection;
 using Pharos.Common.ViewCenter;
 using Pharos.Framework.Helpers;
+using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Pharos.Extensions.Mediation
 {
@@ -12,9 +14,9 @@ namespace Pharos.Extensions.Mediation
         private readonly IInjector injector;
 
         private readonly Dictionary<Type, IEventDispatcher> viewTypeToViewDispatcherCache = new();
-        
+
         private readonly Dictionary<IView, KeyValuePair<IMediatorMapping, IMediator>> viewToMappingMediatorPair = new();
-        
+
         public MediatorManager(IInjector injector)
         {
             this.injector = injector;
@@ -51,18 +53,22 @@ namespace Pharos.Extensions.Mediation
 
             return mediator;
         }
-        
+
         public void RemoveMediator(IView view)
         {
             if (!viewToMappingMediatorPair.TryGetValue(view, out var mappingMediatorPair))
                 return;
-            
+
             if (view is IEventView eventView)
                 eventView.ViewDispatcher = null;
-            
+
             var mediator = mappingMediatorPair.Value;
             viewToMappingMediatorPair.Remove(view);
             DestroyMediator(mediator);
+            
+#if UNITY_EDITOR
+            TryDestroyMediatorMappingInfo(view);
+#endif
         }
 
         private static void DestroyMediator(IMediator mediator)
@@ -73,13 +79,62 @@ namespace Pharos.Extensions.Mediation
             mediator.ViewDispatcher = null;
             mediator.PostDestroy();
         }
+        
+#if UNITY_EDITOR
+        private static void TryAddMediatorMappingInfo(IView view, IMediator mediator)
+        {
+            if (view is Component viewComponent)
+            {
+                var gameObject = viewComponent.gameObject;
+                if (!gameObject)
+                    return;
 
-        private void AddMediator(IView view, Type viewType, IMediator mediator, IMediatorMapping mapping)
+                var mediatorMappingInfo = gameObject.GetComponent<MediatorMappingInfo>();
+                if (!mediatorMappingInfo)
+                    mediatorMappingInfo = gameObject.AddComponent<MediatorMappingInfo>();
+
+                mediatorMappingInfo.View = view;
+                mediatorMappingInfo.Mediator = mediator;
+            }
+        }
+
+        private static void TryDestroyMediatorMappingInfo(IView view)
+        {
+            if (view is Component viewComponent)
+            {
+                var gameObject = viewComponent.gameObject;
+                if (!gameObject)
+                    return;
+
+                var mediatorMappingInfo = gameObject.GetComponent<MediatorMappingInfo>();
+                if (!mediatorMappingInfo)
+                    return;
+
+                if (Application.isPlaying)
+                {
+                    Object.DestroyImmediate(mediatorMappingInfo);
+                }
+                else
+                {
+                    Object.Destroy(mediatorMappingInfo);
+                }
+            }
+        }
+#endif
+
+        private void AddMediator(IView view,
+            Type viewType,
+            IMediator mediator,
+            IMediatorMapping mapping)
         {
             if (!viewToMappingMediatorPair.ContainsKey(view))
                 viewToMappingMediatorPair[view] = new KeyValuePair<IMediatorMapping, IMediator>(mapping, mediator);
-            
+
             InitializeMediator(view, viewType, mediator);
+
+#if UNITY_EDITOR
+            TryAddMediatorMappingInfo(view, mediator);
+#endif
         }
 
         private IEventDispatcher InitializeEventView(IView view, Type viewType)
@@ -87,7 +142,7 @@ namespace Pharos.Extensions.Mediation
             if (view is IEventView eventView)
             {
                 IEventDispatcher viewDispatcher;
-                
+
                 if (eventView.ViewDispatcherCacheEnabled)
                 {
                     viewDispatcher = viewTypeToViewDispatcherCache.GetValueOrDefault(viewType);
@@ -101,18 +156,18 @@ namespace Pharos.Extensions.Mediation
                 {
                     viewDispatcher = new EventDispatcher();
                 }
-                
+
                 eventView.ViewDispatcher = viewDispatcher;
                 return viewDispatcher;
             }
 
             return null;
         }
-        
+
         private void InitializeMediator(IView view, Type viewType, IMediator mediator)
         {
             var viewDispatcher = InitializeEventView(view, viewType);
-            
+
             mediator.PreInitialize();
             mediator.View = view;
             mediator.ViewDispatcher = viewDispatcher;
