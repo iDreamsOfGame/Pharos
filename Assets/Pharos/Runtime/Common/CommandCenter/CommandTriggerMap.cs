@@ -23,7 +23,11 @@ namespace Pharos.Common.CommandCenter
         public ICommandTrigger GetTrigger(params object[] args)
         {
             var key = GetKey(args);
-            return keyToTrigger.TryGetValue(key, out var trigger) ? trigger : keyToTrigger[key] = CreateTrigger(args);
+            if (keyToTrigger.TryGetValue(key, out var trigger))
+                return trigger;
+            
+            keyToTrigger.Add(key, CreateTrigger(args));
+            return keyToTrigger[key];
         }
 
         public ICommandTrigger RemoveTrigger(params object[] args)
