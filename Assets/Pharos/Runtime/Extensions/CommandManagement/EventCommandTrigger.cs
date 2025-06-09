@@ -50,7 +50,7 @@ namespace Pharos.Extensions.CommandManagement
 
         public override string ToString()
         {
-            return $"{eventType.FullName} with selector \"{type}\"";
+            return eventType != null ? $"{eventType.FullName} with selector \"{type}\"" : string.Empty;
         }
 
         private void EventHandler(IEvent e)
