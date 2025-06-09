@@ -58,7 +58,7 @@ namespace Pharos.Extensions.CommandManagement
         private static object GetKey(params object[] args)
         {
             var type = args[0] as Enum;
-            return args[1] is Type eventType ? HashCode.Combine(type, eventType) : type?.GetHashCode();
+            return args[1] is Type eventType ? new Tuple<object, Type>(type, eventType) : type;
         }
 
         private EventCommandTrigger GetTrigger(Enum type, Type eventType)
