@@ -1,7 +1,7 @@
 {
     "name": "io.github.idreamsofgame.pharos",
     "displayName": "Pharos",
-    "version": "0.8.4",
+    "version": "0.8.5",
     "unity": "2021.3",
     "description": "Pharos is a lightweight application framework by using ReflexPlus dependency injection library for creating applications based upon the classic Model-View-Controller design meta-pattern.",
     "keywords": [

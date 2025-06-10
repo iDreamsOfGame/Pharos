@@ -106,11 +106,10 @@ namespace Pharos.Extensions.Mediation
                 if (!gameObject)
                     return;
 
-                var mediatorMappingInfo = gameObject.GetComponent<MediatorMappingInfo>();
-                if (!mediatorMappingInfo)
+                if (!gameObject.TryGetComponent<MediatorMappingInfo>(out var mediatorMappingInfo))
                     return;
-
-                if (Application.isPlaying)
+                
+                if (!Application.isPlaying)
                 {
                     Object.DestroyImmediate(mediatorMappingInfo);
                 }

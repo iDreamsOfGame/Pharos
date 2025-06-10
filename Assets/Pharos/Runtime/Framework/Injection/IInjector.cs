@@ -40,7 +40,11 @@ namespace Pharos.Framework.Injection
 
         void Unmap(Type type, object key = null);
 
+        IInjector BuildAncestors();
+
         IInjector Build(bool buildAncestors = false, bool buildDescendants = false);
+
+        IInjector BuildDescendants();
 
         T GetInstance<T>(object key = null);
 

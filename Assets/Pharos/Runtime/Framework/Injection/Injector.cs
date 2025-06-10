@@ -42,7 +42,11 @@ namespace Pharos.Framework.Injection
 
         public IInjector CreateChild(string name = null)
         {
-            var childInjector = new Injector(name);
+            var childName = !string.IsNullOrEmpty(name) ? name : $"Child-{Children.Count + 1}";
+            if (!string.IsNullOrEmpty(Name))
+                childName = $"{Name}/{childName}";
+            
+            var childInjector = new Injector(childName);
             childInjector.Parent = this;
             childInjector.Builder.SetParent(Container);
             Children.Add(childInjector);
@@ -84,19 +88,64 @@ namespace Pharos.Framework.Injection
             Builder?.Unbind(type, key);
         }
 
+        public IInjector BuildAncestors()
+        {
+            if (Parent == null) 
+                return this;
+            
+            var linkedList = new LinkedList<Injector>();
+            var parent = Parent as Injector;
+            while (parent != null)
+            {
+                linkedList.AddFirst(parent);
+                parent = parent.Parent as Injector;
+            }
+
+            var ancestor = linkedList.First?.Value;
+            while (ancestor != null)
+            {
+                linkedList.RemoveFirst();
+                ancestor.Build();
+                var container = ancestor.Container;
+
+                if (linkedList.First != null)
+                {
+                    ancestor = linkedList.First.Value;
+                    ancestor.Builder.SetParent(container);
+                }
+                else
+                {
+                    Builder.SetParent(container);
+                    ancestor = null;
+                }
+            }
+
+            return this;
+        }
+
         public IInjector Build(bool buildAncestors = false, bool buildDescendants = false)
         {
             // Build Ancestors
             if (buildAncestors)
-                TryBuildAncestors();
+                BuildAncestors();
 
             Container = Builder.Build();
 
-            foreach (var child in Children)
+            if (buildDescendants)
+                BuildDescendants();
+            
+            return this;
+        }
+
+        public IInjector BuildDescendants()
+        {
+            if (Children != null)
             {
-                child.Builder.SetParent(Container);
-                if (buildDescendants)
+                foreach (var child in Children)
+                {
+                    child.Builder.SetParent(Container);
                     child.Build(false, true);
+                }
             }
             
             return this;
@@ -167,38 +216,6 @@ namespace Pharos.Framework.Injection
                 }
 
                 Children = null;
-            }
-        }
-
-        private void TryBuildAncestors()
-        {
-            if (Parent == null) 
-                return;
-            
-            var linkedList = new LinkedList<Injector>();
-            var parent = Parent as Injector;
-            while (parent != null)
-            {
-                linkedList.AddFirst(parent);
-                parent = parent.Parent as Injector;
-            }
-
-            var first = linkedList.First.Value;
-            while (first != null)
-            {
-                linkedList.RemoveFirst();
-                first.Build();
-                var container = first.Container;
-
-                if (linkedList.First != null)
-                {
-                    first = linkedList.First.Value;
-                    first.Builder.SetParent(container);
-                }
-                else
-                {
-                    first = null;
-                }
             }
         }
     }

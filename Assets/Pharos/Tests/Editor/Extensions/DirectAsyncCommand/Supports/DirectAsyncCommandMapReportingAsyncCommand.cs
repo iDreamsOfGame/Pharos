@@ -8,14 +8,14 @@ namespace PharosEditor.Tests.Extensions.DirectAsyncCommand.Supports
     internal class DirectAsyncCommandMapReportingAsyncCommand : AsyncCommand
     {
         [Inject]
-        private IDirectAsyncCommandMap dcm;
+        private IDirectAsyncCommandMap directAsyncCommandMap;
 
         [Inject("ReportingFunction")]
         private Action<IDirectAsyncCommandMap> reportingFunc;
         
         public override void Execute()
         {
-            reportingFunc.Invoke(dcm);
+            reportingFunc.Invoke(directAsyncCommandMap);
             Executed();
         }
     }
