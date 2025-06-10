@@ -6,6 +6,8 @@ namespace Pharos.Framework.Injection
 {
     public interface IInjector : IDisposable
     {
+        string Name { get; }
+
         Container Container { get; }
 
         ContainerBuilder Builder { get; }
@@ -17,11 +19,14 @@ namespace Pharos.Framework.Injection
 
         List<IInjector> Children { get; }
 
+        IInjector GetChild(string name = null);
+
         /// <summary>
         /// Creates a new <see cref="IInjector"/> and sets itself as that new <see cref="IInjector"/>'s parentInjector. 
         /// </summary>
+        /// <param name="name"></param>
         /// <returns>The new <see cref="IInjector"/> instance as child of this <see cref="IInjector"/>. </returns>
-        IInjector CreateChild();
+        IInjector CreateChild(string name = null);
 
         bool HasMapping<T>(object key = null);
 
@@ -35,7 +40,7 @@ namespace Pharos.Framework.Injection
 
         void Unmap(Type type, object key = null);
 
-        IInjector Build(bool buildAncestors = false);
+        IInjector Build(bool buildAncestors = false, bool buildDescendants = false);
 
         T GetInstance<T>(object key = null);
 

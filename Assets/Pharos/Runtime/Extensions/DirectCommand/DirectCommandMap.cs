@@ -18,7 +18,7 @@ namespace Pharos.Extensions.DirectCommand
         public DirectCommandMap(IContext context)
         {
             this.context = context;
-            var childInjector = context.Injector.CreateChild();
+            var childInjector = context.Injector.CreateChild(nameof(DirectCommandMap));
             childInjector.Map<IDirectCommandMap>().ToValue(this);
             mappings = new CommandMappingList(NullCommandTrigger.Instance, mappingProcessors, context.GetLogger(this));
             executor = new CommandsExecutor(childInjector, mappings.RemoveMapping);

@@ -15,7 +15,7 @@ namespace Pharos.Extensions.DirectAsyncCommand
         
         public DirectAsyncCommandMap(IContext context)
         {
-            var childInjector = context.Injector.CreateChild();
+            var childInjector = context.Injector.CreateChild(nameof(DirectAsyncCommandMap));
             childInjector.Map<IDirectAsyncCommandMap>().ToValue(this);
             mappings = new CommandMappingList(NullCommandTrigger.Instance, mappingProcessors, context.GetLogger(this));
             executor = new AsyncCommandsExecutor(context, childInjector, mappings.RemoveMapping);

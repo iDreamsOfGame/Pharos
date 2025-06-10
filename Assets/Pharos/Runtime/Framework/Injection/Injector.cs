@@ -16,6 +16,8 @@ namespace Pharos.Framework.Injection
                 .SetName(name);
         }
 
+        public string Name => Builder?.Name;
+
         public Container Container { get; private set; }
 
         public ContainerBuilder Builder { get; }
@@ -24,9 +26,23 @@ namespace Pharos.Framework.Injection
 
         public List<IInjector> Children { get; private set; } = new();
 
-        public IInjector CreateChild()
+        public IInjector GetChild(string name = null)
         {
-            var childInjector = new Injector();
+            if (Children == null)
+                return null;
+
+            foreach (var child in Children)
+            {
+                if (child.Name == name)
+                    return child;
+            }
+
+            return Children.Count > 0 ? Children[0] : null;
+        }
+
+        public IInjector CreateChild(string name = null)
+        {
+            var childInjector = new Injector(name);
             childInjector.Parent = this;
             childInjector.Builder.SetParent(Container);
             Children.Add(childInjector);
@@ -68,7 +84,7 @@ namespace Pharos.Framework.Injection
             Builder?.Unbind(type, key);
         }
 
-        public IInjector Build(bool buildAncestors = false)
+        public IInjector Build(bool buildAncestors = false, bool buildDescendants = false)
         {
             // Build Ancestors
             if (buildAncestors)
@@ -79,6 +95,8 @@ namespace Pharos.Framework.Injection
             foreach (var child in Children)
             {
                 child.Builder.SetParent(Container);
+                if (buildDescendants)
+                    child.Build(false, true);
             }
             
             return this;
