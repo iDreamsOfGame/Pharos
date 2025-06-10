@@ -14,21 +14,9 @@ namespace Pharos.Extensions.Mediation
         [Inject(true)]
         public IEventDispatcher EventDispatcher { get; protected set; }
 
-        IView IMediator.View
-        {
-            get => View;
-            set => View = value;
-        }
+        public IView View { get; set; }
 
-        IEventDispatcher IMediator.ViewDispatcher
-        {
-            get => ViewDispatcher;
-            set => ViewDispatcher = value;
-        }
-
-        protected IView View { get; private set; }
-
-        protected IEventDispatcher ViewDispatcher { get; private set; }
+        public IEventDispatcher ViewDispatcher { get; set; }
 
         void IMediator.PreInitialize()
         {

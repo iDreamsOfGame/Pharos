@@ -6,6 +6,6 @@ namespace Pharos.Common.ViewCenter
     {
         bool ViewDispatcherCacheEnabled { get; }
 
-        IEventDispatcher ViewDispatcher { get; internal set; }
+        IEventDispatcher ViewDispatcher { get; set; }
     }
 }

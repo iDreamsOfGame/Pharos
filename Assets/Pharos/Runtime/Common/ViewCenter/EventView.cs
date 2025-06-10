@@ -6,12 +6,6 @@ namespace Pharos.Common.ViewCenter
     {
         public virtual bool ViewDispatcherCacheEnabled => true;
 
-        IEventDispatcher IEventView.ViewDispatcher
-        {
-            get => ViewDispatcher;
-            set => ViewDispatcher = value;
-        }
-
-        protected IEventDispatcher ViewDispatcher { get; private set; }
+        public IEventDispatcher ViewDispatcher { get; set; }
     }
 }

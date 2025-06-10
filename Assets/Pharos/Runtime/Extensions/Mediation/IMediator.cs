@@ -5,9 +5,9 @@ namespace Pharos.Extensions.Mediation
 {
     public interface IMediator
     {
-        IView View { get; internal set; }
+        IView View { get; set; }
 
-        IEventDispatcher ViewDispatcher { get; internal set; }
+        IEventDispatcher ViewDispatcher { get; set; }
 
         internal void PreInitialize();
         
