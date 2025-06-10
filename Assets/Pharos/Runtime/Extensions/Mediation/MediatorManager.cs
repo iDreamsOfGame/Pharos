@@ -75,9 +75,9 @@ namespace Pharos.Extensions.Mediation
         {
             mediator.PreDestroy();
             mediator.Destroy();
+            mediator.PostDestroy();
             mediator.View = null;
             mediator.ViewDispatcher = null;
-            mediator.PostDestroy();
         }
         
 #if UNITY_EDITOR
@@ -167,9 +167,9 @@ namespace Pharos.Extensions.Mediation
         {
             var viewDispatcher = InitializeEventView(view, viewType);
 
-            mediator.PreInitialize();
             mediator.View = view;
             mediator.ViewDispatcher = viewDispatcher;
+            mediator.PreInitialize();
             mediator.Initialize();
             mediator.PostInitialize();
         }
