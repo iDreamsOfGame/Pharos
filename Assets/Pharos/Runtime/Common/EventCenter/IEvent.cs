@@ -4,6 +4,6 @@ namespace Pharos.Common.EventCenter
 {
     public interface IEvent
     {
-        Enum EventType { get; }
+        Enum EventType { get; set; }
     }
 }

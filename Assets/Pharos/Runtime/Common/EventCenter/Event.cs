@@ -10,6 +10,6 @@ namespace Pharos.Common.EventCenter
             EventType = type;
         }
 
-        public Enum EventType { get; }
+        public Enum EventType { get; set; }
     }
 }

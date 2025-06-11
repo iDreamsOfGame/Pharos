@@ -17,6 +17,6 @@ namespace PharosEditor.Tests.Extensions.CommandManagement.Supports
             EventType = type;
         }
 
-        public Enum EventType { get; }
+        public Enum EventType { get; set; }
     }
 }
