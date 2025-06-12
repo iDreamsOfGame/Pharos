@@ -41,18 +41,18 @@ namespace Pharos.Framework.Injection
             Builder.RegisterType(concrete, Type, Key, Lifetime.Transient);
             
             if (autoBuild)
-                Injector.Build();
+                Injector.Build(true, true);
         }
 
-        public void ToValue(object value, bool autoBuild = false, bool autoInject = false)
+        public void ToValue(object value, bool autoInject = false, bool autoBuild = false)
         {
             Builder.RegisterValue(value, Type, Key);
             
-            if (autoBuild)
-                Injector.Build();
-
             if (autoInject) 
                 Injector.InjectInto(value);
+            
+            if (autoBuild)
+                Injector.Build(true, true);
         }
 
         public void ToSingleton<T>(bool initializeImmediately = false)

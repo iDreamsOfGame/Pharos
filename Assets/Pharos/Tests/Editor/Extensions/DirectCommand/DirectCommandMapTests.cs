@@ -60,7 +60,7 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
         public void Execute_SuccessfullyExecutesCommands_ReturnsExpectedExecutionCount()
         {
             var executionCount = 0;
-            injector.Map(typeof(Action), "ExecuteCallback").ToValue((Action)delegate { executionCount++; }, true);
+            injector.Map(typeof(Action), "ExecuteCallback").ToValue((Action)delegate { executionCount++; });
             subject.Map<CallbackCommand>()
                 .Map<CallbackCommand2>()
                 .Execute();
@@ -72,7 +72,7 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
         {
             IDirectCommandMap actual = null;
             injector.Map(typeof(Action<IDirectCommandMap>), "ReportingFunction")
-                .ToValue((Action<IDirectCommandMap>)delegate(IDirectCommandMap passed) { actual = passed; }, true);
+                .ToValue((Action<IDirectCommandMap>)delegate(IDirectCommandMap passed) { actual = passed; });
             subject.Map<DirectCommandMapReportingCommand>().Execute();
             Assert.That(actual, Is.EqualTo(subject));
         }
@@ -81,7 +81,7 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
         public void Execute_CommandsAreDisposedAfterExecution_ReturnsExpectedExecutionCount()
         {
             var executionCount = 0;
-            injector.Map(typeof(Action), "ExecuteCallback").ToValue((Action)delegate { executionCount++; }, true);
+            injector.Map(typeof(Action), "ExecuteCallback").ToValue((Action)delegate { executionCount++; });
             subject.Map<CallbackCommand>().Execute();
             subject.Map<CallbackCommand>().Execute();
             Assert.That(executionCount, Is.EqualTo(2));
@@ -126,7 +126,7 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
         public void Execute_ExecutesCommands_ReturnsExpectedExecutionCount()
         {
             var executionCount = 0;
-            injector.Map(typeof(Action), "ExecuteCallback").ToValue((Action)delegate { executionCount++; }, true);
+            injector.Map(typeof(Action), "ExecuteCallback").ToValue((Action)delegate { executionCount++; });
             subject.Map<CallbackCommand>();
             subject.Execute();
             Assert.That(executionCount, Is.EqualTo(1));
