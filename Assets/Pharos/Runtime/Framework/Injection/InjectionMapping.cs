@@ -44,15 +44,15 @@ namespace Pharos.Framework.Injection
                 Injector.Build(true, true);
         }
 
-        public void ToValue(object value, bool autoInject = false, bool autoBuild = false)
+        public void ToValue(object value, bool autoBuild = false, bool autoInject = false)
         {
             Builder.RegisterValue(value, Type, Key);
             
-            if (autoInject) 
-                Injector.InjectInto(value);
-            
             if (autoBuild)
                 Injector.Build(true, true);
+            
+            if (autoInject) 
+                Injector.InjectInto(value);
         }
 
         public void ToSingleton<T>(bool initializeImmediately = false)

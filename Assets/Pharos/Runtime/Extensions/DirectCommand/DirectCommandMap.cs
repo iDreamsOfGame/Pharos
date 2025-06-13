@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Pharos.Common.CommandCenter;
 using Pharos.Framework;
+using Pharos.Framework.Injection;
 
 namespace Pharos.Extensions.DirectCommand
 {
@@ -11,6 +12,8 @@ namespace Pharos.Extensions.DirectCommand
 
         private readonly IContext context;
 
+        private readonly IInjector sandboxInjector;
+
         private readonly ICommandsExecutor executor;
 
         private readonly ICommandMappingList mappings;
@@ -18,10 +21,10 @@ namespace Pharos.Extensions.DirectCommand
         public DirectCommandMap(IContext context)
         {
             this.context = context;
-            var childInjector = context.Injector.CreateChild(nameof(DirectCommandMap));
-            childInjector.Map<IDirectCommandMap>().ToValue(this);
+            sandboxInjector = context.Injector.CreateChild(nameof(DirectCommandMap));
+            sandboxInjector.Map<IDirectCommandMap>().ToValue(this);
             mappings = new CommandMappingList(NullCommandTrigger.Instance, mappingProcessors, context.GetLogger(this));
-            executor = new CommandsExecutor(childInjector, mappings.RemoveMapping);
+            executor = new CommandsExecutor(sandboxInjector, mappings.RemoveMapping);
         }
         
         public IDirectCommandMap AddMappingProcessor(Action<ICommandMapping> processor)
@@ -55,6 +58,7 @@ namespace Pharos.Extensions.DirectCommand
         public void Execute(CommandPayload payload = default)
         {
             executor.ExecuteCommands(mappings.Mappings, payload);
+            context.Injector.RemoveChild(sandboxInjector);
         }
     }
 }

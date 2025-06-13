@@ -2,23 +2,33 @@ using System;
 using System.Collections.Generic;
 using Pharos.Common.CommandCenter;
 using Pharos.Framework;
+using Pharos.Framework.Injection;
 
 namespace Pharos.Extensions.DirectAsyncCommand
 {
     public class DirectAsyncCommandMap : IDirectAsyncCommandMap
     {
         private readonly List<Action<ICommandMapping>> mappingProcessors = new();
+
+        private readonly IContext context;
+
+        private readonly IInjector sandboxInjector;
         
         private readonly ICommandMappingList mappings;
         
         private readonly IAsyncCommandsExecutor executor;
+
+        private Action commandsAbortedCallback;
+        
+        private Action commandsExecutedCallback;
         
         public DirectAsyncCommandMap(IContext context)
         {
-            var childInjector = context.Injector.CreateChild(nameof(DirectAsyncCommandMap));
-            childInjector.Map<IDirectAsyncCommandMap>().ToValue(this);
+            this.context = context;
+            sandboxInjector = context.Injector.CreateChild(nameof(DirectAsyncCommandMap));
+            sandboxInjector.Map<IDirectAsyncCommandMap>().ToValue(this);
             mappings = new CommandMappingList(NullCommandTrigger.Instance, mappingProcessors, context.GetLogger(this));
-            executor = new AsyncCommandsExecutor(context, childInjector, mappings.RemoveMapping);
+            executor = new AsyncCommandsExecutor(context, sandboxInjector, mappings.RemoveMapping);
         }
 
         public bool IsAborted => executor?.IsAborted ?? false;
@@ -39,13 +49,15 @@ namespace Pharos.Extensions.DirectAsyncCommand
 
         public IDirectAsyncCommandMapper SetCommandsAbortedCallback(Action callback)
         {
-            executor.SetCommandsAbortedCallback(callback);
+            commandsAbortedCallback = callback;
+            executor.SetCommandsAbortedCallback(OnCommandsAbortedCallback);
             return this;
         }
 
         public IDirectAsyncCommandMapper SetCommandsExecutedCallback(Action callback)
         {
-            executor.SetCommandsExecutedCallback(callback);
+            commandsExecutedCallback = callback;
+            executor.SetCommandsExecutedCallback(OnCommandsExecuted);
             return this;
         }
         
@@ -67,6 +79,21 @@ namespace Pharos.Extensions.DirectAsyncCommand
         public void Abort(bool abortExecutingCommand = true)
         {
             executor.Abort(abortExecutingCommand);
+        }
+
+        private void OnCommandsAbortedCallback()
+        {
+            commandsAbortedCallback?.Invoke();
+        }
+
+        private void OnCommandsExecuted()
+        {
+            commandsExecutedCallback?.Invoke();
+        }
+
+        private void Dispose()
+        {
+            context.Injector.RemoveChild(sandboxInjector);
         }
     }
 }

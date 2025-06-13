@@ -28,6 +28,13 @@ namespace Pharos.Framework.Injection
         /// <returns>The new <see cref="IInjector"/> instance as child of this <see cref="IInjector"/>. </returns>
         IInjector CreateChild(string name = null);
 
+        /// <summary>
+        /// Removes a child <see cref="IInjector"/>.
+        /// </summary>
+        /// <param name="childInjector"></param>
+        /// <returns></returns>
+        bool RemoveChild(IInjector childInjector);
+
         bool HasMapping<T>(object key = null);
 
         bool HasMapping(Type type, object key = null);

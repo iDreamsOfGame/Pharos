@@ -110,10 +110,11 @@ namespace Pharos.Common.CommandCenter
 
         private void CommandExecutedCallback(IAsyncCommand command, bool stop = false)
         {
+            var commandType = command.GetType();
             context.Release(command);
             
             var current = totalCommandCount - commandMappingQueue.Count;
-            commandExecutedCallback?.Invoke(command.GetType(), current, totalCommandCount);
+            commandExecutedCallback?.Invoke(commandType, current, totalCommandCount);
             
             if (stop)
                 Abort(false);
