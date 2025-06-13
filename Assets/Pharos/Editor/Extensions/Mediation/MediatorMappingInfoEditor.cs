@@ -10,10 +10,10 @@ namespace PharosEditor.Extensions.Mediation
 
         public override void OnInspectorGUI()
         {
-            var viewInfo = mediatorMappingInfo?.View?.GetType().Name;
-            EditorGUILayout.LabelField("View Type", viewInfo);
+            var viewTypeName = mediatorMappingInfo?.ViewType.Name;
+            EditorGUILayout.LabelField("View Type", viewTypeName);
 
-            var mediatorType = mediatorMappingInfo?.Mediator?.GetType();
+            var mediatorType = mediatorMappingInfo?.MediatorType;
             if (mediatorType != null)
             {
                 var monoScript = MonoScriptCacher.GetMonoScript(mediatorType);

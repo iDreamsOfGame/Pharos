@@ -56,13 +56,13 @@ namespace Pharos.Extensions.Mediation
 
         public void DestroyMediator(IView view)
         {
-            if (!viewToMappingMediatorPair.TryGetValue(view, out var mappingMediatorPair))
+            var mediator = GetMediator(view);
+            if (mediator == null)
                 return;
 
             if (view is IEventView eventView)
                 eventView.ViewDispatcher = null;
-
-            var mediator = mappingMediatorPair.Value;
+            
             viewToMappingMediatorPair.Remove(view);
             DestroyMediator(mediator);
             
@@ -81,41 +81,52 @@ namespace Pharos.Extensions.Mediation
         }
         
 #if UNITY_EDITOR
-        private static void TryAddMediatorMappingInfo(IView view, IMediator mediator)
+        private static void TryAddMediatorMappingInfo(IView view, Type viewType, IMediator mediator)
         {
-            if (view is Component viewComponent)
-            {
-                var gameObject = viewComponent.gameObject;
-                if (!gameObject)
-                    return;
+            if (view is not Component viewComponent)
+                return;
+            
+            var gameObject = viewComponent.gameObject;
+            if (!gameObject)
+                return;
+                
+            var mediatorMappingInfoCollection = gameObject.GetComponents<MediatorMappingInfo>();
+            if (mediatorMappingInfoCollection != null && Array.Exists(mediatorMappingInfoCollection, info => info.ViewType == viewType))
+                return;
 
-                var mediatorMappingInfo = gameObject.GetComponent<MediatorMappingInfo>();
-                if (!mediatorMappingInfo)
-                    mediatorMappingInfo = gameObject.AddComponent<MediatorMappingInfo>();
-
-                mediatorMappingInfo.View = view;
-                mediatorMappingInfo.Mediator = mediator;
-            }
+            var mediatorType = mediator.GetType();
+            var mediatorMappingInfo = gameObject.AddComponent<MediatorMappingInfo>();
+            mediatorMappingInfo.ViewType = viewType;
+            mediatorMappingInfo.MediatorType = mediatorType;
         }
 
         private static void TryDestroyMediatorMappingInfo(IView view)
         {
-            if (view is Component viewComponent)
-            {
-                var gameObject = viewComponent.gameObject;
-                if (!gameObject)
-                    return;
+            if (view is not Component viewComponent)
+                return;
+            
+            var gameObject = viewComponent.gameObject;
+            if (!gameObject)
+                return;
 
-                if (!gameObject.TryGetComponent<MediatorMappingInfo>(out var mediatorMappingInfo))
-                    return;
-                
-                if (!Application.isPlaying)
+            var viewType = view.GetType();
+            var mediatorMappingInfoCollection = gameObject.GetComponents<MediatorMappingInfo>();
+            if (mediatorMappingInfoCollection != null)
+            {
+                var removedItems = Array.FindAll(mediatorMappingInfoCollection, info => info.ViewType == viewType);
+                foreach (var item in removedItems)
                 {
-                    Object.DestroyImmediate(mediatorMappingInfo);
-                }
-                else
-                {
-                    Object.Destroy(mediatorMappingInfo);
+                    if (!item)
+                        continue;
+                    
+                    if (!Application.isPlaying)
+                    {
+                        Object.DestroyImmediate(item);
+                    }
+                    else
+                    {
+                        Object.Destroy(item);
+                    }
                 }
             }
         }
@@ -132,7 +143,7 @@ namespace Pharos.Extensions.Mediation
             InitializeMediator(view, viewType, mediator);
 
 #if UNITY_EDITOR
-            TryAddMediatorMappingInfo(view, mediator);
+            TryAddMediatorMappingInfo(view, viewType, mediator);
 #endif
         }
 
