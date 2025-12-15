@@ -3,7 +3,7 @@ using Pharos.Framework;
 
 namespace PharosEditor.Tests.Framework.Supports
 {
-    internal class CallbackBundle : IBundle
+    internal class CallbackBundle : IExtension
     {
         public CallbackBundle(Action<IContext> callback = null)
         {
