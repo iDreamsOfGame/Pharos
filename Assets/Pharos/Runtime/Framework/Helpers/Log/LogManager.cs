@@ -24,6 +24,9 @@ namespace Pharos.Framework.Helpers
             get => logLevel;
             set
             {
+                if (logLevel == value)
+                    return;
+                
                 logLevel = value;
                 if (LogLevelToReflexPlusLogLevel.TryGetValue(logLevel, out var reflexPlusLogLevel))
                     ReflexPlusLogger.UpdateLogLevel(reflexPlusLogLevel);
@@ -32,7 +35,7 @@ namespace Pharos.Framework.Helpers
 
         public LogManager()
         {
-            LogLevel = LogLevel.Debug;
+            LogLevel = LogLevel.Info;
         }
 
         public ILogger GetLogger(object source) => new Logger(source, this);

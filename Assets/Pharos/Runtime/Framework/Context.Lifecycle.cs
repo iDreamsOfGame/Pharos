@@ -196,7 +196,7 @@ namespace Pharos.Framework
 
         public void Initialize(Action<Exception> callback = null)
         {
-            Injector.Build();
+            Injector.Build(false, true);
             lifecycleManager?.Initialize(callback);
         }
 

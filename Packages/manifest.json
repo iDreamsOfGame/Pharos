@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.unity.ide.rider": "3.0.36",
+    "com.unity.ide.rider": "3.0.38",
     "com.unity.test-framework": "1.1.33",
     "com.unity.ugui": "1.0.0",
     "io.github.idreamsofgame.reflexplus": "1.0.7",
