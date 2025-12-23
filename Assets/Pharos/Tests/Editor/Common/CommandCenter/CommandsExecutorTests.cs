@@ -1,17 +1,21 @@
 using System;
 using System.Collections.Generic;
-using Moq;
 using NUnit.Framework;
 using Pharos.Common.CommandCenter;
 using Pharos.Framework.Injection;
 using PharosEditor.Tests.Common.CommandCenter.Supports;
+#if ENABLE_MOQ
+using Moq;
+#endif
 
 namespace PharosEditor.Tests.Common.CommandCenter
 {
     [TestFixture]
     internal class CommandsExecutorTests
     {
+#if ENABLE_MOQ
         private Mock<UnmapperStub> unmapper;
+#endif
 
         private List<ICommandMapping> mappings;
 
@@ -24,7 +28,9 @@ namespace PharosEditor.Tests.Common.CommandCenter
         [SetUp]
         public void Setup()
         {
+#if ENABLE_MOQ
             unmapper = new Mock<UnmapperStub>();
+#endif
             reported = new List<object>();
             injector = new Injector();
 
@@ -33,6 +39,7 @@ namespace PharosEditor.Tests.Common.CommandCenter
             subject = new CommandsExecutor(injector);
         }
 
+#if ENABLE_MOQ
         [Test]
         public void ExecuteCommands_OneshotMappingIsRemoved_VerifiesMockObject()
         {
@@ -44,6 +51,7 @@ namespace PharosEditor.Tests.Common.CommandCenter
                     unmapperObject.Unmap(It.Is<ICommandMapping>(arg => arg == mapping)),
                 Times.Once);
         }
+#endif
 
         [Test]
         public void ExecuteCommands_CommandIsExecuted_ReturnsExpectedReportedList()

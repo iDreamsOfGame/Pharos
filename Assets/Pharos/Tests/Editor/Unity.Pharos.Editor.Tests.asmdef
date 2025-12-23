@@ -19,6 +19,12 @@
     "defineConstraints": [
         "UNITY_INCLUDE_TESTS"
     ],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "nuget.moq",
+            "expression": "2.0.0",
+            "define": "ENABLE_MOQ"
+        }
+    ],
     "noEngineReferences": false
 }

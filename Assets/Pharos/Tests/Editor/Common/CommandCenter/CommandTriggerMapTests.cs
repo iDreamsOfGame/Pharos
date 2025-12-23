@@ -1,3 +1,4 @@
+#if ENABLE_MOQ
 using Moq;
 using NUnit.Framework;
 using Pharos.Common.CommandCenter;
@@ -62,3 +63,4 @@ namespace PharosEditor.Tests.Common.CommandCenter
         }
     }
 }
+#endif

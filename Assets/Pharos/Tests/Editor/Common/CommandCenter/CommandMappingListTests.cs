@@ -1,3 +1,4 @@
+#if ENABLE_MOQ
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -241,3 +242,4 @@ namespace PharosEditor.Tests.Common.CommandCenter
         }
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if ENABLE_MOQ
 using System;
 using Moq;
 using NUnit.Framework;
@@ -80,3 +81,4 @@ namespace PharosEditor.Tests.Extensions.Mediation
         }
     }
 }
+#endif

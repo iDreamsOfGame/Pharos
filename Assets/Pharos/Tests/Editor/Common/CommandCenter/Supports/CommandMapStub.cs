@@ -1,5 +1,7 @@
+#if ENABLE_MOQ
 using Moq;
 using Pharos.Common.CommandCenter;
+#endif
 
 namespace PharosEditor.Tests.Common.CommandCenter.Supports
 {
@@ -17,11 +19,13 @@ namespace PharosEditor.Tests.Common.CommandCenter.Supports
 
             return s;
         }
-
+        
+#if ENABLE_MOQ
         public virtual ICommandTrigger TriggerFactory(params object[] args)
         {
             return new Mock<ICommandTrigger>().Object;
         }
+#endif
 
         public virtual void Hook(params object[] args)
         {
