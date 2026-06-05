@@ -1,7 +1,7 @@
 using System;
 using Pharos.Common.CommandCenter;
 using Pharos.Common.EventCenter;
-using ReflexPlus.Attributes;
+using VContainer;
 
 namespace PharosEditor.Tests.Extensions.CommandManagement.Supports
 {
@@ -10,7 +10,7 @@ namespace PharosEditor.Tests.Extensions.CommandManagement.Supports
         [Inject]
         public IEvent Event { get; private set; }
 
-        [Inject("ExecuteCallback")]
+        [Inject, Key("ExecuteCallback")]
         public Action<EventInjectedCallbackCommand> Callback { get; private set; }
 
         public void Execute()

@@ -139,7 +139,7 @@ namespace Pharos.Common.CommandCenter
 
         public ICommandConfigurator WithPayloadInjection(bool value)
         {
-            mapping.PayloadInjectionEnabled = value;
+            mapping.PayloadInjectable = value;
             return this;
         }
     }

@@ -19,7 +19,7 @@ namespace Pharos.Common.CommandCenter
 
         public bool ShouldExecuteOnce { get; set; }
 
-        public bool PayloadInjectionEnabled { get; set; } = true;
+        public bool PayloadInjectable { get; set; } = true;
 
         public ICommandMapping AddGuard<T>() where T : IGuard
         {

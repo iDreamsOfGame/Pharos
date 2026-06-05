@@ -4,7 +4,7 @@ using Moq;
 using NUnit.Framework;
 using Pharos.Common.EventCenter;
 using Pharos.Extensions.CommandManagement;
-using Pharos.Framework.Injection;
+using Pharos.Framework;
 
 namespace PharosEditor.Tests.Extensions.CommandManagement
 {
@@ -19,7 +19,7 @@ namespace PharosEditor.Tests.Extensions.CommandManagement
         public void Setup()
         {
             dispatcher = new Mock<IEventDispatcher>();
-            subject = new EventCommandTrigger(new Injector(), dispatcher.Object, null);
+            subject = new EventCommandTrigger(new Context(), dispatcher.Object, null);
         }
 
         [Test]

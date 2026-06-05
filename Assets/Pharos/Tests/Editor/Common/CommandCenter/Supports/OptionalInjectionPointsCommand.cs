@@ -1,18 +1,18 @@
 using System;
 using Pharos.Common.CommandCenter;
-using ReflexPlus.Attributes;
+using VContainer;
 
 namespace PharosEditor.Tests.Common.CommandCenter.Supports
 {
     internal class OptionalInjectionPointsCommand : ICommand
     {
-        [Inject("ReportingFunction")]
+        [Inject, Key("ReportingFunction")]
         private Action<object> reportingFunc;
 
-        [Inject(true)]
+        [Inject]
         private string message;
 
-        [Inject(true)]
+        [Inject]
         private int code;
 
         public void Execute()

@@ -25,7 +25,7 @@ namespace Pharos.Framework
             Setup();
         }
 
-        public IInjector Injector { get; } = new Injector("Root");
+        public IInjector Injector { get; } = new Injector();
 
         Pin IContext.Pin => pin;
 
@@ -50,7 +50,6 @@ namespace Pharos.Framework
 
                 children.Add(child);
                 child.Injector.Parent = Injector;
-                child.Injector.Builder.SetParent(Injector.Container);
                 child.Destroyed += OnChildDestroyed;
             }
 

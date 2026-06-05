@@ -2,8 +2,8 @@ using System;
 using NUnit.Framework;
 using Pharos.Framework;
 using Pharos.Framework.Helpers;
-using Pharos.Framework.Injection;
-using ReflexPlus.Attributes;
+using VContainer;
+using IInjector = Pharos.Framework.Injection.IInjector;
 
 // ReSharper disable ClassNeverInstantiated.Local
 
@@ -16,7 +16,7 @@ namespace PharosEditor.Tests.Framework.Helpers
         {
             public const string CallbackInjectKey = nameof(Callback);
 
-            [Inject(CallbackInjectKey)]
+            [Inject, Key(CallbackInjectKey)]
             public Action<PlainConfig> Callback { get; private set; }
 
             public void Configure()
@@ -29,7 +29,7 @@ namespace PharosEditor.Tests.Framework.Helpers
         {
             public const string CallbackInjectKey = nameof(Callback);
 
-            [Inject(CallbackInjectKey)]
+            [Inject, Key(CallbackInjectKey)]
             public Action<UntypedConfig> Callback { get; private set; }
 
             public void Configure()

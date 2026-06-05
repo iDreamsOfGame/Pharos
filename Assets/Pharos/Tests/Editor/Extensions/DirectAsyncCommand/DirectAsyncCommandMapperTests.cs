@@ -77,7 +77,7 @@ namespace PharosEditor.Tests.Extensions.DirectAsyncCommand
         public void WithPayloadInjection_SetsPayloadInjectionOfMapping_ReturnsFalse()
         {
             CreateMapper<NullAsyncCommand>().WithPayloadInjection(false);
-            Assert.That(caughtMapping.PayloadInjectionEnabled, Is.False);
+            Assert.That(caughtMapping.PayloadInjectable, Is.False);
         }
 
         [Test]

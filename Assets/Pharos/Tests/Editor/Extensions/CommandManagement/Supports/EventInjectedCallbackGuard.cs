@@ -1,7 +1,7 @@
 using System;
 using Pharos.Common.EventCenter;
 using Pharos.Framework;
-using ReflexPlus.Attributes;
+using VContainer;
 
 namespace PharosEditor.Tests.Extensions.CommandManagement.Supports
 {
@@ -10,7 +10,7 @@ namespace PharosEditor.Tests.Extensions.CommandManagement.Supports
         [Inject]
         public IEvent Event { get; private set; }
 
-        [Inject("ApproveCallback")]
+        [Inject, Key("ApproveCallback")]
         public Action<EventInjectedCallbackGuard> Callback { get; private set; }
 
         public bool Approve()

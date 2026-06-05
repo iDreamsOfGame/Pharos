@@ -1,7 +1,7 @@
 using System;
 using Pharos.Common.CommandCenter;
 using Pharos.Extensions.DirectAsyncCommand;
-using ReflexPlus.Attributes;
+using VContainer;
 
 namespace PharosEditor.Tests.Extensions.DirectAsyncCommand.Supports
 {
@@ -10,7 +10,7 @@ namespace PharosEditor.Tests.Extensions.DirectAsyncCommand.Supports
         [Inject]
         private IDirectAsyncCommandMap directAsyncCommandMap;
 
-        [Inject("ReportingFunction")]
+        [Inject, Key("ReportingFunction")]
         private Action<IDirectAsyncCommandMap> reportingFunc;
         
         public override void Execute()

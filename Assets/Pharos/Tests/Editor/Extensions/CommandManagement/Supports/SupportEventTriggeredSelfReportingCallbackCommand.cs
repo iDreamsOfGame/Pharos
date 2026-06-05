@@ -1,19 +1,19 @@
 using System;
 using Pharos.Common.CommandCenter;
 using Pharos.Common.EventCenter;
-using ReflexPlus.Attributes;
+using VContainer;
 
 namespace PharosEditor.Tests.Extensions.CommandManagement.Supports
 {
     internal class SupportEventTriggeredSelfReportingCallbackCommand : ICommand
     {
-        [Inject(true)]
+        [Inject]
         public IEvent UntypedEvent { get; private set; }
 
-        [Inject(true)]
+        [Inject]
         public SupportEvent TypedEvent { get; private set; }
 
-        [Inject("ExecuteCallback")]
+        [Inject, Key("ExecuteCallback")]
         public Action<SupportEventTriggeredSelfReportingCallbackCommand> Callback { get; private set; }
 
         public void Execute()

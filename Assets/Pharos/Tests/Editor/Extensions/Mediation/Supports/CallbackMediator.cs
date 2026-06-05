@@ -1,15 +1,15 @@
 using System;
 using Pharos.Extensions.Mediation;
-using ReflexPlus.Attributes;
+using VContainer;
 
 namespace PharosEditor.Tests.Extensions.Mediation.Supports
 {
     internal class CallbackMediator : Mediator
     {
-        [Inject(true, "callback")]
+        [Inject, Key("callback")]
         private Action<object> initializedCallback;
 
-        [Inject(true, "destroyedCallback")]
+        [Inject, Key("destroyedCallback")]
         private Action<object> destroyedCallback;
 
         protected override void OnInitialized()

@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
-using ReflexPlus.Core;
+using VContainer;
 
 namespace Pharos.Framework.Injection
 {
-    public interface IInjector : IDisposable
+    public interface IInjector
     {
-        string Name { get; }
+        IObjectResolver Container { get; }
 
-        Container Container { get; }
+        IScopedObjectResolver ScopedContainer { get; }
 
         ContainerBuilder Builder { get; }
 
@@ -19,14 +19,11 @@ namespace Pharos.Framework.Injection
 
         List<IInjector> Children { get; }
 
-        IInjector GetChild(string name = null);
-
         /// <summary>
         /// Creates a new <see cref="IInjector"/> and sets itself as that new <see cref="IInjector"/>'s parentInjector. 
         /// </summary>
-        /// <param name="name"></param>
         /// <returns>The new <see cref="IInjector"/> instance as child of this <see cref="IInjector"/>. </returns>
-        IInjector CreateChild(string name = null);
+        IInjector CreateChild();
 
         /// <summary>
         /// Removes a child <see cref="IInjector"/>.
@@ -42,10 +39,6 @@ namespace Pharos.Framework.Injection
         InjectionMapping Map<T>(object key = null);
 
         InjectionMapping Map(Type type, object key = null);
-
-        void Unmap<T>(object key = null);
-
-        void Unmap(Type type, object key = null);
 
         IInjector BuildAncestors();
 
@@ -65,6 +58,8 @@ namespace Pharos.Framework.Injection
 
         object CreateNewInstance(Type type, object key = null);
 
-        void InjectInto(object target, Container container = null);
+        void InjectInto(object target, IObjectResolver container = null);
+
+        void Dispose();
     }
 }

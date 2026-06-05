@@ -1,8 +1,8 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
-using ReflexPlus.Core;
-using ReflexPlus.Injectors;
+using VContainer;
 
 namespace Pharos.Framework.Injection
 {
@@ -10,15 +10,25 @@ namespace Pharos.Framework.Injection
     {
         private const BindingFlags ConstructorsBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
-        public Injector(string name = null)
+        public Injector(ContainerBuilder containerBuilder = null)
         {
-            Builder = new ContainerBuilder()
-                .SetName(name);
+            Builder = containerBuilder ?? new ContainerBuilder();
         }
 
-        public string Name => Builder?.Name;
+        public IObjectResolver Container { get; private set; }
 
-        public Container Container { get; private set; }
+        public IScopedObjectResolver ScopedContainer
+        {
+            get
+            {
+                return Container switch
+                {
+                    null => null,
+                    ScopedContainer scopedContainer => scopedContainer,
+                    _ => (Container as Container)!.RootScope
+                };
+            }
+        }
 
         public ContainerBuilder Builder { get; }
 
@@ -26,29 +36,32 @@ namespace Pharos.Framework.Injection
 
         public List<IInjector> Children { get; private set; } = new();
 
-        public IInjector GetChild(string name = null)
+        public IInjector CreateChild()
         {
-            if (Children == null)
-                return null;
+            if (Container == null)
+                Build();
 
-            foreach (var child in Children)
+            IObjectResolver root;
+            IScopedObjectResolver parent;
+            if (Container is ScopedContainer scopedContainer)
             {
-                if (child.Name == name)
-                    return child;
+                root = scopedContainer.Root;
+                parent = scopedContainer;
             }
-
-            return Children.Count > 0 ? Children[0] : null;
-        }
-
-        public IInjector CreateChild(string name = null)
-        {
-            var childName = !string.IsNullOrEmpty(name) ? name : $"Child-{Children.Count + 1}";
-            if (!string.IsNullOrEmpty(Name))
-                childName = $"{Name}/{childName}";
+            else
+            {
+                root = Container;
+                parent = (Container as Container)!.RootScope;
+            }
             
-            var childInjector = new Injector(childName);
-            childInjector.Parent = this;
-            childInjector.Builder.SetParent(Container);
+            var childContainerBuilder = new ScopedContainerBuilder(root, parent)
+            {
+                ApplicationOrigin = Container!.ApplicationOrigin
+            };
+            var childInjector = new Injector(childContainerBuilder)
+            {
+                Parent = this
+            };
             Children.Add(childInjector);
             return childInjector;
         }
@@ -59,7 +72,7 @@ namespace Pharos.Framework.Injection
                 return false;
             
             childInjector.Parent = null;
-            childInjector.Builder.SetParent(null);
+            childInjector.Dispose();
             return Children.Remove(childInjector);
         }
 
@@ -70,11 +83,16 @@ namespace Pharos.Framework.Injection
 
         public bool HasMapping(Type type, object key = null)
         {
-            var found = Container?.HasBinding(type, key) ?? false;
-            if (!found)
-                found = Builder.HasBinding(type, key);
+            var container = ScopedContainer;
+            while (container != null)
+            {
+                if (container.TryGetRegistration(type, out _, key))
+                    return true;
+                
+                container = container.Parent;
+            }
 
-            return found;
+            return false;
         }
 
         public InjectionMapping Map<T>(object key = null)
@@ -85,17 +103,6 @@ namespace Pharos.Framework.Injection
         public InjectionMapping Map(Type type, object key = null)
         {
             return new InjectionMapping(this, type, key);
-        }
-
-        public void Unmap<T>(object key = null)
-        {
-            Unmap(typeof(T), key);
-        }
-
-        public void Unmap(Type type, object key = null)
-        {
-            Container?.Unbind(type, key);
-            Builder?.Unbind(type, key);
         }
 
         public IInjector BuildAncestors()
@@ -116,18 +123,7 @@ namespace Pharos.Framework.Injection
             {
                 linkedList.RemoveFirst();
                 ancestor.Build();
-                var container = ancestor.Container;
-
-                if (linkedList.First != null)
-                {
-                    ancestor = linkedList.First.Value;
-                    ancestor.Builder.SetParent(container);
-                }
-                else
-                {
-                    Builder.SetParent(container);
-                    ancestor = null;
-                }
+                ancestor = linkedList.First?.Value;
             }
 
             return this;
@@ -135,14 +131,38 @@ namespace Pharos.Framework.Injection
 
         public IInjector Build(bool buildAncestors = false, bool buildDescendants = false)
         {
-            // Build Ancestors
             if (buildAncestors)
                 BuildAncestors();
 
-            Container = Builder.Build();
+            var sharedInstances = Container != null 
+                ? new ConcurrentDictionary<Registration, object>(Container.SharedInstances)
+                : new ConcurrentDictionary<Registration, object>();
+            Container?.Dispose();
+            Container = Builder.Build(sharedInstances);
+
+            if (Container != null)
+            {
+                Container.ThrowIfUnresolved = false;
+
+                // Updates parent reference.
+                if (Parent != null && ScopedContainer != null)
+                    ScopedContainer.Parent = Parent.ScopedContainer;
+            }
 
             if (buildDescendants)
                 BuildDescendants();
+            
+            // Updates children containers references
+            if (Children != null)
+            {
+                foreach (var child in Children)
+                {
+                    if (child.Container == null)
+                        continue;
+
+                    child.ScopedContainer.Parent = ScopedContainer;
+                }
+            }
             
             return this;
         }
@@ -153,7 +173,6 @@ namespace Pharos.Framework.Injection
             {
                 foreach (var child in Children)
                 {
-                    child.Builder.SetParent(Container);
                     child.Build(false, true);
                 }
             }
@@ -169,9 +188,23 @@ namespace Pharos.Framework.Injection
         public object GetInstance(Type type, object key = null)
         {
             if (Container == null)
-                Build();
+                Build(true);
 
-            return Container?.Single(type, true, key);
+            object result;
+            
+            if (Container == null)
+                return null;
+
+            if (Container is ScopedContainer scopedContainer)
+            {
+                scopedContainer.TryResolve(type, out result, key);
+            }
+            else
+            {
+                Container.TryResolve(type, out result, key);
+            }
+            
+            return result;
         }
 
         public T GetOrCreateNewInstance<T>(object key = null)
@@ -192,13 +225,19 @@ namespace Pharos.Framework.Injection
 
         public object CreateNewInstance(Type type, object key = null)
         {
-            if (Container == null)
-                Build();
+            if (!HasMapping(type, key))
+                Builder.Register(type, Lifetime.Transient);
+            
+            Build();
 
-            return Container?.Construct(type, key);
+            if (Container == null)
+                return null;
+
+            Container.TryResolve(type, out var result, key);
+            return result;
         }
 
-        public void InjectInto(object target, Container container = null)
+        public void InjectInto(object target, IObjectResolver container = null)
         {
             if (container == null)
             {
@@ -210,14 +249,11 @@ namespace Pharos.Framework.Injection
                 }
             }
 
-            AttributeInjector.InjectInto(target, container);
+            container?.Inject(target);
         }
 
         public void Dispose()
         {
-            Container?.Dispose();
-            Container = null;
-
             if (Children != null)
             {
                 foreach (var child in Children)
@@ -227,6 +263,9 @@ namespace Pharos.Framework.Injection
 
                 Children = null;
             }
+
+            Container?.Dispose();
+            Container = null;
         }
     }
 }

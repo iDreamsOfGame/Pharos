@@ -1,6 +1,5 @@
 using System;
-using ReflexPlus;
-using ReflexPlus.Core;
+using VContainer;
 
 namespace Pharos.Framework.Injection
 {
@@ -17,7 +16,7 @@ namespace Pharos.Framework.Injection
 
         public IInjector Injector { get; }
 
-        public Container Container => Injector.Container;
+        public IObjectResolver Container => Injector.Container;
 
         public ContainerBuilder Builder => Injector.Builder;
 
@@ -25,10 +24,29 @@ namespace Pharos.Framework.Injection
 
         public object Key { get; }
 
-        public void AsSingleton(bool initializeImmediately = false)
+        public void AsSingleton()
         {
-            var resolution = initializeImmediately ? Resolution.Eager : Resolution.Lazy;
-            Builder.RegisterType(Type, Key, Lifetime.Singleton, resolution);
+            Register(Lifetime.Singleton);
+        }
+
+        public void AsType()
+        {
+            Register(Lifetime.Transient);
+        }
+
+        public void AsScopedType()
+        {
+            Register(Lifetime.Scoped);
+        }
+        
+        public void ToSingleton<T>()
+        {
+            ToSingleton(typeof(T));
+        }
+
+        public void ToSingleton(Type concrete)
+        {
+            Register(concrete, Lifetime.Singleton);
         }
 
         public void ToType<T>(bool autoBuild = false)
@@ -38,32 +56,50 @@ namespace Pharos.Framework.Injection
 
         public void ToType(Type concrete, bool autoBuild = false)
         {
-            Builder.RegisterType(concrete, Type, Key, Lifetime.Transient);
+            Register(concrete, Lifetime.Transient);
             
+            if (autoBuild)
+                Injector.Build(true, true);
+        }
+        
+        public void ToScopedType<T>(bool autoBuild = false)
+        {
+            ToScopedType(typeof(T), autoBuild);
+        }
+        
+        public void ToScopedType(Type concrete, bool autoBuild = false)
+        {
+            Register(concrete, Lifetime.Scoped);
+
             if (autoBuild)
                 Injector.Build(true, true);
         }
 
         public void ToValue(object value, bool autoBuild = false, bool autoInject = false)
         {
-            Builder.RegisterValue(value, Type, Key);
-            
+            var registrationBuilder = Builder.RegisterInstance(value, Type);
+            if (Key != null)
+                registrationBuilder.Keyed(Key);
+
             if (autoBuild)
                 Injector.Build(true, true);
-            
-            if (autoInject) 
+
+            if (autoInject)
                 Injector.InjectInto(value);
         }
 
-        public void ToSingleton<T>(bool initializeImmediately = false)
+        private void Register(Type concrete, Lifetime lifetime)
         {
-            ToSingleton(typeof(T), initializeImmediately);
+            var registrationBuilder = Builder.Register(Type, concrete, lifetime);
+            if (Key != null)
+                registrationBuilder.Keyed(Key);
         }
 
-        public void ToSingleton(Type concrete, bool initializeImmediately = false)
+        private void Register(Lifetime lifetime)
         {
-            var resolution = initializeImmediately ? Resolution.Eager : Resolution.Lazy;
-            Builder.RegisterType(concrete, Type, Key, Lifetime.Singleton, resolution);
+            var registrationBuilder = Builder.Register(Type, lifetime);
+            if (Key != null)
+                registrationBuilder.Keyed(Key);
         }
     }
 }

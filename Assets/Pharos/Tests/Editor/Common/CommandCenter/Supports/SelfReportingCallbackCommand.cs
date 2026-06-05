@@ -1,12 +1,14 @@
 using System;
 using Pharos.Common.CommandCenter;
-using ReflexPlus.Attributes;
+using VContainer;
 
 namespace PharosEditor.Tests.Common.CommandCenter.Supports
 {
     internal class SelfReportingCallbackCommand : ICommand
     {
-        [Inject("ExecuteCallback")]
+        public const string CallbackKey = "ExecuteCallback";
+        
+        [Inject, Key(CallbackKey)]
         private Action<SelfReportingCallbackCommand> callback;
 
         public void Execute()

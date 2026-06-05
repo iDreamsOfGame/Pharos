@@ -38,7 +38,6 @@ namespace Pharos.Extensions.Mediation
                             injector.Map(mediatorType).ToValue(mediator);
                             injector.Build();
                             Hooks.Hook(injector, mapping.HookTypes);
-                            injector.Unmap(mediatorType);
                         }
 
                         AddMediator(view, viewType, mediator, mapping);

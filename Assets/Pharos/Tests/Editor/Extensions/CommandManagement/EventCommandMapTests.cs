@@ -257,7 +257,7 @@ namespace PharosEditor.Tests.Extensions.CommandManagement
         [Test]
         public void WithHooks_HooksAreCalled_ReturnsExpectedCallCount()
         {
-            Assert.That(HookCallCount(typeof(ClassReportingCallbackHook), typeof(ClassReportingCallbackHook)), Is.EqualTo(2));
+            Assert.That(HookCallCount(typeof(HookCallbackTestHook), typeof(HookCallbackTestHook)), Is.EqualTo(2));
         }
 
         [Test]
@@ -385,9 +385,8 @@ namespace PharosEditor.Tests.Extensions.CommandManagement
         private uint HookCallCount(params Type[] hooks)
         {
             uint hookCallCount = 0;
-
-            injector.Unmap(typeof(Action<object>), "ReportingFunction");
-            injector.Map(typeof(Action<object>), "ReportingFunction").ToValue((Action<object>)delegate { hookCallCount++; });
+            
+            injector.Map(typeof(Action<object>), HookCallbackTestHook.CallbackFuncKey).ToValue((Action<object>)delegate { hookCallCount++; });
             subject
                 .Map(SupportEvent.Type.Type1)
                 .ToCommand<NullCommand>()

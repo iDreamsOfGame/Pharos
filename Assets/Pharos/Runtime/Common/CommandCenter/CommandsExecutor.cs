@@ -7,23 +7,27 @@ namespace Pharos.Common.CommandCenter
 {
     public class CommandsExecutor : ICommandsExecutor
     {
+        private readonly IInjector injector;
+        
         private readonly Action<ICommandMapping> removeMappingProcessor;
 
         private readonly Action<ICommand, ICommandMapping> executingPreprocessor;
 
         private readonly Action<ICommand, ICommandMapping> resultHandler;
-
-        private readonly IInjector injector;
+        
+        private readonly Action completedHandler;
 
         public CommandsExecutor(IInjector injector,
-            Action<ICommandMapping> removeMappingProcessor = null,
-            Action<ICommand, ICommandMapping> executingPreprocessor = null,
-            Action<ICommand, ICommandMapping> resultHandler = null)
+            Action<ICommandMapping> removeMappingProcessor = null, 
+            Action<ICommand, ICommandMapping> executingPreprocessor = null, 
+            Action<ICommand, ICommandMapping> resultHandler = null, 
+            Action completedHandler = null)
         {
             this.injector = injector;
             this.removeMappingProcessor = removeMappingProcessor;
             this.executingPreprocessor = executingPreprocessor;
             this.resultHandler = resultHandler;
+            this.completedHandler = completedHandler;
         }
 
         public void ExecuteCommand(ICommandMapping mapping, CommandPayload payload = default)
@@ -32,12 +36,12 @@ namespace Pharos.Common.CommandCenter
                 return;
 
             var hasPayload = payload.HasPayload;
-            var payloadInjectionEnabled = hasPayload && mapping.PayloadInjectionEnabled;
+            var payloadInjectable = hasPayload && mapping.PayloadInjectable;
 
             ICommand command = null;
 
             // Inject payload.
-            if (payloadInjectionEnabled)
+            if (payloadInjectable)
                 MapPayload(payload);
 
             // Approve guards and hook hooks.
@@ -46,20 +50,20 @@ namespace Pharos.Common.CommandCenter
                 var commandType = mapping.CommandType;
                 if (mapping.ShouldExecuteOnce && removeMappingProcessor != null)
                     removeMappingProcessor.Invoke(mapping);
+
+                command = injector.GetInstance(commandType) as ICommand;
+                if (command == null)
+                {
+                    injector.Map(commandType).AsScopedType();
+                    injector.Build();
+                    command = injector.GetInstance(commandType) as ICommand;
+                }
                 
-                command = injector.GetOrCreateNewInstance(commandType) as ICommand;
                 if (command != null && mapping.HookTypes is { Count: > 0 })
                 {
-                    injector.Map(commandType).ToValue(command);
-                    injector.Build();
                     Hooks.Hook(injector, mapping.HookTypes);
-                    injector.Unmap(commandType);
                 }
             }
-
-            // Uninject payload.
-            if (payloadInjectionEnabled)
-                UnmapPayload(payload);
 
             // Execute command.
             executingPreprocessor?.Invoke(command, mapping);
@@ -78,24 +82,19 @@ namespace Pharos.Common.CommandCenter
             {
                 ExecuteCommand(mapping, payload);
             }
+            
+            completedHandler?.Invoke();
         }
 
         private void MapPayload(CommandPayload payload)
         {
             foreach (var (obj, type) in payload.ValueToType)
             {
-                injector.Map(type).ToValue(obj);
+                if (!injector.HasMapping(type))
+                    injector.Map(type).ToValue(obj);
             }
 
             injector.Build();
-        }
-
-        private void UnmapPayload(CommandPayload payload)
-        {
-            foreach (var type in payload.ValueToType.Values)
-            {
-                injector.Unmap(type);
-            }
         }
     }
 }

@@ -1,12 +1,12 @@
 using System;
 using Pharos.Common.CommandCenter;
-using ReflexPlus.Attributes;
+using VContainer;
 
 namespace PharosEditor.Tests.Common.CommandCenter.Supports
 {
     internal class TypeReportingCallbackAsyncCommand2 : AsyncCommand
     {
-        [Inject("ReportingFunction")]
+        [Inject, Key("ReportingFunction")]
         private Action<object> reportingFunc;
         
         public override void Execute()

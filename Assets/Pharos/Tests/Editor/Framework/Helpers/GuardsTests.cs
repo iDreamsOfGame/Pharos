@@ -3,7 +3,8 @@ using Pharos.Framework;
 using Pharos.Framework.Helpers;
 using Pharos.Framework.Injection;
 using PharosEditor.Tests.Common.CommandCenter.Supports;
-using ReflexPlus.Attributes;
+using VContainer;
+using IInjector = Pharos.Framework.Injection.IInjector;
 
 // ReSharper disable ClassNeverInstantiated.Local
 

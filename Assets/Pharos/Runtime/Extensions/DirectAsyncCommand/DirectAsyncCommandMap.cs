@@ -25,10 +25,12 @@ namespace Pharos.Extensions.DirectAsyncCommand
         public DirectAsyncCommandMap(IContext context)
         {
             this.context = context;
-            sandboxInjector = context.Injector.CreateChild(nameof(DirectAsyncCommandMap));
+            sandboxInjector = context.Injector.CreateChild();
             sandboxInjector.Map<IDirectAsyncCommandMap>().ToValue(this);
             mappings = new CommandMappingList(NullCommandTrigger.Instance, mappingProcessors, context.GetLogger(this));
             executor = new AsyncCommandsExecutor(context, sandboxInjector, mappings.RemoveMapping);
+            executor.SetCommandsAbortedCallback(OnCommandsAbortedCallback);
+            executor.SetCommandsExecutedCallback(OnCommandsExecuted);
         }
 
         public bool IsAborted => executor?.IsAborted ?? false;
@@ -50,14 +52,12 @@ namespace Pharos.Extensions.DirectAsyncCommand
         public IDirectAsyncCommandMapper SetCommandsAbortedCallback(Action callback)
         {
             commandsAbortedCallback = callback;
-            executor.SetCommandsAbortedCallback(OnCommandsAbortedCallback);
             return this;
         }
 
         public IDirectAsyncCommandMapper SetCommandsExecutedCallback(Action callback)
         {
             commandsExecutedCallback = callback;
-            executor.SetCommandsExecutedCallback(OnCommandsExecuted);
             return this;
         }
         
@@ -84,11 +84,13 @@ namespace Pharos.Extensions.DirectAsyncCommand
         private void OnCommandsAbortedCallback()
         {
             commandsAbortedCallback?.Invoke();
+            Dispose();
         }
 
         private void OnCommandsExecuted()
         {
             commandsExecutedCallback?.Invoke();
+            Dispose();
         }
 
         private void Dispose()

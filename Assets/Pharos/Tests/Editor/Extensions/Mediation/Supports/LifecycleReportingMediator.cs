@@ -2,28 +2,28 @@ using System;
 using Pharos.Common.EventCenter;
 using Pharos.Common.ViewCenter;
 using Pharos.Extensions.Mediation;
-using ReflexPlus.Attributes;
+using VContainer;
 
 namespace PharosEditor.Tests.Extensions.Mediation.Supports
 {
     internal class LifecycleReportingMediator : IMediator
     {
-        [Inject(true, nameof(PreInitializeCallback))]
+        [Inject, Key(nameof(PreInitializeCallback))]
         public Action<string> PreInitializeCallback { get; private set; }
 
-        [Inject(true, nameof(InitializeCallback))]
+        [Inject, Key(nameof(InitializeCallback))]
         public Action<string> InitializeCallback { get; private set; }
 
-        [Inject(true, nameof(PostInitializeCallback))]
+        [Inject, Key(nameof(PostInitializeCallback))]
         public Action<string> PostInitializeCallback { get; private set; }
 
-        [Inject(true, nameof(PreDestroyCallback))]
+        [Inject, Key(nameof(PreDestroyCallback))]
         public Action<string> PreDestroyCallback { get; private set; }
 
-        [Inject(true, nameof(DestroyCallback))]
+        [Inject, Key(nameof(DestroyCallback))]
         public Action<string> DestroyCallback { get; private set; }
 
-        [Inject(true, nameof(PostDestroyCallback))]
+        [Inject, Key(nameof(PostDestroyCallback))]
         public Action<string> PostDestroyCallback { get; private set; }
 
         IView IMediator.View { get; set; }

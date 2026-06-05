@@ -31,21 +31,5 @@ namespace PharosEditor.Tests.Extensions.Mediation
                 actual = context.Injector.GetInstance<IMediatorMap>();
             }
         }
-
-        [Test]
-        public void Disable_MediatorMapIsUnmappedFromInjector_ReturnsFalse()
-        {
-            context.AddExtension<MediatorMapExtension>();
-            context.Destroying += OnDestroying;
-            context.Initialize();
-            context.Destroy();
-            return;
-            
-            void OnDestroying(object obj)
-            {
-                context.Destroying -= OnDestroying;
-                Assert.That(context.Injector.HasMapping<IMediatorMap>(), Is.False);
-            }
-        }
     }
 }

@@ -1,12 +1,12 @@
 using System;
 using Pharos.Framework;
-using ReflexPlus.Attributes;
+using VContainer;
 
 namespace PharosEditor.Tests.Common.CommandCenter.Supports
 {
     internal class ClassReportingCallbackGuard2 : IGuard
     {
-        [Inject("ReportingFunction")]
+        [Inject, Key("ReportingFunction")]
         private Action<object> reportingFunc;
 
         public bool Approve()

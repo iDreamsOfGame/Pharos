@@ -1,6 +1,6 @@
 using System;
 using Pharos.Framework;
-using ReflexPlus.Attributes;
+using VContainer;
 
 namespace PharosEditor.Tests.Common.CommandCenter.Supports
 {
@@ -12,7 +12,7 @@ namespace PharosEditor.Tests.Common.CommandCenter.Supports
         [Inject]
         private int code;
 
-        [Inject("ReportingFunction")]
+        [Inject, Key("ReportingFunction")]
         private Action<object> reportingFunc;
 
         public bool Approve()

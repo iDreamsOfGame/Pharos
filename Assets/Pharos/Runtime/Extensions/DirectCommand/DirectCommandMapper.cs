@@ -44,7 +44,7 @@ namespace Pharos.Extensions.DirectCommand
 
         public IDirectCommandConfigurator WithPayloadInjection(bool value = true)
         {
-            mapping.PayloadInjectionEnabled = value;
+            mapping.PayloadInjectable = value;
             return this;
         }
 

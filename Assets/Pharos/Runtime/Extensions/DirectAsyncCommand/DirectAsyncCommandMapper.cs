@@ -62,7 +62,7 @@ namespace Pharos.Extensions.DirectAsyncCommand
 
         public IDirectAsyncCommandConfigurator WithPayloadInjection(bool value = true)
         {
-            mapping.PayloadInjectionEnabled = value;
+            mapping.PayloadInjectable = value;
             return this;
         }
         

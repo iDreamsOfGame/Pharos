@@ -40,9 +40,6 @@ namespace Pharos.Extensions.Mediation
             var viewRegistry = injector.GetInstance<ViewRegistry>();
             var mediatorMap = injector.GetInstance<IMediatorMap>() as MediatorMap;
             viewRegistry.RemoveHandler(mediatorMap);
-            
-            if (injector.HasMapping<IMediatorMap>())
-                injector.Unmap<IMediatorMap>();
         }
     }
 }

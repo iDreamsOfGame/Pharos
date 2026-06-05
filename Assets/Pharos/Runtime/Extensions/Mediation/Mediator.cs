@@ -2,16 +2,16 @@ using System;
 using Pharos.Common.EventCenter;
 using Pharos.Common.ViewCenter;
 using Pharos.Framework;
-using ReflexPlus.Attributes;
+using VContainer;
 
 namespace Pharos.Extensions.Mediation
 {
     public abstract class Mediator : IMediator
     {
-        [Inject(true)]
+        [Inject]
         public ILogger Logger { get; protected set; }
 
-        [Inject(true)]
+        [Inject]
         public IEventDispatcher EventDispatcher { get; protected set; }
 
         public IView View { get; set; }

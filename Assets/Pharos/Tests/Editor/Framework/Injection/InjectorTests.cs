@@ -1,6 +1,8 @@
+using System;
 using NUnit.Framework;
 using Pharos.Framework.Injection;
-using ReflexPlus.Attributes;
+using VContainer;
+using IInjector = Pharos.Framework.Injection.IInjector;
 
 // ReSharper disable ClassNeverInstantiated.Local
 // ReSharper disable MemberHidesStaticFromOuterClass
@@ -28,13 +30,13 @@ namespace PharosEditor.Tests.Framework.Injection
 
         private class FooContainer
         {
-            [Inject(true)]
+            [Inject]
             internal IFoo Foo { get; private set; }
 
-            [Inject(true, nameof(Foo))]
+            [Inject, Key(nameof(Foo))]
             internal IFoo FooWithKey { get; private set; }
 
-            [Inject(true)]
+            [Inject]
             internal IFoo2 Foo2 { get; private set; }
         }
 
@@ -69,18 +71,18 @@ namespace PharosEditor.Tests.Framework.Injection
         }
 
         [Test]
-        public void HasMapping_BeforeBuilding_ReturnsTrue()
+        public void HasMapping_BeforeBuilding_ReturnsFalse()
         {
             injector.Map<IFoo>().ToSingleton<Foo>();
-            Assert.That(injector.HasMapping<IFoo>(), Is.True);
+            Assert.That(injector.HasMapping<IFoo>(), Is.False);
         }
 
         [Test]
-        public void HasMapping_BeforeBuildingWithKey_ReturnsTrue()
+        public void HasMapping_BeforeBuildingWithKey_ReturnsFalse()
         {
             const string key = nameof(Foo);
             injector.Map<IFoo>(key).ToSingleton<Foo>();
-            Assert.That(injector.HasMapping<IFoo>(key), Is.True);
+            Assert.That(injector.HasMapping<IFoo>(key), Is.False);
         }
 
         [Test]

@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using Pharos.Framework.Helpers;
 using Pharos.Framework.Injection;
-using ReflexPlus.Attributes;
+using VContainer;
 
 // ReSharper disable ClassNeverInstantiated.Local
 
@@ -12,7 +12,7 @@ namespace PharosEditor.Tests.Framework.Helpers
     {
         private class Foo
         {
-            [Inject(true)]
+            [Inject]
             public int InjectedValue { get; private set; }
         }
 

@@ -1,6 +1,6 @@
 using Pharos.Common.CommandCenter;
-using Pharos.Framework.Injection;
-using ReflexPlus.Attributes;
+using VContainer;
+using IInjector = Pharos.Framework.Injection.IInjector;
 
 namespace PharosEditor.Tests.Common.CommandCenter.Supports
 {

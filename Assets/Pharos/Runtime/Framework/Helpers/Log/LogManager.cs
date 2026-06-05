@@ -1,42 +1,13 @@
 using System;
 using System.Collections.Generic;
-using ReflexPlus.Logging;
 
 namespace Pharos.Framework.Helpers
 {
     internal class LogManager : ILogHandler
     {
-        private static readonly Dictionary<LogLevel, ReflexPlus.Logging.LogLevel> LogLevelToReflexPlusLogLevel = new()
-        {
-            { LogLevel.FatalError, ReflexPlus.Logging.LogLevel.Error },
-            { LogLevel.Error, ReflexPlus.Logging.LogLevel.Error },
-            { LogLevel.Warning, ReflexPlus.Logging.LogLevel.Warning },
-            { LogLevel.Info, ReflexPlus.Logging.LogLevel.Info },
-            { LogLevel.Debug, ReflexPlus.Logging.LogLevel.Development }
-        };
-
-        private LogLevel logLevel;
-
         private readonly List<ILogHandler> handlers = new();
 
-        public LogLevel LogLevel
-        {
-            get => logLevel;
-            set
-            {
-                if (logLevel == value)
-                    return;
-                
-                logLevel = value;
-                if (LogLevelToReflexPlusLogLevel.TryGetValue(logLevel, out var reflexPlusLogLevel))
-                    ReflexPlusLogger.UpdateLogLevel(reflexPlusLogLevel);
-            }
-        }
-
-        public LogManager()
-        {
-            LogLevel = LogLevel.Info;
-        }
+        public LogLevel LogLevel { get; set; } = LogLevel.Info;
 
         public ILogger GetLogger(object source) => new Logger(source, this);
 

@@ -2,7 +2,7 @@
     "name": "Unity.Pharos.Editor.Tests",
     "rootNamespace": "PharosEditor.Tests",
     "references": [
-        "ReflexPlus",
+        "VContainer",
         "Unity.Pharos"
     ],
     "includePlatforms": [

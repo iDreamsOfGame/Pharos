@@ -4,9 +4,11 @@ using VContainer;
 
 namespace PharosEditor.Tests.Common.CommandCenter.Supports
 {
-    internal class ClassReportingCallbackHook : IHook
+    internal class HookCallbackTestHook : IHook
     {
-        [Inject, Key("ReportingFunction")]
+        public const string CallbackFuncKey = "Callback";
+        
+        [Inject, Key(CallbackFuncKey)]
         private Action<object> reportingFunc;
 
         public void Hook()

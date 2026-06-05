@@ -41,14 +41,14 @@ namespace PharosEditor.Tests.Common.CommandCenter
         [Test]
         public void PayloadInjectionEnabled_DefaultsToTrue_ReturnsExpectedValue()
         {
-            Assert.That(mapping.PayloadInjectionEnabled, Is.True);
+            Assert.That(mapping.PayloadInjectable, Is.True);
         }
 
         [Test]
         public void PayloadInjectionEnabled_MappingStoresPropertyValue_ReturnsExpectedValue()
         {
-            mapping.PayloadInjectionEnabled = false;
-            Assert.That(mapping.PayloadInjectionEnabled, Is.False);
+            mapping.PayloadInjectable = false;
+            Assert.That(mapping.PayloadInjectable, Is.False);
         }
 
         [Test]

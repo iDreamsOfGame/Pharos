@@ -3,9 +3,9 @@ using NUnit.Framework;
 using Pharos.Common.CommandCenter;
 using Pharos.Extensions.DirectCommand;
 using Pharos.Framework;
-using Pharos.Framework.Injection;
 using PharosEditor.Tests.Common.CommandCenter.Supports;
-using ReflexPlus.Attributes;
+using VContainer;
+using IInjector = Pharos.Framework.Injection.IInjector;
 
 // ReSharper disable ClassNeverInstantiated.Local
 
@@ -19,7 +19,7 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
             [Inject]
             public IDirectCommandMap DirectCommandMap { get; private set; }
 
-            [Inject("ReportingFunction")]
+            [Inject, Key("ReportingFunction")]
             public Action<IDirectCommandMap> ReportingFunc { get; private set; }
 
             public void Execute()
@@ -60,7 +60,7 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
         public void Execute_SuccessfullyExecutesCommands_ReturnsExpectedExecutionCount()
         {
             var executionCount = 0;
-            injector.Map(typeof(Action), "ExecuteCallback").ToValue((Action)delegate { executionCount++; });
+            injector.Map(typeof(Action), CallbackCommand.CallbackKey).ToValue((Action)delegate { executionCount++; });
             subject.Map<CallbackCommand>()
                 .Map<CallbackCommand2>()
                 .Execute();

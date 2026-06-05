@@ -1,6 +1,6 @@
 using System;
 using Pharos.Framework;
-using ReflexPlus.Attributes;
+using VContainer;
 
 namespace PharosEditor.Tests.Common.CommandCenter.Supports
 {
@@ -9,7 +9,7 @@ namespace PharosEditor.Tests.Common.CommandCenter.Supports
         [Inject]
         public SelfReportingCallbackCommand Command { get; private set; }
 
-        [Inject("HookCallback")]
+        [Inject, Key("HookCallback")]
         private Action<SelfReportingCallbackHook> callback;
 
         public void Hook()

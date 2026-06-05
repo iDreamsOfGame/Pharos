@@ -2,7 +2,7 @@
     "name": "Unity.Pharos",
     "rootNamespace": "Pharos",
     "references": [
-        "ReflexPlus"
+        "VContainer"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

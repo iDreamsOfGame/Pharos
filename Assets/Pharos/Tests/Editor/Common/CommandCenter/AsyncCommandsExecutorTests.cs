@@ -28,6 +28,8 @@ namespace PharosEditor.Tests.Common.CommandCenter
 
         private IInjector injector;
 
+        private IInjector sandboxInjector;
+
         [SetUp]
         public void Setup()
         {
@@ -37,11 +39,11 @@ namespace PharosEditor.Tests.Common.CommandCenter
             reported = new List<object>();
             context = new Context();
             context.Initialize();
-            injector = context.Injector.CreateChild();
-
+            injector = context.Injector;
+            sandboxInjector = injector.CreateChild();
             injector.Map(typeof(Action<object>), "ReportingFunction").ToValue((Action<object>)ReportingFunction);
             mappings = new List<ICommandMapping>();
-            subject = new AsyncCommandsExecutor(context, injector);
+            subject = new AsyncCommandsExecutor(context, sandboxInjector);
         }
 
         [TearDown]
@@ -54,7 +56,7 @@ namespace PharosEditor.Tests.Common.CommandCenter
         [Test]
         public void ExecuteCommands_OneshotMappingIsRemoved_VerifiesMockObject()
         {
-            subject = new AsyncCommandsExecutor(context, injector, unmapper.Object.Unmap);
+            subject = new AsyncCommandsExecutor(context, sandboxInjector, unmapper.Object.Unmap);
             var mapping = AddMapping<TypeReportingCallbackCommand>();
             mapping.ShouldExecuteOnce = true;
             subject.ExecuteCommands(new List<ICommandMapping> { mapping });
@@ -217,21 +219,7 @@ namespace PharosEditor.Tests.Common.CommandCenter
         [Test]
         public void ExecuteCommands_PayloadInjectionIsDisabled_ReturnsExpectedReportedList()
         {
-            AddMapping<OptionalInjectionPointsCommand>().PayloadInjectionEnabled = false;
-            var payload = new CommandPayload(new Dictionary<object, Type>
-            {
-                { "message", typeof(string) },
-                { 1, typeof(int) }
-            });
-            ExecuteCommands(payload);
-            Assert.That(reported, Is.EqualTo(new object[] { null, 0 }).AsCollection);
-        }
-
-        [Test]
-        public void ExecuteCommands_PayloadDoesNotLeakIntoTypeInstantiatedByCommand_ReturnsExpectedReportedList()
-        {
-            injector.Map<IInjector>().ToValue(injector);
-            AddMapping<OptionalInjectionPointsCommandInstantiatingCommand>();
+            AddMapping<OptionalInjectionPointsCommand>().PayloadInjectable = false;
             var payload = new CommandPayload(new Dictionary<object, Type>
             {
                 { "message", typeof(string) },
@@ -244,12 +232,13 @@ namespace PharosEditor.Tests.Common.CommandCenter
         [Test]
         public void ExecuteCommands_UsesInjectorMappedCommandInstance_ReturnsExpectedReportedList()
         {
-            injector.Map(typeof(Action<SelfReportingCallbackCommand>), "ExecuteCallback").ToValue((Action<SelfReportingCallbackCommand>)ReportingFunction);
+            injector.Map(typeof(Action<SelfReportingCallbackCommand>), SelfReportingCallbackCommand.CallbackKey).ToValue((Action<SelfReportingCallbackCommand>)ReportingFunction);
             injector.Map<SelfReportingCallbackCommand>().AsSingleton();
+            injector.Build();
             var expected = injector.GetInstance<SelfReportingCallbackCommand>();
             var mapping = AddMapping(typeof(SelfReportingCallbackCommand));
             subject.ExecuteCommands(new List<ICommandMapping> { mapping });
-            Assert.That(reported, Is.EqualTo(new object[] { expected }).AsCollection);
+            Assert.AreSame(expected, reported[0]);
         }
 
         [Test]

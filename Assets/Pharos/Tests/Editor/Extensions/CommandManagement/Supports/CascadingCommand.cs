@@ -1,7 +1,7 @@
 using Pharos.Common.EventCenter;
 using Pharos.Extensions.CommandManagement;
 using PharosEditor.Tests.Common.CommandCenter.Supports;
-using ReflexPlus.Attributes;
+using VContainer;
 
 namespace PharosEditor.Tests.Extensions.CommandManagement.Supports
 {

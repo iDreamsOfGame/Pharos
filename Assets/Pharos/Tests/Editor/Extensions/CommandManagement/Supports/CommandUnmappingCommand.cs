@@ -1,7 +1,7 @@
 using System;
 using Pharos.Common.EventCenter;
 using Pharos.Extensions.CommandManagement;
-using ReflexPlus.Attributes;
+using VContainer;
 
 namespace PharosEditor.Tests.Extensions.CommandManagement.Supports
 {
@@ -10,7 +10,7 @@ namespace PharosEditor.Tests.Extensions.CommandManagement.Supports
         [Inject]
         public IEvent Event { get; private set; }
 
-        [Inject("nestedCommand")]
+        [Inject, Key("nestedCommand")]
         public Type CommandType { get; private set; }
 
         [Inject]
