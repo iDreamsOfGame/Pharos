@@ -16,6 +16,6 @@
     "changelogUrl": "https://github.com/iDreamsOfGame/Pharos/blob/main/Assets/Pharos/CHANGELOG.md",
     "licensesUrl": "https://github.com/iDreamsOfGame/Pharos/blob/main/LICENSE",
     "dependencies": {
-        "jp.hadashikick.vcontainer": "1.18.0"
+        "io.github.idreamsofgame.vcontainerplus": "1.18.0"
     }
 }
