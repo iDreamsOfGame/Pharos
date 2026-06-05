@@ -5,6 +5,7 @@ using VContainer;
 
 namespace PharosEditor.Tests.Extensions.CommandManagement.Supports
 {
+    [InjectIgnore]
     public class CascadingCommand
     {
         public enum EventType

@@ -6,13 +6,13 @@ using VContainer;
 
 namespace Pharos.Extensions.Mediation
 {
-    public abstract class Mediator : IMediator
+    public class Mediator : IMediator
     {
         [Inject]
-        public ILogger Logger { get; protected set; }
+        public ILogger Logger { get; set; }
 
         [Inject]
-        public IEventDispatcher EventDispatcher { get; protected set; }
+        public IEventDispatcher EventDispatcher { get; set; }
 
         public IView View { get; set; }
 

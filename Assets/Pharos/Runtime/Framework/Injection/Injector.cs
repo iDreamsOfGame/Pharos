@@ -6,10 +6,11 @@ using VContainer;
 
 namespace Pharos.Framework.Injection
 {
-    internal class Injector : IInjector
+    internal class Injector : IPharosInjector
     {
         private const BindingFlags ConstructorsBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-
+        
+        [Inject]
         public Injector(ContainerBuilder containerBuilder = null)
         {
             Builder = containerBuilder ?? new ContainerBuilder();
@@ -32,11 +33,11 @@ namespace Pharos.Framework.Injection
 
         public ContainerBuilder Builder { get; }
 
-        public IInjector Parent { get; set; }
+        public IPharosInjector Parent { get; set; }
 
-        public List<IInjector> Children { get; private set; } = new();
+        public List<IPharosInjector> Children { get; private set; } = new();
 
-        public IInjector CreateChild()
+        public IPharosInjector CreateChild()
         {
             if (Container == null)
                 Build();
@@ -66,7 +67,7 @@ namespace Pharos.Framework.Injection
             return childInjector;
         }
 
-        public bool RemoveChild(IInjector childInjector)
+        public bool RemoveChild(IPharosInjector childInjector)
         {
             if (!ReferenceEquals(childInjector.Parent, this))
                 return false;
@@ -105,7 +106,7 @@ namespace Pharos.Framework.Injection
             return new InjectionMapping(this, type, key);
         }
 
-        public IInjector BuildAncestors()
+        public IPharosInjector BuildAncestors()
         {
             if (Parent == null) 
                 return this;
@@ -129,7 +130,7 @@ namespace Pharos.Framework.Injection
             return this;
         }
 
-        public IInjector Build(bool buildAncestors = false, bool buildDescendants = false)
+        public IPharosInjector Build(bool buildAncestors = false, bool buildDescendants = false)
         {
             if (buildAncestors)
                 BuildAncestors();
@@ -167,7 +168,7 @@ namespace Pharos.Framework.Injection
             return this;
         }
 
-        public IInjector BuildDescendants()
+        public IPharosInjector BuildDescendants()
         {
             if (Children != null)
             {

@@ -3,9 +3,9 @@ using NUnit.Framework;
 using Pharos.Common.CommandCenter;
 using Pharos.Extensions.DirectCommand;
 using Pharos.Framework;
+using Pharos.Framework.Injection;
 using PharosEditor.Tests.Common.CommandCenter.Supports;
 using VContainer;
-using IInjector = Pharos.Framework.Injection.IInjector;
 
 // ReSharper disable ClassNeverInstantiated.Local
 
@@ -14,6 +14,7 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
     [TestFixture]
     internal class DirectCommandMapTests
     {
+        [InjectIgnore]
         private class DirectCommandMapReportingCommand : ICommand
         {
             [Inject]
@@ -32,7 +33,7 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
 
         private IDirectCommandMap subject;
 
-        private IInjector injector;
+        private IPharosInjector injector;
 
         [SetUp]
         public void Setup()

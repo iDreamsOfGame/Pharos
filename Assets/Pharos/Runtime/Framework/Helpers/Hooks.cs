@@ -16,12 +16,12 @@ namespace Pharos.Framework.Helpers
             Hook(null, hooks);
         }
 
-        public static void Hook(IInjector injector, params Type[] hooks)
+        public static void Hook(IPharosInjector injector, params Type[] hooks)
         {
             Hook(injector, hooks as IEnumerable<Type>);
         }
 
-        public static void Hook(IInjector injector, IEnumerable<Type> hookTypes)
+        public static void Hook(IPharosInjector injector, IEnumerable<Type> hookTypes)
         {
             foreach (var hookType in hookTypes)
             {

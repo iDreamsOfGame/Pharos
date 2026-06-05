@@ -1,9 +1,9 @@
 {
-    "name": "Unity.Pharos.Editor.Tests",
+    "name": "Pharos.Editor.Tests",
     "rootNamespace": "PharosEditor.Tests",
     "references": [
         "VContainer",
-        "Unity.Pharos"
+        "Pharos"
     ],
     "includePlatforms": [
         "Editor"

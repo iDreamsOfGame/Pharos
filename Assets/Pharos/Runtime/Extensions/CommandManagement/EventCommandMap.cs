@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Pharos.Common.CommandCenter;
 using Pharos.Common.EventCenter;
 using Pharos.Framework;
+using VContainer;
 
 namespace Pharos.Extensions.CommandManagement
 {
@@ -18,6 +19,7 @@ namespace Pharos.Extensions.CommandManagement
 
         private readonly ILogger logger;
 
+        [Inject]
         public EventCommandMap(IContext context, IEventDispatcher dispatcher)
         {
             this.context = context;

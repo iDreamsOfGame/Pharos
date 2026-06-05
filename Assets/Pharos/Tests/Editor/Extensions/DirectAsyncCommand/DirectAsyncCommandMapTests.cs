@@ -12,7 +12,7 @@ namespace PharosEditor.Tests.Extensions.DirectAsyncCommand
     {
         private IContext context;
 
-        private IInjector injector;
+        private IPharosInjector injector;
 
         private IDirectAsyncCommandMap subject;
 

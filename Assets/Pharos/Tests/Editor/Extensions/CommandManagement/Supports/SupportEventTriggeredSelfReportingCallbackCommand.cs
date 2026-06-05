@@ -5,6 +5,7 @@ using VContainer;
 
 namespace PharosEditor.Tests.Extensions.CommandManagement.Supports
 {
+    [InjectIgnore]
     internal class SupportEventTriggeredSelfReportingCallbackCommand : ICommand
     {
         [Inject]

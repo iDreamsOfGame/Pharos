@@ -47,7 +47,7 @@ namespace PharosEditor.Tests.Framework
         [Test]
         public void Injector_InjectorHasMappedIntoItself_ReturnsSameInstance()
         {
-            var injector = context.Injector.GetInstance<IInjector>();
+            var injector = context.Injector.GetInstance<IPharosInjector>();
             Assert.That(injector, Is.SameAs(context.Injector));
         }
 

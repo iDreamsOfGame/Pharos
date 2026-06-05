@@ -4,6 +4,7 @@ using VContainer;
 
 namespace PharosEditor.Tests.Extensions.CommandManagement.Supports
 {
+    [InjectIgnore]
     internal class EventParametersCommand : ICommand
     {
         [Inject]

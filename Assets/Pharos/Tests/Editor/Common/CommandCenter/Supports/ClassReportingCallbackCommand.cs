@@ -4,6 +4,7 @@ using VContainer;
 
 namespace PharosEditor.Tests.Common.CommandCenter.Supports
 {
+    [InjectIgnore]
     internal class ClassReportingCallbackCommand : ICommand
     {
         [Inject, Key("ReportingFunction")]

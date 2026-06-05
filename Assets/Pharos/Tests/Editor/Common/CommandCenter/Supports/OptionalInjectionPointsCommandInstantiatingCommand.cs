@@ -1,13 +1,14 @@
 using Pharos.Common.CommandCenter;
+using Pharos.Framework.Injection;
 using VContainer;
-using IInjector = Pharos.Framework.Injection.IInjector;
 
 namespace PharosEditor.Tests.Common.CommandCenter.Supports
 {
+    [InjectIgnore]
     internal class OptionalInjectionPointsCommandInstantiatingCommand : ICommand
     {
         [Inject]
-        private IInjector injector;
+        private IPharosInjector injector;
 
         public void Execute()
         {

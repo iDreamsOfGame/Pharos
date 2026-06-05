@@ -2,7 +2,6 @@ using System;
 using NUnit.Framework;
 using Pharos.Framework.Injection;
 using VContainer;
-using IInjector = Pharos.Framework.Injection.IInjector;
 
 // ReSharper disable ClassNeverInstantiated.Local
 // ReSharper disable MemberHidesStaticFromOuterClass
@@ -28,6 +27,7 @@ namespace PharosEditor.Tests.Framework.Injection
         {
         }
 
+        [InjectIgnore]
         private class FooContainer
         {
             [Inject]
@@ -40,7 +40,7 @@ namespace PharosEditor.Tests.Framework.Injection
             internal IFoo2 Foo2 { get; private set; }
         }
 
-        private IInjector injector;
+        private IPharosInjector injector;
 
         [SetUp]
         public void Setup()

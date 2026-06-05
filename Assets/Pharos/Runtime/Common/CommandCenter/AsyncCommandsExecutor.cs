@@ -9,7 +9,7 @@ namespace Pharos.Common.CommandCenter
     {
         private readonly IContext context;
 
-        private readonly IInjector injector;
+        private readonly IPharosInjector injector;
 
         private readonly ICommandsExecutor executor;
         
@@ -28,7 +28,7 @@ namespace Pharos.Common.CommandCenter
         private Action commandsExecutedCallback;
         
         public AsyncCommandsExecutor(IContext context, 
-            IInjector injector,
+            IPharosInjector injector,
             Action<ICommandMapping> removeMappingProcessor = null)
         {
             IsAborted = false;

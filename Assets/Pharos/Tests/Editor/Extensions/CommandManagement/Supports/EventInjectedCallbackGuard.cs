@@ -5,6 +5,7 @@ using VContainer;
 
 namespace PharosEditor.Tests.Extensions.CommandManagement.Supports
 {
+    [InjectIgnore]
     internal class EventInjectedCallbackGuard : IGuard
     {
         [Inject]

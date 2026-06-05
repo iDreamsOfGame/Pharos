@@ -26,9 +26,9 @@ namespace PharosEditor.Tests.Common.CommandCenter
 
         private IContext context;
 
-        private IInjector injector;
+        private IPharosInjector injector;
 
-        private IInjector sandboxInjector;
+        private IPharosInjector sandboxInjector;
 
         [SetUp]
         public void Setup()

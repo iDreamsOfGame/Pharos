@@ -1,10 +1,16 @@
 using System;
 using System.Collections.Generic;
+using VContainer;
 
 namespace Pharos.Common.EventCenter
 {
     public class EventDispatcher : IEventDispatcher
     {
+        [Inject]
+        public EventDispatcher()
+        {
+        }
+        
         public static IEventDispatcher Instance { get; internal set; }
 
         private readonly Dictionary<Enum, List<EventMapConfig>> eventTypeToMapConfigs = new();

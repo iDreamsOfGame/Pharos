@@ -10,6 +10,7 @@ namespace PharosEditor.Tests.Framework.Helpers
     [TestFixture]
     internal class InstanceActivatorTests
     {
+        [InjectIgnore]
         private class Foo
         {
             [Inject]

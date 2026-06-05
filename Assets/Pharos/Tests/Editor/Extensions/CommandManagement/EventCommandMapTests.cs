@@ -25,7 +25,7 @@ namespace PharosEditor.Tests.Extensions.CommandManagement
 
         private List<object> reportedExecutions;
 
-        private IInjector injector;
+        private IPharosInjector injector;
 
         private IEventDispatcher dispatcher;
 

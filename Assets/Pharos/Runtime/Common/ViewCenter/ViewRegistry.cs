@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using VContainer;
 
 // ReSharper disable ForCanBeConvertedToForeach
 
@@ -9,6 +10,11 @@ namespace Pharos.Common.ViewCenter
         public static ViewRegistry Instance { get; } = new();
         
         private readonly List<IViewHandler> handlers = new();
+
+        [Inject]
+        public ViewRegistry()
+        {
+        }
 
         public void AddHandler(IViewHandler handler)
         {

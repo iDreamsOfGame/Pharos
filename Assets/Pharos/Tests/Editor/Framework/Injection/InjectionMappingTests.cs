@@ -14,7 +14,7 @@ namespace PharosEditor.Tests.Framework.Injection
         {
         }
 
-        private IInjector injector;
+        private IPharosInjector injector;
 
         [SetUp]
         public void Setup()

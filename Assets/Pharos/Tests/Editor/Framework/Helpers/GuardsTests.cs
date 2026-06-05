@@ -4,7 +4,6 @@ using Pharos.Framework.Helpers;
 using Pharos.Framework.Injection;
 using PharosEditor.Tests.Common.CommandCenter.Supports;
 using VContainer;
-using IInjector = Pharos.Framework.Injection.IInjector;
 
 // ReSharper disable ClassNeverInstantiated.Local
 
@@ -25,6 +24,7 @@ namespace PharosEditor.Tests.Framework.Helpers
             public bool Approve() => approve;
         }
 
+        [InjectIgnore]
         private class JustTheMiddleManGuard : IGuard
         {
             [Inject]
@@ -36,7 +36,7 @@ namespace PharosEditor.Tests.Framework.Helpers
             }
         }
 
-        private IInjector injector;
+        private IPharosInjector injector;
 
         [SetUp]
         public void Setup()

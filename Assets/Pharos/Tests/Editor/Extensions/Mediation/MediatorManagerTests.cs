@@ -10,7 +10,7 @@ namespace PharosEditor.Tests.Extensions.Mediation
     [TestFixture]
     internal class MediatorManagerTests
     {
-        private IInjector injector;
+        private IPharosInjector injector;
 
         private MediatorManager manager;
         

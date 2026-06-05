@@ -10,7 +10,7 @@ namespace Pharos.Framework
         /// <summary>
         /// The injection binder this context relies on. Use this to bind and unbind anything you require.
         /// </summary>
-        IInjector Injector { get; }
+        IPharosInjector Injector { get; }
 
         /// <summary>
         /// Gets or sets the current log level. 

@@ -11,13 +11,13 @@ namespace Pharos.Extensions.Mediation
 {
     public class MediatorManager : IMediatorManager
     {
-        private readonly IInjector injector;
+        private readonly IPharosInjector injector;
 
         private readonly Dictionary<Type, IEventDispatcher> viewTypeToViewDispatcherCache = new();
 
         private readonly Dictionary<IView, KeyValuePair<IMediatorMapping, IMediator>> viewToMappingMediatorPair = new();
 
-        public MediatorManager(IInjector injector)
+        public MediatorManager(IPharosInjector injector)
         {
             this.injector = injector;
         }

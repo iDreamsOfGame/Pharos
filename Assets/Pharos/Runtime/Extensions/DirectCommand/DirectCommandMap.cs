@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Pharos.Common.CommandCenter;
 using Pharos.Framework;
 using Pharos.Framework.Injection;
+using VContainer;
 
 namespace Pharos.Extensions.DirectCommand
 {
@@ -12,12 +13,13 @@ namespace Pharos.Extensions.DirectCommand
 
         private readonly IContext context;
 
-        private readonly IInjector sandboxInjector;
+        private readonly IPharosInjector sandboxInjector;
 
         private readonly ICommandsExecutor executor;
 
         private readonly ICommandMappingList mappings;
 
+        [Inject]
         public DirectCommandMap(IContext context)
         {
             this.context = context;

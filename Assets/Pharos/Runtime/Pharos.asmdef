@@ -1,12 +1,10 @@
 {
-    "name": "Unity.Pharos.Editor",
-    "rootNamespace": "PharosEditor",
+    "name": "Pharos",
+    "rootNamespace": "Pharos",
     "references": [
-        "Unity.Pharos"
+        "VContainer"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

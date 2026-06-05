@@ -2,8 +2,8 @@ using System;
 using NUnit.Framework;
 using Pharos.Framework;
 using Pharos.Framework.Helpers;
+using Pharos.Framework.Injection;
 using VContainer;
-using IInjector = Pharos.Framework.Injection.IInjector;
 
 // ReSharper disable ClassNeverInstantiated.Local
 
@@ -12,6 +12,7 @@ namespace PharosEditor.Tests.Framework.Helpers
     [TestFixture]
     internal class ConfigManagerTests
     {
+        [InjectIgnore]
         private class PlainConfig : IConfig
         {
             public const string CallbackInjectKey = nameof(Callback);
@@ -25,6 +26,7 @@ namespace PharosEditor.Tests.Framework.Helpers
             }
         }
 
+        [InjectIgnore]
         private class UntypedConfig
         {
             public const string CallbackInjectKey = nameof(Callback);
@@ -40,7 +42,7 @@ namespace PharosEditor.Tests.Framework.Helpers
 
         private IContext context;
 
-        private IInjector injector;
+        private IPharosInjector injector;
 
         private ConfigManager configManager;
 

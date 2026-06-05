@@ -5,6 +5,7 @@ using VContainer;
 
 namespace PharosEditor.Tests.Extensions.DirectAsyncCommand.Supports
 {
+    [InjectIgnore]
     internal class DirectAsyncCommandMapReportingAsyncCommand : AsyncCommand
     {
         [Inject]

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Pharos.Common.CommandCenter;
 using Pharos.Framework;
 using Pharos.Framework.Injection;
+using VContainer;
 
 namespace Pharos.Extensions.DirectAsyncCommand
 {
@@ -12,7 +13,7 @@ namespace Pharos.Extensions.DirectAsyncCommand
 
         private readonly IContext context;
 
-        private readonly IInjector sandboxInjector;
+        private readonly IPharosInjector sandboxInjector;
         
         private readonly ICommandMappingList mappings;
         
@@ -22,6 +23,7 @@ namespace Pharos.Extensions.DirectAsyncCommand
         
         private Action commandsExecutedCallback;
         
+        [Inject]
         public DirectAsyncCommandMap(IContext context)
         {
             this.context = context;

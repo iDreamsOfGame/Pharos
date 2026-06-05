@@ -5,7 +5,7 @@ namespace Pharos.Framework.Injection
 {
     public readonly struct InjectionMapping
     {
-        public InjectionMapping(IInjector injector,
+        public InjectionMapping(IPharosInjector injector,
             Type type,
             object key = null)
         {
@@ -14,7 +14,7 @@ namespace Pharos.Framework.Injection
             Key = key;
         }
 
-        public IInjector Injector { get; }
+        public IPharosInjector Injector { get; }
 
         public IObjectResolver Container => Injector.Container;
 

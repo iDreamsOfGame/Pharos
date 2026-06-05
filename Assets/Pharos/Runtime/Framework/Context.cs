@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Pharos.Framework.Helpers;
 using Pharos.Framework.Injection;
+using VContainer;
 
 namespace Pharos.Framework
 {
@@ -20,12 +21,13 @@ namespace Pharos.Framework
 
         private ConfigManager configManager;
 
+        [Inject]
         public Context()
         {
             Setup();
         }
 
-        public IInjector Injector { get; } = new Injector();
+        public IPharosInjector Injector { get; } = new Injector();
 
         Pin IContext.Pin => pin;
 
@@ -90,7 +92,7 @@ namespace Pharos.Framework
             Destroyed += OnDestroyed;
 
             Injector.Map<IContext>().ToValue(this);
-            Injector.Map<IInjector>().ToValue(Injector);
+            Injector.Map<IPharosInjector>().ToValue(Injector);
         }
 
         private void RemoveChildren()

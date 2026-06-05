@@ -22,7 +22,7 @@ namespace Pharos.Framework.Helpers
 
         public IContext Context { get; }
 
-        public IInjector Injector => Context.Injector;
+        public IPharosInjector Injector => Context.Injector;
 
         public void AddConfig<T>() where T : IConfig
         {

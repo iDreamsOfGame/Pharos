@@ -6,6 +6,7 @@ using VContainer;
 
 namespace PharosEditor.Tests.Extensions.Mediation.Supports
 {
+    [InjectIgnore]
     internal class LifecycleReportingMediator : IMediator
     {
         [Inject, Key(nameof(PreInitializeCallback))]

@@ -13,7 +13,7 @@ namespace Pharos.Extensions.CommandManagement
         
         private readonly IEventDispatcher dispatcher;
         
-        private readonly IInjector sandboxInjector;
+        private readonly IPharosInjector sandboxInjector;
 
         private readonly Enum type;
 

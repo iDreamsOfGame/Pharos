@@ -16,12 +16,12 @@ namespace Pharos.Framework.Helpers
             return Approve(null, guardTypes as IEnumerable<Type>);
         }
 
-        public static bool Approve(IInjector injector, params Type[] guardTypes)
+        public static bool Approve(IPharosInjector injector, params Type[] guardTypes)
         {
             return Approve(injector, guardTypes as IEnumerable<Type>);
         }
 
-        public static bool Approve(IInjector injector, IEnumerable<Type> guardTypes)
+        public static bool Approve(IPharosInjector injector, IEnumerable<Type> guardTypes)
         {
             foreach (var guardType in guardTypes)
             {

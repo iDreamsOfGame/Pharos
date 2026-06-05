@@ -4,13 +4,13 @@ using Pharos.Framework;
 using Pharos.Framework.Helpers;
 using Pharos.Framework.Injection;
 using VContainer;
-using IInjector = Pharos.Framework.Injection.IInjector;
 
 namespace PharosEditor.Tests.Framework.Helpers
 {
     [TestFixture]
     internal class HooksTests
     {
+        [InjectIgnore]
         private class CallbackHook : IHook
         {
             [Inject, Key("hookCallback")]
@@ -22,7 +22,7 @@ namespace PharosEditor.Tests.Framework.Helpers
             }
         }
 
-        private IInjector injector;
+        private IPharosInjector injector;
 
         [SetUp]
         public void Setup()

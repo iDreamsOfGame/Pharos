@@ -4,6 +4,7 @@ using VContainer;
 
 namespace PharosEditor.Tests.Extensions.Mediation.Supports
 {
+    [InjectIgnore]
     internal class CallbackMediator : Mediator
     {
         [Inject, Key("callback")]

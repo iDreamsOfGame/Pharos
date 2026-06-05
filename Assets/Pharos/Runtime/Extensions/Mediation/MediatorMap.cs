@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Pharos.Framework;
 using Pharos.Common.ViewCenter;
+using VContainer;
 
 namespace Pharos.Extensions.Mediation
 {
@@ -15,6 +16,7 @@ namespace Pharos.Extensions.Mediation
 
         private readonly IMediatorViewHandler viewHandler;
 
+        [Inject]
         public MediatorMap(IContext context)
         {
             logger = context.GetLogger(this);

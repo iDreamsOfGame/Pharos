@@ -23,9 +23,9 @@ namespace PharosEditor.Tests.Common.CommandCenter
 
         private List<object> reported;
 
-        private IInjector injector;
+        private IPharosInjector injector;
 
-        private IInjector sandboxInjector;
+        private IPharosInjector sandboxInjector;
 
         [SetUp]
         public void Setup()

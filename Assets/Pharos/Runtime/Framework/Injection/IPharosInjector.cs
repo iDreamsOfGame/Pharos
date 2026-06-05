@@ -4,7 +4,7 @@ using VContainer;
 
 namespace Pharos.Framework.Injection
 {
-    public interface IInjector
+    public interface IPharosInjector
     {
         IObjectResolver Container { get; }
 
@@ -13,24 +13,24 @@ namespace Pharos.Framework.Injection
         ContainerBuilder Builder { get; }
 
         /// <summary>
-        /// The parent IInjector used for dependencies the current IInjector can't supply. 
+        /// The parent IPharosInjector used for dependencies the current IPharosInjector can't supply. 
         /// </summary>
-        IInjector Parent { get; set; }
+        IPharosInjector Parent { get; set; }
 
-        List<IInjector> Children { get; }
+        List<IPharosInjector> Children { get; }
 
         /// <summary>
-        /// Creates a new <see cref="IInjector"/> and sets itself as that new <see cref="IInjector"/>'s parentInjector. 
+        /// Creates a new <see cref="IPharosInjector"/> and sets itself as that new <see cref="IPharosInjector"/>'s parentInjector. 
         /// </summary>
-        /// <returns>The new <see cref="IInjector"/> instance as child of this <see cref="IInjector"/>. </returns>
-        IInjector CreateChild();
+        /// <returns>The new <see cref="IPharosInjector"/> instance as child of this <see cref="IPharosInjector"/>. </returns>
+        IPharosInjector CreateChild();
 
         /// <summary>
-        /// Removes a child <see cref="IInjector"/>.
+        /// Removes a child <see cref="IPharosInjector"/>.
         /// </summary>
         /// <param name="childInjector"></param>
         /// <returns></returns>
-        bool RemoveChild(IInjector childInjector);
+        bool RemoveChild(IPharosInjector childInjector);
 
         bool HasMapping<T>(object key = null);
 
@@ -40,11 +40,11 @@ namespace Pharos.Framework.Injection
 
         InjectionMapping Map(Type type, object key = null);
 
-        IInjector BuildAncestors();
+        IPharosInjector BuildAncestors();
 
-        IInjector Build(bool buildAncestors = false, bool buildDescendants = false);
+        IPharosInjector Build(bool buildAncestors = false, bool buildDescendants = false);
 
-        IInjector BuildDescendants();
+        IPharosInjector BuildDescendants();
 
         T GetInstance<T>(object key = null);
 

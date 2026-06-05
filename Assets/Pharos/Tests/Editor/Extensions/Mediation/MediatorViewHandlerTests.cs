@@ -11,7 +11,7 @@ namespace PharosEditor.Tests.Extensions.Mediation
     {
         private MediatorViewHandler handler;
 
-        private IInjector injector;
+        private IPharosInjector injector;
         
         [SetUp]
         public void Setup()

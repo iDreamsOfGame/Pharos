@@ -7,7 +7,7 @@ namespace Pharos.Common.CommandCenter
 {
     public class CommandsExecutor : ICommandsExecutor
     {
-        private readonly IInjector injector;
+        private readonly IPharosInjector injector;
         
         private readonly Action<ICommandMapping> removeMappingProcessor;
 
@@ -17,7 +17,7 @@ namespace Pharos.Common.CommandCenter
         
         private readonly Action completedHandler;
 
-        public CommandsExecutor(IInjector injector,
+        public CommandsExecutor(IPharosInjector injector,
             Action<ICommandMapping> removeMappingProcessor = null, 
             Action<ICommand, ICommandMapping> executingPreprocessor = null, 
             Action<ICommand, ICommandMapping> resultHandler = null, 
