@@ -1,3 +1,4 @@
+using Pharos.Common.CommandCenter;
 using Pharos.Common.EventCenter;
 using Pharos.Extensions.CommandManagement;
 using PharosEditor.Tests.Common.CommandCenter.Supports;
@@ -6,7 +7,7 @@ using VContainer;
 namespace PharosEditor.Tests.Extensions.CommandManagement.Supports
 {
     [InjectIgnore]
-    public class CascadingCommand
+    public class CascadingCommand : ICommand
     {
         public enum EventType
         {

@@ -1,4 +1,5 @@
 using System;
+using Pharos.Common.CommandCenter;
 using Pharos.Common.EventCenter;
 using Pharos.Extensions.CommandManagement;
 using VContainer;
@@ -6,7 +7,7 @@ using VContainer;
 namespace PharosEditor.Tests.Extensions.CommandManagement.Supports
 {
     [InjectIgnore]
-    internal class CommandMappingCommand
+    internal class CommandMappingCommand : ICommand
     {
         [Inject]
         public IEvent Event { get; private set; }

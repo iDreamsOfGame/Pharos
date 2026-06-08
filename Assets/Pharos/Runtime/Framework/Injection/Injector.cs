@@ -190,21 +190,11 @@ namespace Pharos.Framework.Injection
         {
             if (Container == null)
                 Build(true);
-
-            object result;
             
             if (Container == null)
                 return null;
 
-            if (Container is ScopedContainer scopedContainer)
-            {
-                scopedContainer.TryResolve(type, out result, key);
-            }
-            else
-            {
-                Container.TryResolve(type, out result, key);
-            }
-            
+            Container.TryResolve(type, out var result, key);
             return result;
         }
 

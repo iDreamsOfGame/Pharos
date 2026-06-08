@@ -54,9 +54,8 @@ namespace Pharos.Common.CommandCenter
                 command = injector.GetInstance(commandType) as ICommand;
                 if (command == null)
                 {
-                    injector.Map(commandType).AsScopedType();
-                    injector.Build();
-                    command = injector.GetInstance(commandType) as ICommand;
+                    command = injector.GetOrCreateNewInstance(commandType) as ICommand;
+                    injector.Map(commandType).ToValue(command);
                 }
                 
                 if (command != null && mapping.HookTypes is { Count: > 0 })
