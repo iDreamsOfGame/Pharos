@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Pharos.Common.CommandCenter;
 using Pharos.Common.EventCenter;
 using Pharos.Framework;
-using Pharos.Framework.Injection;
 
 namespace Pharos.Extensions.CommandManagement
 {
@@ -12,8 +11,6 @@ namespace Pharos.Extensions.CommandManagement
         private readonly IContext context;
         
         private readonly IEventDispatcher dispatcher;
-        
-        private readonly IPharosInjector sandboxInjector;
 
         private readonly Enum type;
 
@@ -34,9 +31,8 @@ namespace Pharos.Extensions.CommandManagement
             this.dispatcher = dispatcher;
             this.type = type;
             this.eventType = eventType;
-            sandboxInjector = context.Injector.CreateChild();
             mappings = new CommandMappingList(this, processors, logger);
-            executor = new CommandsExecutor(sandboxInjector, mappings.RemoveMapping, null, null, OnCommandsExecuted);
+            executor = new CommandsExecutor(mappings.RemoveMapping);
         }
 
         public CommandMapper CreateMapper()
@@ -77,12 +73,7 @@ namespace Pharos.Extensions.CommandManagement
 
             var payload = new CommandPayload();
             payload.AddPayload(e, payloadEventType);
-            executor?.ExecuteCommands(mappings.Mappings, payload);
-        }
-
-        private void OnCommandsExecuted()
-        {
-            context.Injector.RemoveChild(sandboxInjector);
+            executor?.ExecuteCommands(context.Injector, mappings.Mappings, payload);
         }
     }
 }

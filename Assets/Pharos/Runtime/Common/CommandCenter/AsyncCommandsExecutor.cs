@@ -9,7 +9,7 @@ namespace Pharos.Common.CommandCenter
     {
         private readonly IContext context;
 
-        private readonly IPharosInjector injector;
+        private readonly IPharosInjector sandboxInjector;
 
         private readonly ICommandsExecutor executor;
         
@@ -27,14 +27,12 @@ namespace Pharos.Common.CommandCenter
         
         private Action commandsExecutedCallback;
         
-        public AsyncCommandsExecutor(IContext context, 
-            IPharosInjector injector,
-            Action<ICommandMapping> removeMappingProcessor = null)
+        public AsyncCommandsExecutor(IContext context, IPharosInjector sandboxInjector, Action<ICommandMapping> removeMappingProcessor = null)
         {
-            IsAborted = false;
             this.context = context;
-            this.injector = injector;
-            executor = new CommandsExecutor(injector, removeMappingProcessor, PreprocessAsyncCommandExecuting);
+            this.sandboxInjector = sandboxInjector;
+            IsAborted = false;
+            executor = new CommandsExecutor(removeMappingProcessor, PreprocessAsyncCommandExecuting);
         }
         
         public bool IsAborted { get; private set; }
@@ -49,7 +47,6 @@ namespace Pharos.Common.CommandCenter
 
         public void ExecuteCommands(IEnumerable<ICommandMapping> mappings, CommandPayload payload = default)
         {
-            injector.Build(true);
             commandMappingQueue = new Queue<ICommandMapping>(mappings);
             totalCommandCount = commandMappingQueue.Count;
             this.payload = payload;
@@ -93,7 +90,7 @@ namespace Pharos.Common.CommandCenter
                 if (mapping == null)
                     continue;
                 
-                executor.ExecuteCommand(mapping, payload);
+                executor.ExecuteCommand(sandboxInjector, mapping, payload);
                 return;
             }
             

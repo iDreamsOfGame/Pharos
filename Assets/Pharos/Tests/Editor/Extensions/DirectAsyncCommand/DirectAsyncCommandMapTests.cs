@@ -86,7 +86,7 @@ namespace PharosEditor.Tests.Extensions.DirectAsyncCommand
             injector.Map(typeof(Action<IDirectAsyncCommandMap>), "ReportingFunction")
                 .ToValue((Action<IDirectAsyncCommandMap>)delegate(IDirectAsyncCommandMap passed) { actual = passed; });
             subject.Map<DirectAsyncCommandMapReportingAsyncCommand>().Execute();
-            Assert.That(actual, Is.EqualTo(subject));
+            Assert.That(actual, Is.SameAs(subject));
         }
     }
 }

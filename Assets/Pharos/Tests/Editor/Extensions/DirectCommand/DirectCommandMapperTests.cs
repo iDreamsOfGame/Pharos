@@ -4,6 +4,8 @@ using Moq;
 using NUnit.Framework;
 using Pharos.Common.CommandCenter;
 using Pharos.Extensions.DirectCommand;
+using Pharos.Framework;
+using Pharos.Framework.Injection;
 using PharosEditor.Tests.Common.CommandCenter.Supports;
 
 namespace PharosEditor.Tests.Extensions.DirectCommand
@@ -11,6 +13,10 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
     [TestFixture]
     internal class DirectCommandMapperTests
     {
+        private IContext context;
+
+        private IPharosInjector sandboxInjector;
+        
         private Mock<ICommandMappingList> mockMappingList;
 
         private Mock<ICommandsExecutor> mockExecutor;
@@ -22,6 +28,8 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
         [SetUp]
         public void Setup()
         {
+            context = new Context();
+            sandboxInjector = context.Injector.CreateChild();
             mockExecutor = new Mock<ICommandsExecutor>();
             mockMappingList = new Mock<ICommandMappingList>();
             mockMappingList.Setup(m => m.AddMapping(It.IsAny<ICommandMapping>()))
@@ -87,14 +95,14 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
             mockMappingList.Setup(m => m.Mappings).Returns(list);
             CreateMapper<NullCommand>().Execute();
             mockExecutor.Verify(e =>
-                    e.ExecuteCommands(It.Is<List<ICommandMapping>>(arg1 => arg1 == list),
+                    e.ExecuteCommands(sandboxInjector, It.Is<List<ICommandMapping>>(arg1 => arg1 == list),
                         It.Is<CommandPayload>(arg2 => arg2.ValueToType == null)),
                 Times.Once);
         }
 
         private DirectCommandMapper CreateMapper<T>()
         {
-            subject = new DirectCommandMapper(mockExecutor.Object, mockMappingList.Object, typeof(T));
+            subject = new DirectCommandMapper(sandboxInjector, mockExecutor.Object, mockMappingList.Object, typeof(T));
             return subject;
         }
     }

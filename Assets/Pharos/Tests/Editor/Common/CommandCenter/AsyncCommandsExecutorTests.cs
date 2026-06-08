@@ -38,12 +38,12 @@ namespace PharosEditor.Tests.Common.CommandCenter
 #endif
             reported = new List<object>();
             context = new Context();
-            context.Initialize();
             injector = context.Injector;
             sandboxInjector = injector.CreateChild();
             injector.Map(typeof(Action<object>), "ReportingFunction").ToValue((Action<object>)ReportingFunction);
             mappings = new List<ICommandMapping>();
             subject = new AsyncCommandsExecutor(context, sandboxInjector);
+            context.Initialize();
         }
 
         [TearDown]

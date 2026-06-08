@@ -35,20 +35,19 @@ namespace PharosEditor.Tests.Common.CommandCenter
 #endif
             reported = new List<object>();
             injector = new Injector();
-            sandboxInjector = injector.CreateChild();
             injector.Map(typeof(Action<object>), "ReportingFunction").ToValue((Action<object>)ReportingFunction);
             mappings = new List<ICommandMapping>();
-            subject = new CommandsExecutor(sandboxInjector);
+            subject = new CommandsExecutor();
         }
 
 #if ENABLE_MOQ
         [Test]
         public void ExecuteCommands_OneshotMappingIsRemoved_VerifiesMockObject()
         {
-            subject = new CommandsExecutor(sandboxInjector, unmapper.Object.Unmap);
+            subject = new CommandsExecutor(unmapper.Object.Unmap);
             var mapping = AddMapping<TypeReportingCallbackCommand>();
             mapping.ShouldExecuteOnce = true;
-            subject.ExecuteCommands(mappings);
+            subject.ExecuteCommands(injector, mappings);
             unmapper.Verify(unmapperObject =>
                     unmapperObject.Unmap(It.Is<ICommandMapping>(arg => arg == mapping)),
                 Times.Once);
@@ -227,7 +226,7 @@ namespace PharosEditor.Tests.Common.CommandCenter
             injector.Build();
             var expected = injector.GetInstance<SelfReportingCallbackCommand>();
             var mapping = AddMapping(typeof(SelfReportingCallbackCommand));
-            subject.ExecuteCommand(mapping);
+            subject.ExecuteCommand(injector, mapping);
             Assert.AreSame(expected, reported[0]);
         }
 
@@ -235,7 +234,7 @@ namespace PharosEditor.Tests.Common.CommandCenter
         public void ExecuteCommands_CommandMappedToInterfaceIsExecuted_ReturnsExpectedReportedList()
         {
             injector.Map<ICommand>().ToType(typeof(AbstractInterfaceImplementingCommand));
-            subject.ExecuteCommand(AddMapping<ICommand>());
+            subject.ExecuteCommand(injector, AddMapping<ICommand>());
             Assert.That(reported, Is.EqualTo(new object[] { typeof(AbstractInterfaceImplementingCommand) }).AsCollection);
         }
 
@@ -262,7 +261,7 @@ namespace PharosEditor.Tests.Common.CommandCenter
 
         private void ExecuteCommands(CommandPayload payload = default)
         {
-            subject.ExecuteCommands(mappings, payload);
+            subject.ExecuteCommands(injector, mappings, payload);
         }
 
         private void ReportingFunction(object item)

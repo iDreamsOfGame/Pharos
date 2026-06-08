@@ -1,20 +1,27 @@
 using System;
 using Pharos.Common.CommandCenter;
+using Pharos.Framework.Injection;
 
 namespace Pharos.Extensions.DirectCommand
 {
     internal class DirectCommandMapper : IDirectCommandConfigurator
     {
+        private readonly IPharosInjector sandboxInjector;
+
         private readonly ICommandMappingList mappings;
 
         private readonly ICommandMapping mapping;
 
         private readonly ICommandsExecutor executor;
 
-        public DirectCommandMapper(ICommandsExecutor executor, ICommandMappingList mappings, Type commandType)
+        public DirectCommandMapper(IPharosInjector sandboxInjector,
+            ICommandsExecutor executor,
+            ICommandMappingList mappings,
+            Type commandType)
         {
             mapping = new CommandMapping(commandType);
             mapping.ShouldExecuteOnce = true;
+            this.sandboxInjector = sandboxInjector;
             this.executor = executor;
             this.mappings = mappings;
             this.mappings.AddMapping(mapping);
@@ -22,7 +29,7 @@ namespace Pharos.Extensions.DirectCommand
 
         public IDirectCommandConfigurator Map(Type commandType)
         {
-            return new DirectCommandMapper(executor, mappings, commandType);
+            return new DirectCommandMapper(sandboxInjector, executor, mappings, commandType);
         }
 
         public IDirectCommandConfigurator Map<T>()
@@ -50,7 +57,7 @@ namespace Pharos.Extensions.DirectCommand
 
         public void Execute(CommandPayload payload = default)
         {
-            executor.ExecuteCommands(mappings.Mappings, payload);
+            executor.ExecuteCommands(sandboxInjector, mappings.Mappings, payload);
         }
     }
 }

@@ -75,7 +75,7 @@ namespace PharosEditor.Tests.Extensions.DirectCommand
             injector.Map(typeof(Action<IDirectCommandMap>), "ReportingFunction")
                 .ToValue((Action<IDirectCommandMap>)delegate(IDirectCommandMap passed) { actual = passed; });
             subject.Map<DirectCommandMapReportingCommand>().Execute();
-            Assert.That(actual, Is.EqualTo(subject));
+            Assert.That(actual, Is.SameAs(subject));
         }
 
         [Test]

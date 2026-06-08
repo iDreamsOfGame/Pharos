@@ -69,12 +69,15 @@ namespace Pharos.Framework.Injection
 
         public bool RemoveChild(IPharosInjector childInjector)
         {
+            if (childInjector == null)
+                return false;
+            
             if (!ReferenceEquals(childInjector.Parent, this))
                 return false;
             
             childInjector.Parent = null;
             childInjector.Dispose();
-            return Children.Remove(childInjector);
+            return Children?.Remove(childInjector) ?? false;
         }
 
         public bool HasMapping<T>(object key = null)
