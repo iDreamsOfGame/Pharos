@@ -1,7 +1,7 @@
 {
     "name": "io.github.idreamsofgame.pharos",
     "displayName": "Pharos",
-    "version": "2.0.2",
+    "version": "2.0.3",
     "unity": "2022.3",
     "description": "Pharos is a lightweight application framework by using VContainer dependency injection library for creating applications based upon the classic Model-View-Controller design meta-pattern.",
     "keywords": [
@@ -16,6 +16,6 @@
     "changelogUrl": "https://github.com/iDreamsOfGame/Pharos/blob/main/Assets/Pharos/CHANGELOG.md",
     "licensesUrl": "https://github.com/iDreamsOfGame/Pharos/blob/main/LICENSE",
     "dependencies": {
-        "io.github.idreamsofgame.vcontainerplus": "1.18.0"
+        "io.github.idreamsofgame.vcontainerplus": "1.18.1"
     }
 }

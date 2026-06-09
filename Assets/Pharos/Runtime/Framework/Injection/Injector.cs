@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
 using VContainer;
@@ -139,8 +138,8 @@ namespace Pharos.Framework.Injection
                 BuildAncestors();
 
             var sharedInstances = Container != null 
-                ? new ConcurrentDictionary<Registration, object>(Container.SharedInstances)
-                : new ConcurrentDictionary<Registration, object>();
+                ? new Dictionary<Registration, object>(Container.SharedInstances)
+                : new Dictionary<Registration, object>();
             Container?.Dispose();
             Container = Builder.Build(sharedInstances);
 
