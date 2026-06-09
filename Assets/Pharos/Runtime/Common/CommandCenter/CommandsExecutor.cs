@@ -69,7 +69,7 @@ namespace Pharos.Common.CommandCenter
 
         public void ExecuteCommands(IPharosInjector injector, IEnumerable<ICommandMapping> mappings, CommandPayload payload = default)
         {
-            injector.Build(true);
+            injector.Build();
             
             foreach (var mapping in mappings)
             {

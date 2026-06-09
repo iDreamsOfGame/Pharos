@@ -6,11 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [2.0.3] - 2026-06-09
+## [2.0.4] - 2026-06-09
 
 ### Changed
 
  - Updates the version of dependency **VContainerPlus**.
+ - **Injector** will build container only on container is *null* or **ContainerBuilder.IsDirty** is true.
 
 
 

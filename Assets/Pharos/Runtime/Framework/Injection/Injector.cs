@@ -137,13 +137,19 @@ namespace Pharos.Framework.Injection
             if (buildAncestors)
                 BuildAncestors();
 
-            var sharedInstances = Container != null 
-                ? new Dictionary<Registration, object>(Container.SharedInstances)
-                : new Dictionary<Registration, object>();
-            Container?.Dispose();
-            Container = Builder.Build(sharedInstances);
+            var built = false;
+            
+            if (Container == null || Builder.IsDirty)
+            {
+                var sharedInstances = Container != null 
+                    ? new Dictionary<Registration, object>(Container.SharedInstances)
+                    : new Dictionary<Registration, object>();
+                Container?.Dispose();
+                Container = Builder.Build(sharedInstances);
+                built = true;
+            }
 
-            if (Container != null)
+            if (Container != null && built)
             {
                 Container.ThrowIfUnresolved = false;
 
@@ -156,7 +162,7 @@ namespace Pharos.Framework.Injection
                 BuildDescendants();
             
             // Updates children containers references
-            if (Children != null)
+            if (Children != null && built)
             {
                 foreach (var child in Children)
                 {
