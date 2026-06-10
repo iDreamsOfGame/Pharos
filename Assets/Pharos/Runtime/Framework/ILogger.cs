@@ -1,8 +1,11 @@
+using UnityEngine.Scripting;
+
 namespace Pharos.Framework
 {
     /// <summary>
     /// The framework logger contract. 
     /// </summary>
+    [RequireImplementors]
     public interface ILogger
     {
         /// <summary>

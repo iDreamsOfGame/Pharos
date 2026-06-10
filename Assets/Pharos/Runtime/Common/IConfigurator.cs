@@ -1,8 +1,10 @@
 using System;
 using Pharos.Framework;
+using UnityEngine.Scripting;
 
 namespace Pharos.Common
 {
+    [RequireImplementors]
     public interface IConfigurator<out TConfigurator>
     {
         TConfigurator WithGuards<T>() where T : IGuard;

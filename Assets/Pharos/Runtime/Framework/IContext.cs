@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using Pharos.Framework.Helpers;
 using Pharos.Framework.Injection;
+using UnityEngine.Scripting;
 
 namespace Pharos.Framework
 {
+    [RequireImplementors]
     public interface IContext : IPinEvent, ILifecycle
     {
         /// <summary>

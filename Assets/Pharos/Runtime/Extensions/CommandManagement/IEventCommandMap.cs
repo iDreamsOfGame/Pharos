@@ -1,8 +1,10 @@
 using System;
 using Pharos.Common.CommandCenter;
+using UnityEngine.Scripting;
 
 namespace Pharos.Extensions.CommandManagement
 {
+    [RequireImplementors]
     public interface IEventCommandMap
     {
         ICommandMapper Map(Enum type, Type eventType = null);

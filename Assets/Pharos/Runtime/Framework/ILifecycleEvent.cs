@@ -1,7 +1,9 @@
 using System;
+using UnityEngine.Scripting;
 
 namespace Pharos.Framework
 {
+    [RequireImplementors]
     public interface ILifecycleEvent
     {
         event Action<Exception> ErrorOccurred;

@@ -1,9 +1,13 @@
 {
     "name": "io.github.idreamsofgame.pharos",
     "displayName": "Pharos",
-    "version": "2.0.4",
-    "unity": "2022.3",
     "description": "Pharos is a lightweight application framework by using VContainer dependency injection library for creating applications based upon the classic Model-View-Controller design meta-pattern.",
+    "version": "2.0.5",
+    "unity": "2022.3",
+    "author": {
+        "name": "iDreamsOfGame",
+        "url": "https://github.com/iDreamsOfGame"
+    },
     "keywords": [
         "Dependency Injection",
         "IoC",

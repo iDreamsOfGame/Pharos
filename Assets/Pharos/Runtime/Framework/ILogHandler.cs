@@ -1,10 +1,12 @@
 using System;
+using UnityEngine.Scripting;
 
 namespace Pharos.Framework
 {
     /// <summary>
     /// Interface for custom log handler implementation.
     /// </summary>
+    [RequireImplementors]
     public interface ILogHandler
     {
         /// <summary>
