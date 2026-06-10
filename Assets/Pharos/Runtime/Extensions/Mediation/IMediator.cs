@@ -1,8 +1,10 @@
 using Pharos.Common.EventCenter;
 using Pharos.Common.ViewCenter;
+using UnityEngine.Scripting;
 
 namespace Pharos.Extensions.Mediation
 {
+    [RequireImplementors]
     public interface IMediator
     {
         IView View { get; set; }

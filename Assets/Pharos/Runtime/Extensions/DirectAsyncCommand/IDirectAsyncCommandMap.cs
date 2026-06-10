@@ -1,8 +1,10 @@
 using System;
 using Pharos.Common.CommandCenter;
+using UnityEngine.Scripting;
 
 namespace Pharos.Extensions.DirectAsyncCommand
 {
+    [RequireImplementors]
     public interface IDirectAsyncCommandMap : IDirectAsyncCommandMapper
     {
         /// <summary>
