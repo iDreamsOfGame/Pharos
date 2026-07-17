@@ -41,29 +41,34 @@ namespace Pharos.Framework.Injection
             if (Container == null)
                 Build();
 
-            IObjectResolver root;
-            IScopedObjectResolver parent;
-            if (Container is ScopedContainer scopedContainer)
+            if (Children != null)
             {
-                root = scopedContainer.Root;
-                parent = scopedContainer;
+                IObjectResolver root;
+                IScopedObjectResolver parent;
+                if (Container is ScopedContainer scopedContainer)
+                {
+                    root = scopedContainer.Root;
+                    parent = scopedContainer;
+                }
+                else
+                {
+                    root = Container;
+                    parent = (Container as Container)!.RootScope;
+                }
+                
+                var childContainerBuilder = new ScopedContainerBuilder(root, parent)
+                {
+                    ApplicationOrigin = Container!.ApplicationOrigin
+                };
+                var childInjector = new Injector(childContainerBuilder)
+                {
+                    Parent = this
+                };
+                Children.Add(childInjector);
+                return childInjector;
             }
-            else
-            {
-                root = Container;
-                parent = (Container as Container)!.RootScope;
-            }
-            
-            var childContainerBuilder = new ScopedContainerBuilder(root, parent)
-            {
-                ApplicationOrigin = Container!.ApplicationOrigin
-            };
-            var childInjector = new Injector(childContainerBuilder)
-            {
-                Parent = this
-            };
-            Children.Add(childInjector);
-            return childInjector;
+
+            return null;
         }
 
         public bool RemoveChild(IPharosInjector childInjector)
@@ -79,10 +84,7 @@ namespace Pharos.Framework.Injection
             return Children?.Remove(childInjector) ?? false;
         }
 
-        public bool HasMapping<T>(object key = null)
-        {
-            return HasMapping(typeof(T), key);
-        }
+        public bool HasMapping<T>(object key = null) => HasMapping(typeof(T), key);
 
         public bool HasMapping(Type type, object key = null)
         {
@@ -98,15 +100,9 @@ namespace Pharos.Framework.Injection
             return false;
         }
 
-        public InjectionMapping Map<T>(object key = null)
-        {
-            return Map(typeof(T), key);
-        }
+        public InjectionMapping Map<T>(object key = null) => Map(typeof(T), key);
 
-        public InjectionMapping Map(Type type, object key = null)
-        {
-            return new InjectionMapping(this, type, key);
-        }
+        public InjectionMapping Map(Type type, object key = null) => new(this, type, key);
 
         public IPharosInjector BuildAncestors()
         {
@@ -189,10 +185,7 @@ namespace Pharos.Framework.Injection
             return this;
         }
 
-        public T GetInstance<T>(object key = null)
-        {
-            return (T)GetInstance(typeof(T), key);
-        }
+        public T GetInstance<T>(object key = null) => (T)GetInstance(typeof(T), key);
 
         public object GetInstance(Type type, object key = null)
         {
@@ -206,10 +199,7 @@ namespace Pharos.Framework.Injection
             return result;
         }
 
-        public T GetOrCreateNewInstance<T>(object key = null)
-        {
-            return (T)GetOrCreateNewInstance(typeof(T), key);
-        }
+        public T GetOrCreateNewInstance<T>(object key = null) => (T)GetOrCreateNewInstance(typeof(T), key);
 
         public object GetOrCreateNewInstance(Type type, object key = null)
         {
@@ -217,10 +207,7 @@ namespace Pharos.Framework.Injection
             return instance ?? CreateNewInstance(type, key);
         }
 
-        public T CreateNewInstance<T>(object key = null)
-        {
-            return (T)CreateNewInstance(typeof(T), key);
-        }
+        public T CreateNewInstance<T>(object key = null) => (T)CreateNewInstance(typeof(T), key);
 
         public object CreateNewInstance(Type type, object key = null)
         {

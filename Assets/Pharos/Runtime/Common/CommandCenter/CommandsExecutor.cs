@@ -27,7 +27,7 @@ namespace Pharos.Common.CommandCenter
             if (mapping == null)
                 return;
 
-            var sandboxInjector = injector.CreateChild();
+            var sandboxInjector = injector.CreateChild() ?? injector;
             var hasPayload = payload.HasPayload;
             var payloadInjectable = hasPayload && mapping.PayloadInjectable;
 

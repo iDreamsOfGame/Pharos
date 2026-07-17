@@ -23,7 +23,7 @@ namespace Pharos.Extensions.DirectCommand
         public DirectCommandMap(IContext context)
         {
             this.context = context;
-            sandboxInjector = context.Injector.CreateChild();
+            sandboxInjector = context.Injector.CreateChild() ?? context.Injector;
             sandboxInjector.Map<IDirectCommandMap>().ToValue(this);
             sandboxInjector.Build();
             mappings = new CommandMappingList(NullCommandTrigger.Instance, mappingProcessors, context.GetLogger(this));
